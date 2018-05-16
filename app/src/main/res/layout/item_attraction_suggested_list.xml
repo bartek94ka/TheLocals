@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nazwa trasy"
+                    android:layout_marginTop="15dp"
+                    android:textColor="#00a7f5"
+                    android:textSize="15dp" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:layout_weight="0.3"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/item_details"
+                android:minWidth="120px"
+                android:minHeight="120px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/ic_add_circle_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/item_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:minHeight="120px"
+                android:minWidth="120px"
+                android:src="@mipmap/ic_delete_black_24dp"
+                android:text="Details" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
+</LinearLayout>

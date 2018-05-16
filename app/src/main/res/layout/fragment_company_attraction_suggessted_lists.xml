@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CompanyAttractionSugesstedList">
+    tools:context=".CompanyAttractionSuggesstedList">
 
     <LinearLayout
         android:id="@+id/companyAttractionList"
@@ -34,7 +34,7 @@
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dodaj"
+                android:text="Usuń"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
@@ -46,7 +46,7 @@
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dodaj"
+                android:text="Zapisz"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
@@ -61,7 +61,7 @@
 
 
             <ListView
-                android:id="@+id/listview_attractions"
+                android:id="@+id/listview_attraction_lists"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
