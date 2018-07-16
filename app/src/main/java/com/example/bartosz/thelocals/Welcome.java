@@ -3,6 +3,7 @@ package com.example.bartosz.thelocals;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+
 public class Welcome extends AppCompatActivity {
 
     @Override

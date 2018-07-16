@@ -12,6 +12,7 @@ public class Attraction {
     public String SourceUrl;
     public String Longitude;
     public String Latitude;
+    public Boolean IsValidated;
 
     public Attraction(){
         CreationDate = new Date();
@@ -24,5 +25,6 @@ public class Attraction {
         SourceUrl = sourceUrl;
         Longitude = longitude;
         Latitude = latitude;
+        IsValidated = false;
     }
 }
