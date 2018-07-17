@@ -20,9 +20,9 @@ android {
 
 buildscript {
     repositories
-    {
-        mavenCentral()
-    }
+            {
+                mavenCentral()
+            }
 }
 
 dependencies {
