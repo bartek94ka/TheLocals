@@ -94,6 +94,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         user = firebaseAuth.getCurrentUser();
+        if(user != null){
+            Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(loginIntent);
+            LoginActivity.this.finish();
+        }
         Toast.makeText(getApplicationContext(), "Update UI", Toast.LENGTH_SHORT).show();
     }
 

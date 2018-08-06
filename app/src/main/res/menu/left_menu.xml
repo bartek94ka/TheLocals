@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/welcome"
+            android:icon="@mipmap/ic_home_black_24dp"
+            android:title="Home" />
+        <item
+            android:id="@+id/newAttraction"
+            android:icon="@mipmap/ic_group_black_24dp"
+            android:title="Dodaj atrakcję" />
+        <item
+            android:id="@+id/addCompany"
+            android:icon="@mipmap/ic_my_location_black_24dp"
+            android:title="Dodaj firmę" />
+        <item android:id="@+id/nav_logout"
+            android:icon="@mipmap/ic_settings_power_black_24dp"
+            android:title="Wyloguj"/>
+    </group>
+
+</menu>
