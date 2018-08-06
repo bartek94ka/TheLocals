@@ -1,0 +1,105 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewAttraction">
+
+    <LinearLayout
+        android:id="@+id/newAttraction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Nowa atrakcja"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="italic" />
+        <EditText
+            android:id="@+id/newAttractionName"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Nazwa"
+            android:inputType="textPersonName"/>
+
+        <EditText
+            android:id="@+id/newAttractionDescription"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Opis"
+            android:inputType="textPersonName"/>
+
+        <EditText
+            android:id="@+id/newAttractionPhotoUrl"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Url zdjęcia"
+            android:inputType="textPersonName"/>
+
+        <EditText
+            android:id="@+id/newAttractionSourceUrl"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Url źródła"
+            android:inputType="textPersonName"/>
+
+        <EditText
+            android:id="@+id/newAttractionLatitude"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Szerokość geograficzna (y)"
+            android:inputType="textPersonName"/>
+
+
+        <EditText
+            android:id="@+id/newAttractionLongitude"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Długość geograficzna (x)"
+            android:inputType="textPersonName"/>
+
+        <Button
+            android:id="@+id/newAttractionAddButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dodaj"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+
+    </LinearLayout>
+</FrameLayout>
