@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.bartosz.thelocals.Managers.UserManager;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+
+    private UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         UseDefaultFragment();
+
+        userManager = new UserManager();
     }
 
     @Override
@@ -65,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_welcome) {
             fragment = new Welcome();
         } else if (id == R.id.nav_logout) {
-
+            LogoutUserAndChangeActivity();
         } else if (id == R.id.nav_newAttraction){
             fragment = new NewAttraction();
         } else if (id == R.id.nav_addCompany) {
@@ -93,5 +101,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fragmentTransaction.replace(R.id.screen_area, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void LogoutUserAndChangeActivity(){
+        userManager.LogoutUser();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        MainActivity.this.finish();
     }
 }

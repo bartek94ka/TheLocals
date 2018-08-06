@@ -48,10 +48,10 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_attraction, container, false);
 
-        //buttonAdd = (Button) view.findViewById(R.id.newAttractionAddButton);
-        //buttonAdd.setOnClickListener(this);
+        buttonAdd = (Button) view.findViewById(R.id.newAttractionAddButton);
+        buttonAdd.setOnClickListener(this);
 
-        return inflater.inflate(R.layout.fragment_add_attraction, null);
+        return inflater.inflate(R.layout.fragment_new_attraction, null);
     }
 
     @Override
