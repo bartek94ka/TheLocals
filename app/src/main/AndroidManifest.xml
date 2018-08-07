@@ -3,6 +3,12 @@
     package="com.example.bartosz.thelocals">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <permission
+        android:name="com.example.bartosz.whereismyfriend.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.example.bartosz.whereismyfriend.permission.MAPS_RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -11,11 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome" />
-        <activity
-            android:name=".NewAttraction"
-            android:label="@string/title_activity_new_attraction"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

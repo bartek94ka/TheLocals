@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bartosz.thelocals.Managers.UserManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new NewAttraction();
         } else if (id == R.id.nav_addCompany) {
             fragment = new AddCompany();
+        } else if (id == R.id.nav_userSettings) {
+            fragment = new UserSettings();
         }
 
         if(fragment != null){
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void LogoutUserAndChangeActivity(){
+        //TODO check if user was register by service - without FB
+        FirebaseAuth.getInstance().signOut();
         userManager.LogoutUser();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);

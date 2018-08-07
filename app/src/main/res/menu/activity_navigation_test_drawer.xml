@@ -21,6 +21,11 @@
             android:id="@+id/nav_addCompany"
             android:icon="@mipmap/ic_my_location_black_24dp"
             android:title="Dodaj firmę" />
+
+        <item
+            android:id="@+id/nav_userSettings"
+            android:icon="@mipmap/ic_my_location_black_24dp"
+            android:title="Ustawienia konta" />
     </group>
 
 

@@ -88,7 +88,7 @@ public class UserManager {
         });
     }
 
-    public  void RegisterUser(final Context context, final String email, String password, final String name, final String surname){
+    public void RegisterUser(final Context context, final String email, String password, final String name, final String surname){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
         if(TextUtils.isEmpty(email))
@@ -122,7 +122,7 @@ public class UserManager {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                CompleteRegistration(context, progressDialog, email, name, surname);
+                                //CompleteRegistration(context, progressDialog, email, name, surname);
                             } else {
                                 Log.d("TAG", "createUserWithEmail:fail");
                                 Toast.makeText(context, "Could not register. Please try again", Toast.LENGTH_SHORT).show();

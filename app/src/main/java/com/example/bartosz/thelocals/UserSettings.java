@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +31,6 @@ public class UserSettings extends Fragment implements View.OnClickListener {
 
     private View view;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private FirebaseAuth _firebaseAuth;
     private FirebaseDatabase _database;
     private FirebaseUser _currentUser;
@@ -47,27 +45,18 @@ public class UserSettings extends Fragment implements View.OnClickListener {
     private EditText _settingsConfirmPassword;
     private Button _settingsChangePasswordButton;
 
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
     private UserManager _userManager;
     private UserDataValidator _userDataValidator;
 
     public UserSettings() {
-        // Required empty public constructor
-    }
 
-    // TODO: Rename and change types and number of parameters
-    public static UserSettings newInstance(String param1, String param2) {
-        UserSettings fragment = new UserSettings();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _userManager = new UserManager();
-        _userDataValidator = new UserDataValidator();
+
     }
 
     @Override
@@ -81,18 +70,19 @@ public class UserSettings extends Fragment implements View.OnClickListener {
         Button settingsSaveButton = (Button) view.findViewById(R.id.settingsSaveButton);
         settingsSaveButton.setOnClickListener(this);
 
-        InitializeLocalVeribles();
-        FillBasicUserData();
+
+
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        InitializeLocalVeribles();
+        FillBasicUserData();
 
+    }
+/*
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -114,6 +104,7 @@ public class UserSettings extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+*/
 
     @Override
     public void onClick(View v) {
@@ -154,6 +145,9 @@ public class UserSettings extends Fragment implements View.OnClickListener {
     }
 
     private void InitializeLocalVeribles(){
+        _userManager = new UserManager();
+        _userDataValidator = new UserDataValidator();
+
         _firebaseAuth = FirebaseAuth.getInstance();
         _database = FirebaseDatabase.getInstance();
         _currentUser = _firebaseAuth.getCurrentUser();
@@ -167,9 +161,14 @@ public class UserSettings extends Fragment implements View.OnClickListener {
     }
 
     private void FillBasicUserData(){
-        _user = _userManager.getUserData(_currentUser.getUid()).getResult();
-        _settingsName.setText(_user.Name);
-        _settingsSurname.setText(_user.Surname);
+        try{
+            _user = _userManager.getUserData(_currentUser.getUid()).getResult();
+            _settingsName.setText(_user.Name);
+            _settingsSurname.setText(_user.Surname);
+        }catch(Exception ex){
+
+        }
+
     }
 
     public class ThreadUpdateData extends Thread {
