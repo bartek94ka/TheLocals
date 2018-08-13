@@ -97,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void UseDefaultFragment(){
-        Fragment fragment = new Welcome();
+        Fragment fragment = new AttractionMap();
+        //        Fragment fragment = new Welcome();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -60,7 +60,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class AttractionMap extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
+public class AttractionMap extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -97,10 +97,18 @@ public class AttractionMap extends Fragment implements NavigationView.OnNavigati
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        */
+        mListener = new OnFragmentInteractionListener() {
+            @Override
+            public void onFragmentInteraction(Uri uri) {
+
+            }
+        };
     }
 
     @Override
@@ -116,7 +124,7 @@ public class AttractionMap extends Fragment implements NavigationView.OnNavigati
             mListener.onFragmentInteraction(uri);
         }
     }
-
+/*
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -133,7 +141,7 @@ public class AttractionMap extends Fragment implements NavigationView.OnNavigati
         super.onDetach();
         mListener = null;
     }
-
+*/
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
