@@ -16,5 +16,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps_test">Map</string>
 
-
+    <!-- Collection names>
+    <string name="Attractions">Attractions2</string>
+-->
 </resources>

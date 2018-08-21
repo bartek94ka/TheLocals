@@ -89,11 +89,11 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
         String description = etDescription.getText().toString().trim();
         String photoUrl = etPhotoUrl.getText().toString().trim();
         String sourceUrl = etSourceUrl.getText().toString().trim();
-        String Latitude = etLatitude.getText().toString().trim();
-        String Longitude = etLongitude.getText().toString().trim();
+        Double Latitude = Double.parseDouble(etLatitude.getText().toString().trim());
+        Double Longitude = Double.parseDouble(etLongitude.getText().toString().trim());
 
-        Attraction attraction = new Attraction(name, description, photoUrl, sourceUrl, Longitude, Latitude);
-
+        //Attraction attraction = new Attraction(name, description, photoUrl, sourceUrl, Longitude, Latitude);
+        Attraction attraction = null;
         try{
             String key = _database.getReference("Attractions").push().getKey();
             _database.getReference("Attractions").child(key).setValue(attraction).addOnCompleteListener(new OnCompleteListener<Void>() {

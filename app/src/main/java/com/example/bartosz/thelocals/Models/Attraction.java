@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Attraction {
     public String Id;
-    public Date CreationDate;
+    public String CreationDate;
     public String Name;
     public String Description;
     public String PhotoUrl;
@@ -15,10 +15,10 @@ public class Attraction {
     public Boolean IsValidated;
 
     public Attraction(){
-        CreationDate = new Date();
+        CreationDate = new Date().toString();
     }
     public Attraction(String name, String description, String photoUrl, String sourceUrl, String longitude, String latitude){
-        CreationDate = new Date();
+        CreationDate = new Date().toString();
         Name = name;
         Description = description;
         PhotoUrl = photoUrl;
