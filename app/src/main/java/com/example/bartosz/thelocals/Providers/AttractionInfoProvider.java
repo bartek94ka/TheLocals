@@ -44,9 +44,34 @@ public class AttractionInfoProvider {
         return taskCompletionSource.getTask();
     }
 
-    public Task<ArrayList<Attraction>> GetAllAttractions(){
+    public Task<ArrayList<Attraction>> GetAllAttractionsByProvince(String provinceName){
         final TaskCompletionSource<ArrayList<Attraction>> taskCompletionSource = new TaskCompletionSource<>();
         final DatabaseReference reference = firebaseDatabase.getReference(collectionName  + "/" + provinceName);
+        final ArrayList<Attraction> list = new ArrayList<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    Attraction attraction = child.getValue(Attraction.class);
+                    attraction.Id = child.getKey();
+                    //TODO: check is validated
+                    list.add(attraction);
+                }
+                taskCompletionSource.setResult(list);
+                reference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
+    public Task<ArrayList<Attraction>> GetAllAttractions(){
+        final TaskCompletionSource<ArrayList<Attraction>> taskCompletionSource = new TaskCompletionSource<>();
+        final DatabaseReference reference = firebaseDatabase.getReference(collectionName);
         final ArrayList<Attraction> list = new ArrayList<>();
         reference.addValueEventListener(new ValueEventListener() {
             @Override

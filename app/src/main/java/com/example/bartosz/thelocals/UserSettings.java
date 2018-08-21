@@ -70,8 +70,6 @@ public class UserSettings extends Fragment implements View.OnClickListener {
         Button settingsSaveButton = (Button) view.findViewById(R.id.settingsSaveButton);
         settingsSaveButton.setOnClickListener(this);
 
-
-
         return view;
     }
 

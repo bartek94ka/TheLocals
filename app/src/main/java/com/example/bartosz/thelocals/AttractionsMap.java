@@ -49,6 +49,9 @@ public class AttractionsMap extends Fragment implements NavigationView.OnNavigat
     private ArrayList<Attraction> attractions;
     private AttractionMarkerProvider attractionMarkerProvider;
 
+    private String provinceName = "Wielkopolskie";
+    //private String provinceName = "Kujawsko-pomorskie";
+
     public AttractionsMap() {
         // Required empty public constructor
     }
@@ -129,8 +132,8 @@ public class AttractionsMap extends Fragment implements NavigationView.OnNavigat
         map.moveCamera(cameraUpdate);
     }
 
-    private void SetAttractionListRegionName(String regionName){
-        attractionInfoProvider.GetAllAttractions().
+    private void SetAttractionListRegionName(String provinceName){
+        attractionInfoProvider.GetAllAttractionsByProvince(provinceName).
                 continueWith(new Continuation<ArrayList<Attraction>, ArrayList<Attraction>>() {
                     @Override
                     public ArrayList<Attraction> then(bolts.Task<ArrayList<Attraction>> task) throws Exception {
@@ -166,7 +169,7 @@ public class AttractionsMap extends Fragment implements NavigationView.OnNavigat
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         map = googleMap;
-        SetAttractionListRegionName("region name");
+        SetAttractionListRegionName(provinceName);
         //UpdateUserLocationOnMap();
         //SetCameraOnAttraction();
     }
