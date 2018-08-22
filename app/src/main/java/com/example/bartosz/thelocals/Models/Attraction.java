@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 
 public class Attraction {
+
+    private Boolean isSelected;
     public String Id;
     public String CreationDate;
     public String Name;
@@ -16,8 +18,10 @@ public class Attraction {
 
     public Attraction(){
         CreationDate = new Date().toString();
+        isSelected = false;
     }
     public Attraction(String name, String description, String photoUrl, String sourceUrl, String longitude, String latitude){
+        isSelected = false;
         CreationDate = new Date().toString();
         Name = name;
         Description = description;
@@ -26,5 +30,13 @@ public class Attraction {
         Longitude = longitude;
         Latitude = latitude;
         IsValidated = false;
+    }
+
+    public boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

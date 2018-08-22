@@ -14,13 +14,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
+import com.example.bartosz.thelocals.Models.Attraction;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IAttractionPassListener{
 
 
     private UserManager userManager;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void UseDefaultFragment(){
-        Fragment fragment = new AttractionsMap();
+        fragment = new AttractionList();
         //        Fragment fragment = new Welcome();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -114,5 +119,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         MainActivity.this.finish();
+    }
+
+    @Override
+    public void PassAttractionList(ArrayList<Attraction> attractions) {
+        Fragment selectedAttractionsOnMap = new SelectedAttractionsOnMap();
+        Bundle args = new Bundle();
+        args.putSerializable("attractions", attractions);
+        selectedAttractionsOnMap.setArguments(args);
+        getSupportFragmentManager().beginTransaction().
+                replace(fragment.getId(), selectedAttractionsOnMap).
+                commit();
+
     }
 }

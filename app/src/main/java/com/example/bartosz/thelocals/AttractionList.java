@@ -1,6 +1,7 @@
 package com.example.bartosz.thelocals;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,9 +11,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.bartosz.thelocals.AttractionAdapters.AttractionListAdapter;
+import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Providers.AttractionInfoProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +36,7 @@ public class AttractionList extends Fragment {
 
     private Handler handler;
 
+    private IAttractionPassListener mListener;
     private AttractionInfoProvider attractionInfoProvider;
     private AttractionListAdapter attractionListAdapter;
     private String provinceName = "Wielkopolskie";
@@ -46,7 +50,24 @@ public class AttractionList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_attraction_list, container, false);
+        Button nextButton = view.findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.PassAttractionList((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
+            }
+        });
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (IAttractionPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IAttractionPassListener");
+        }
     }
 
     @Override
@@ -61,8 +82,13 @@ public class AttractionList extends Fragment {
         listViewAttractions = view.findViewById(R.id.listview_attractions);
 
         handler = new MyHandler();
-        attractionListAdapter = new AttractionListAdapter();
         attractionInfoProvider = new AttractionInfoProvider(provinceName);
+        attractionListAdapter = new AttractionListAdapter(getContext());
+        attractionListAdapter.ClearList();
+        listViewAttractions.setAdapter(attractionListAdapter);
+
+        Thread thread = new ThreadGetMoreData();
+        thread.start();
 
     }
 
