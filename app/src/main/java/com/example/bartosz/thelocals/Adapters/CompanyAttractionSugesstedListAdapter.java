@@ -1,12 +1,15 @@
 package com.example.bartosz.thelocals.Adapters;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.R;
 
@@ -48,6 +51,14 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
         return selectedAttractionList;
     }
 
+    public void UpdateAttractionListByPosition(AttractionList attractionList, int position){
+        attractionLists.set(position, attractionList);
+    }
+
+    public AttractionList GetAttractionByPosition(int position){
+        return attractionLists.get(position);
+    }
+
     public void ClearList(){
         attractionLists.clear();
     }
@@ -70,9 +81,11 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
         View v = View.inflate(context, R.layout.item_attraction_suggested_list, null);
-        selectedAttractionList = (AttractionList)getItem(position);
-        /*
+        //selectedAttractionList = (AttractionList)getItem(position);
+        AttractionList attractionList = GetAttractionByPosition(position);
+
         TextView itemName = (TextView)v.findViewById(R.id.item_name);
+        itemName.setText(attractionList.Name);
         ImageButton itemDetailsButton = (ImageButton)v.findViewById(R.id.item_details);
         ImageButton itemRemoveButton = (ImageButton)v.findViewById(R.id.item_remove);
         if(itemDetailsButton != null){
@@ -97,7 +110,27 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
                     //delete attraction List from database
                 }
             });
-        }*/
+        }
+
+        itemName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                AttractionList attractionList = GetAttractionByPosition(position);
+                attractionList.Name = s.toString();
+                UpdateAttractionListByPosition(attractionList, position);
+//                attractionList.Name = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return v;
     }
 }

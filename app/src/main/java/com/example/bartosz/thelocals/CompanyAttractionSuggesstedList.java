@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Adapters.CompanyAttractionSugesstedListAdapter;
 import com.example.bartosz.thelocals.Models.Attraction;
+import android.widget.AdapterView.OnItemClickListener;
 import com.example.bartosz.thelocals.Models.AttractionList;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class CompanyAttractionSuggesstedList extends ListFragment implements AdapterView.OnItemClickListener {
+public class CompanyAttractionSuggesstedList extends ListFragment implements OnItemClickListener {
 
     private View view;
     private ListView listViewAttractionLists;
@@ -79,7 +81,7 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements Ada
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+/*
         InitializeLocalVeribles();
         listViewAttractionLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,14 +91,29 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements Ada
                 Toast.makeText(getContext(), "Kliknięto: " +position, Toast.LENGTH_SHORT);
             }
         });
-
+*/
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        /*
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.Planets, android.R.layout.simple_list_item_1);
+        setListAdapter(adapter);
+        getListView().setOnItemClickListener(this);
+        */
+        InitializeLocalVeribles();
+    }
+
 
     private void InitializeLocalVeribles(){
         listViewAttractionLists = view.findViewById(android.R.id.list);
         attractionSugesstedListAdapter = new CompanyAttractionSugesstedListAdapter(getContext());
         attractionSugesstedListAdapter.ClearList();
         listViewAttractionLists.setAdapter(attractionSugesstedListAdapter);
+        setListAdapter(attractionSugesstedListAdapter);
+        getListView().setOnItemClickListener(this);
         //listViewAttractionLists.setlistview
 
     }
