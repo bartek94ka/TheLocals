@@ -26,9 +26,6 @@ import java.util.ArrayList;
 import bolts.Continuation;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AttractionList extends Fragment {
 
     private View view;

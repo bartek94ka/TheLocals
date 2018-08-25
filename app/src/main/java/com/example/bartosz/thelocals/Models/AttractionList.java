@@ -13,6 +13,7 @@ public class AttractionList {
         CreationDate = new Date();
     }
     public AttractionList(String name, List<Attraction> attractions){
+        CreationDate = new Date();
         Name = name;
         Attractions = attractions;
     }

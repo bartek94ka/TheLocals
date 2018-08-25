@@ -10,31 +10,33 @@ import android.widget.TextView;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
-    private Context _context;
-    private List<AttractionList> _attractionLists;
+    private Context context;
+    private List<AttractionList> attractionLists;
+    private AttractionList selectedAttractionList;
 
-    public CompanyAttractionSugesstedListAdapter(Context context, List<AttractionList> attractionLists){
-        _context = context;
-        _attractionLists = attractionLists;
+    public CompanyAttractionSugesstedListAdapter(Context context){
+        this.context = context;
+        attractionLists = new ArrayList<AttractionList>();
     }
 
-    public void AddListItemToAdapter(List<AttractionList> attractionList) {
+    public void AddListItemToAdapter(AttractionList attractionList) {
         //Add list to current array list of data
-        _attractionLists.addAll(attractionList);
+        attractionLists.add(attractionList);
         //Notify UI
         this.notifyDataSetChanged();
     }
 
     public void DeleteListItem(AttractionList attractionList){
-        _attractionLists.remove(attractionList);
+        attractionLists.remove(attractionList);
         this.notifyDataSetChanged();
     }
 
     public AttractionList GetAttraqtionList(String id) {
-        for(AttractionList attractionList: _attractionLists){
+        for(AttractionList attractionList: attractionLists){
             if(attractionList.Id == id){
                 return attractionList;
             }
@@ -42,18 +44,22 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
         return null;
     }
 
+    public AttractionList GetSelectedAttractionList(){
+        return selectedAttractionList;
+    }
+
     public void ClearList(){
-        _attractionLists.clear();
+        attractionLists.clear();
     }
 
     @Override
     public int getCount() {
-        return _attractionLists.size();
+        return attractionLists.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return _attractionLists.get(position);
+        return attractionLists.get(position);
     }
 
     @Override
@@ -63,12 +69,14 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
-        View v = View.inflate(_context, R.layout.item_attraction_suggested_list, null);
+        View v = View.inflate(context, R.layout.item_attraction_suggested_list, null);
+        selectedAttractionList = (AttractionList)getItem(position);
+        /*
         TextView itemName = (TextView)v.findViewById(R.id.item_name);
         ImageButton itemDetailsButton = (ImageButton)v.findViewById(R.id.item_details);
         ImageButton itemRemoveButton = (ImageButton)v.findViewById(R.id.item_remove);
         if(itemDetailsButton != null){
-            itemDetailsButton.setTag(_attractionLists.get(position).Id);
+            itemDetailsButton.setTag(attractionLists.get(position).Id);
             itemDetailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -79,7 +87,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
         }
 
         if(itemRemoveButton != null){
-            itemRemoveButton.setTag(_attractionLists.get(position).Id);
+            itemRemoveButton.setTag(attractionLists.get(position).Id);
             itemRemoveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +97,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
                     //delete attraction List from database
                 }
             });
-        }
+        }*/
         return v;
     }
 }

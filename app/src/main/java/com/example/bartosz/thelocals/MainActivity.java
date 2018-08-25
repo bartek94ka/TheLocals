@@ -13,10 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.Attraction;
+import com.example.bartosz.thelocals.Models.AttractionList;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -46,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         UseDefaultFragment();
 
         userManager = new UserManager();
+
+
     }
 
     @Override
@@ -102,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void UseDefaultFragment(){
-        fragment = new AttractionList();
+        fragment = new CompanyAttractionSuggesstedList();
         //        Fragment fragment = new Welcome();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
