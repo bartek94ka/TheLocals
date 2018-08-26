@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
+import com.example.bartosz.thelocals.Managers.AttractionListManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.R;
@@ -19,10 +21,14 @@ import java.util.List;
 public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
     private Context context;
     private List<AttractionList> attractionLists;
+    private AttractionListManager attractionListManager;
     private AttractionList selectedAttractionList;
+    private IComapnyPassListener mListener;
 
     public CompanyAttractionSugesstedListAdapter(Context context){
         this.context = context;
+        mListener = (IComapnyPassListener) context;
+        attractionListManager = new AttractionListManager(context);
         attractionLists = new ArrayList<AttractionList>();
     }
 
@@ -53,6 +59,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
 
     public void UpdateAttractionListByPosition(AttractionList attractionList, int position){
         attractionLists.set(position, attractionList);
+        attractionListManager.UpdateFirebaseAttractionList(attractionList.Id, attractionList);
     }
 
     public AttractionList GetAttractionByPosition(int position){
@@ -94,7 +101,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
                 @Override
                 public void onClick(View v) {
                     String attractionListId = (String) v.getTag();
-
+                    mListener.PassAttractionListIdToCompanyAttractionList(attractionListId);
                     //move to another window
                 }
             });
@@ -108,6 +115,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
                     String attractionListId = (String) v.getTag();
                     AttractionList attractionList = GetAttraqtionList(attractionListId);
                     DeleteListItem(attractionList);
+                    attractionListManager.RemoveAttractionList(attractionListId);
                     //delete attraction List from database
                 }
             });

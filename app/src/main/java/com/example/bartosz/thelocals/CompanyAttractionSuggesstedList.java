@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Adapters.CompanyAttractionSugesstedListAdapter;
+import com.example.bartosz.thelocals.Managers.AttractionListManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import android.widget.AdapterView.OnItemClickListener;
 import com.example.bartosz.thelocals.Models.AttractionList;
@@ -35,6 +36,7 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
     private ListView listViewAttractionLists;
 
     private AttractionListsProvider attractionListsProvider;
+    private AttractionListManager attractionListManager;
     private List<AttractionList> attractionLists;
     private AttractionList selectedAttractionList;
     private String companyId;
@@ -69,6 +71,8 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
             public void onClick(View v) {
                 AttractionList attractionsList = new AttractionList();
                 attractionsList.Id = UUID.randomUUID().toString();
+                attractionsList.CompanyId = companyId;
+                attractionListManager.AddAttractionList(attractionsList);
                 attractionSugesstedListAdapter.AddListItemToAdapter(attractionsList);
             }
         });
@@ -97,6 +101,7 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
                 attractionLists = task.getResult();
             }
         });
+        attractionListManager = new AttractionListManager(getContext());
         /*
         InitializeLocalVeribles();
         listViewAttractionLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {

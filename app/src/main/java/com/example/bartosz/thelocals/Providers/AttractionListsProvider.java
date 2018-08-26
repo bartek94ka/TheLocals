@@ -36,7 +36,6 @@ public class AttractionListsProvider {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Company company = dataSnapshot.getValue(Company.class);
-                //company.Id = companyId;
                 if(company.AttractionSuggestedList != null){
                     for (String attractionListId: company.AttractionSuggestedList) {
                         GetAttractionListById(attractionListId).addOnCompleteListener(new OnCompleteListener<AttractionList>() {

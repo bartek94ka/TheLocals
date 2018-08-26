@@ -148,9 +148,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle args = new Bundle();
         args.putSerializable("attractions", attractions);
         selectedAttractionsOnMap.setArguments(args);
+        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        fragmentTransaction.replace(fragment.getId(), selectedAttractionsOnMap);
+        fragment = selectedAttractionsOnMap;
+        /*
         getSupportFragmentManager().beginTransaction().
                 replace(fragment.getId(), selectedAttractionsOnMap).
                 commit();
+        */
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -159,8 +165,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle args = new Bundle();
         args.putString("companyId", id);
         comapnyAttractionSuggestedList.setArguments(args);
-        getSupportFragmentManager().beginTransaction().
-                replace(fragment.getId(), comapnyAttractionSuggestedList).
-                commit();
+        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        fragmentTransaction.replace(fragment.getId(), comapnyAttractionSuggestedList);
+        fragment = comapnyAttractionSuggestedList;
+        //
+        // fragmentTransaction.addToBackStack("")
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassAttractionListIdToCompanyAttractionList(String id) {
+        Fragment comapnyAttractionList = new CompanyAttractionList();
+        Bundle args = new Bundle();
+        args.putString("attractionListId", id);
+        comapnyAttractionList.setArguments(args);
+        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
+        fragment = comapnyAttractionList;
+        //
+        // fragmentTransaction.addToBackStack("")
+        fragmentTransaction.commit();
     }
 }
