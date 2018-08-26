@@ -14,6 +14,7 @@ public class Company {
     public List<String> AttractionSuggestedList;
     public Boolean IsValidated;
 
+    public Company(){}
     public Company(String name, String address, String description, String urlAddress, String logoUrl, String phoneNumber, String email, List<String> attractionSuggestedList){
         Name = name;
         Address = address;

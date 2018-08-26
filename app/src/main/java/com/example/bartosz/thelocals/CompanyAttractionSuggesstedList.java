@@ -20,6 +20,9 @@ import com.example.bartosz.thelocals.Adapters.CompanyAttractionSugesstedListAdap
 import com.example.bartosz.thelocals.Models.Attraction;
 import android.widget.AdapterView.OnItemClickListener;
 import com.example.bartosz.thelocals.Models.AttractionList;
+import com.example.bartosz.thelocals.Providers.AttractionListsProvider;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +34,10 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
     private View view;
     private ListView listViewAttractionLists;
 
+    private AttractionListsProvider attractionListsProvider;
     private List<AttractionList> attractionLists;
     private AttractionList selectedAttractionList;
+    private String companyId;
 
     private CompanyAttractionSugesstedListAdapter attractionSugesstedListAdapter;
 
@@ -44,8 +49,10 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_company_attraction_suggessted_lists, container, false);
-        attractionLists = new ArrayList<>();
+        //attractionLists = new ArrayList<>();
         attractionSugesstedListAdapter = new CompanyAttractionSugesstedListAdapter(getContext());
+
+
 
         Button saveButton = view.findViewById(R.id.saveListsButton);
         Button addListItemButton = view.findViewById(R.id.addListItemButton);
@@ -65,13 +72,14 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
                 attractionSugesstedListAdapter.AddListItemToAdapter(attractionsList);
             }
         });
+        /*
         deleteListItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attractionSugesstedListAdapter.DeleteListItem(selectedAttractionList);
             }
         });
-
+        */
 
 
         // Inflate the layout for this fragment
@@ -81,7 +89,15 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-/*
+        SetComapnyIdArguments();
+        attractionListsProvider = new AttractionListsProvider(companyId);
+        attractionListsProvider.GetAttractionListsForCompany().addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
+            @Override
+            public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
+                attractionLists = task.getResult();
+            }
+        });
+        /*
         InitializeLocalVeribles();
         listViewAttractionLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -121,5 +137,12 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getContext(), "Kliknięto: " +position, Toast.LENGTH_SHORT);
+    }
+
+    private void SetComapnyIdArguments(){
+        Bundle args = getArguments();
+        if(args != null){
+            companyId = (String)args.get("companyId");
+        }
     }
 }

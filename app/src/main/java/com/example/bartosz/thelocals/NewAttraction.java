@@ -73,8 +73,8 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
                 AddAttraction();
                 break;
             }
+        }
     }
-}
 
 
     private void AddAttraction()

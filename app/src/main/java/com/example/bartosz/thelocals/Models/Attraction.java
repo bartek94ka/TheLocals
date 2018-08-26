@@ -17,7 +17,7 @@ public class Attraction {
     public Boolean IsValidated;
 
     public Attraction(){
-        CreationDate = new Date().toString();
+        //CreationDate = new Date().toString();
         isSelected = false;
     }
     public Attraction(String name, String description, String photoUrl, String sourceUrl, String longitude, String latitude){

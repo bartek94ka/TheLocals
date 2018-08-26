@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
+import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
@@ -26,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IAttractionPassListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IAttractionPassListener, IComapnyPassListener{
 
 
     private UserManager userManager;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void UseDefaultFragment(){
-        fragment = new SelectedAttractionsOnMap();
+        fragment = new AddCompany();
         //fragment = new CompanyAttractionSuggesstedList();
         //        Fragment fragment = new Welcome();
 
@@ -149,6 +150,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         selectedAttractionsOnMap.setArguments(args);
         getSupportFragmentManager().beginTransaction().
                 replace(fragment.getId(), selectedAttractionsOnMap).
+                commit();
+    }
+
+    @Override
+    public void PassComapnyIdToComapnyAttractionSugesstedList(String id) {
+        Fragment comapnyAttractionSuggestedList = new CompanyAttractionSuggesstedList();
+        Bundle args = new Bundle();
+        args.putString("companyId", id);
+        comapnyAttractionSuggestedList.setArguments(args);
+        getSupportFragmentManager().beginTransaction().
+                replace(fragment.getId(), comapnyAttractionSuggestedList).
                 commit();
     }
 }

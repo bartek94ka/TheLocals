@@ -86,14 +86,15 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
 
         TextView itemName = (TextView)v.findViewById(R.id.item_name);
         itemName.setText(attractionList.Name);
-        ImageButton itemDetailsButton = (ImageButton)v.findViewById(R.id.item_details);
+        ImageButton itemEditAttractionList = (ImageButton)v.findViewById(R.id.item_edit_attraction_list);
         ImageButton itemRemoveButton = (ImageButton)v.findViewById(R.id.item_remove);
-        if(itemDetailsButton != null){
-            itemDetailsButton.setTag(attractionLists.get(position).Id);
-            itemDetailsButton.setOnClickListener(new View.OnClickListener() {
+        if(itemEditAttractionList != null){
+            itemEditAttractionList.setTag(attractionLists.get(position).Id);
+            itemEditAttractionList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String attractionListId = (String) v.getTag();
+
                     //move to another window
                 }
             });
