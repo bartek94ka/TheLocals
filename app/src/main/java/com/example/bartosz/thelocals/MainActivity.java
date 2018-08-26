@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void UseDefaultFragment(){
-        fragment = new CompanyAttractionSuggesstedList();
+        fragment = new SelectedAttractionsOnMap();
+        //fragment = new CompanyAttractionSuggesstedList();
         //        Fragment fragment = new Welcome();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -138,5 +139,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replace(fragment.getId(), selectedAttractionsOnMap).
                 commit();
 
+    }
+
+    @Override
+    public void PassAttractionListToAttractionLists(ArrayList<Attraction> attractions) {
+        Fragment selectedAttractionsOnMap = new CompanyAttractionSuggesstedList();
+        Bundle args = new Bundle();
+        args.putSerializable("attractions", attractions);
+        selectedAttractionsOnMap.setArguments(args);
+        getSupportFragmentManager().beginTransaction().
+                replace(fragment.getId(), selectedAttractionsOnMap).
+                commit();
     }
 }

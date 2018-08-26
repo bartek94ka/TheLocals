@@ -18,8 +18,6 @@ import com.example.bartosz.thelocals.AttractionAdapters.AttractionListAdapter;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Providers.AttractionInfoProvider;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -48,10 +46,17 @@ public class AttractionList extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_attraction_list, container, false);
         Button nextButton = view.findViewById(R.id.nextButton);
+        Button saveButton = view.findViewById(R.id.saveListsButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.PassAttractionList((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
+            }
+        });
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.PassAttractionListToAttractionLists((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
             }
         });
         return view;
