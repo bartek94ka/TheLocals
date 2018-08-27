@@ -23,7 +23,7 @@ public class AttractionListsProvider {
 
     public AttractionListsProvider(String companyId){
         companyCollectionName = "Companies";
-        collectionName = "AttractionsList";
+        collectionName = "AttractionLists";
         this.companyId = companyId;
         firebaseDatabase = FirebaseDatabase.getInstance();
     }
@@ -44,13 +44,13 @@ public class AttractionListsProvider {
                                 if(task.isSuccessful()){
                                     AttractionList attractionList = (AttractionList)task.getResult();
                                     list.add(attractionList);
+                                    taskCompletionSource.setResult(list);
                                 }
                             }
                         });
                     }
                 }
-                taskCompletionSource.setResult(list);
-                reference.removeEventListener(this);
+                //reference.removeEventListener(this);
             }
 
             @Override
@@ -69,7 +69,9 @@ public class AttractionListsProvider {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 AttractionList attractionList = dataSnapshot.getValue(AttractionList.class);
-                attractionList.Id = companyId;
+                if(attractionList != null){
+                    attractionList.Id = companyId;
+                }
                 taskCompletionSource.setResult(attractionList);
                 reference.removeEventListener(this);
             }

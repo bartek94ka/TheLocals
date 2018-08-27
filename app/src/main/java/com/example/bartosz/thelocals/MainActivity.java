@@ -2,6 +2,7 @@ package com.example.bartosz.thelocals;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +26,7 @@ import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IAttractionPassListener, IComapnyPassListener{
@@ -143,14 +145,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void PassAttractionListToAttractionLists(ArrayList<Attraction> attractions) {
-        Fragment selectedAttractionsOnMap = new CompanyAttractionSuggesstedList();
+    public void PassAttractionListToAttractionLists(AttractionList attractionList) {
+        Fragment companyAttractionSuggesstedList = new CompanyAttractionSuggesstedList();
         Bundle args = new Bundle();
-        args.putSerializable("attractions", attractions);
-        selectedAttractionsOnMap.setArguments(args);
+        args.putSerializable("attractionList", attractionList.CompanyId);
+        companyAttractionSuggesstedList.setArguments(args);
         FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
-        fragmentTransaction.replace(fragment.getId(), selectedAttractionsOnMap);
-        fragment = selectedAttractionsOnMap;
+        fragmentTransaction.replace(fragment.getId(), companyAttractionSuggesstedList);
+        fragment = companyAttractionSuggesstedList;
         /*
         getSupportFragmentManager().beginTransaction().
                 replace(fragment.getId(), selectedAttractionsOnMap).
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         comapnyAttractionList.setArguments(args);
         FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
+        //fragmentTransaction.addToBackStack(null);
         fragment = comapnyAttractionList;
         //
         // fragmentTransaction.addToBackStack("")

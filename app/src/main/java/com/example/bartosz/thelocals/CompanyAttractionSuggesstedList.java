@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Adapters.CompanyAttractionSugesstedListAdapter;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
+import com.example.bartosz.thelocals.Managers.CompanyManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import android.widget.AdapterView.OnItemClickListener;
 import com.example.bartosz.thelocals.Models.AttractionList;
+import com.example.bartosz.thelocals.Models.Company;
 import com.example.bartosz.thelocals.Providers.AttractionListsProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,9 +39,11 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
 
     private AttractionListsProvider attractionListsProvider;
     private AttractionListManager attractionListManager;
+    private CompanyManager companyManager;
     private List<AttractionList> attractionLists;
     private AttractionList selectedAttractionList;
     private String companyId;
+    private Company company;
 
     private CompanyAttractionSugesstedListAdapter attractionSugesstedListAdapter;
 
@@ -55,7 +59,6 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
         attractionSugesstedListAdapter = new CompanyAttractionSugesstedListAdapter(getContext());
 
 
-
         Button saveButton = view.findViewById(R.id.saveListsButton);
         Button addListItemButton = view.findViewById(R.id.addListItemButton);
         Button deleteListItemButton  = view.findViewById(R.id.deleteListItemButton);
@@ -69,22 +72,40 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
         addListItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AttractionList attractionsList = new AttractionList();
+                final AttractionList attractionsList = new AttractionList();
                 attractionsList.Id = UUID.randomUUID().toString();
                 attractionsList.CompanyId = companyId;
+
+
                 attractionListManager.AddAttractionList(attractionsList);
                 attractionSugesstedListAdapter.AddListItemToAdapter(attractionsList);
+                companyManager.GetCompanyData(companyId).addOnCompleteListener(new OnCompleteListener<Company>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Company> task) {
+                        if(task.isSuccessful()){
+                            company = task.getResult();
+                            if(company.AttractionSuggestedList == null){
+                                company.AttractionSuggestedList = new ArrayList<>();
+                            }
+                            company.AttractionSuggestedList.add(attractionsList.Id);
+                            companyManager.UpdateFirebaseComapnyData(companyId, company);
+                        }
+                    }
+                });
             }
         });
-        /*
-        deleteListItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attractionSugesstedListAdapter.DeleteListItem(selectedAttractionList);
-            }
-        });
-        */
+/*
+        if(attractionListsProvider != null){
+            attractionListsProvider.GetAttractionListsForCompany().addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
+                @Override
+                public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
+                    attractionLists = task.getResult();
+                    attractionSugesstedListAdapter.AddAllItemsToAdapter(attractionLists);
+                }
+            });
 
+        }
+*/
 
         // Inflate the layout for this fragment
         return view;
@@ -94,14 +115,18 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SetComapnyIdArguments();
+
         attractionListsProvider = new AttractionListsProvider(companyId);
         attractionListsProvider.GetAttractionListsForCompany().addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
             @Override
             public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
                 attractionLists = task.getResult();
+                attractionSugesstedListAdapter.AddAllItemsToAdapter(attractionLists);
             }
         });
         attractionListManager = new AttractionListManager(getContext());
+        companyManager = new CompanyManager(getContext());
+
         /*
         InitializeLocalVeribles();
         listViewAttractionLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -127,11 +152,24 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
         InitializeLocalVeribles();
     }
 
+    private void SetAttractionListsForCompany(){
+        if(attractionListsProvider != null){
+            attractionListsProvider.GetAttractionListsForCompany().addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
+                @Override
+                public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
+                    attractionLists = task.getResult();
+                    attractionSugesstedListAdapter.AddAllItemsToAdapter(attractionLists);
+                }
+            });
+        }
+    }
+
 
     private void InitializeLocalVeribles(){
         listViewAttractionLists = view.findViewById(android.R.id.list);
         attractionSugesstedListAdapter = new CompanyAttractionSugesstedListAdapter(getContext());
         attractionSugesstedListAdapter.ClearList();
+        attractionSugesstedListAdapter.SetCompanyId(companyId);
         listViewAttractionLists.setAdapter(attractionSugesstedListAdapter);
         setListAdapter(attractionSugesstedListAdapter);
         getListView().setOnItemClickListener(this);
@@ -148,6 +186,7 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
         Bundle args = getArguments();
         if(args != null){
             companyId = (String)args.get("companyId");
+
         }
     }
 }

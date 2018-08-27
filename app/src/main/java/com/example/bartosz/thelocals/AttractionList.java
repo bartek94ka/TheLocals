@@ -56,7 +56,7 @@ public class AttractionList extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.PassAttractionListToAttractionLists((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
+                //mListener.PassAttractionListToAttractionLists( attractionListAdapter.GetSelectedAttractionList());
             }
         });
         return view;

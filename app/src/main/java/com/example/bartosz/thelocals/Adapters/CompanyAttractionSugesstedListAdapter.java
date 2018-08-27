@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
+import com.example.bartosz.thelocals.Managers.CompanyManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
+import com.example.bartosz.thelocals.Models.Company;
 import com.example.bartosz.thelocals.R;
 
 import java.util.ArrayList;
@@ -22,7 +24,9 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
     private Context context;
     private List<AttractionList> attractionLists;
     private AttractionListManager attractionListManager;
+    private CompanyManager companyManager;
     private AttractionList selectedAttractionList;
+    private String companyId;
     private IComapnyPassListener mListener;
 
     public CompanyAttractionSugesstedListAdapter(Context context){
@@ -30,12 +34,18 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
         mListener = (IComapnyPassListener) context;
         attractionListManager = new AttractionListManager(context);
         attractionLists = new ArrayList<AttractionList>();
+        companyManager = new CompanyManager(context);
     }
 
     public void AddListItemToAdapter(AttractionList attractionList) {
         //Add list to current array list of data
         attractionLists.add(attractionList);
         //Notify UI
+        this.notifyDataSetChanged();
+    }
+
+    public void AddAllItemsToAdapter(List<AttractionList> attractionLists){
+        attractionLists.addAll(attractionLists);
         this.notifyDataSetChanged();
     }
 
@@ -51,6 +61,11 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
             }
         }
         return null;
+    }
+
+    public void SetCompanyId(String companyId){
+        this.companyId = new String();
+        this.companyId = companyId;
     }
 
     public AttractionList GetSelectedAttractionList(){
@@ -116,6 +131,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
                     AttractionList attractionList = GetAttraqtionList(attractionListId);
                     DeleteListItem(attractionList);
                     attractionListManager.RemoveAttractionList(attractionListId);
+                    companyManager.DeleteAttractionListFromCompany(companyId, attractionListId);
                     //delete attraction List from database
                 }
             });

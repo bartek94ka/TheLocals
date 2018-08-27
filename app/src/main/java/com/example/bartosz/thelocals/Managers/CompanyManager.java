@@ -80,4 +80,19 @@ public class CompanyManager {
             System.out.print(ex.getMessage());
         }
     }
+
+    public void DeleteAttractionListFromCompany(final String companyId, final String attractionListId){
+        GetCompanyData(companyId).addOnCompleteListener(new OnCompleteListener<Company>() {
+            @Override
+            public void onComplete(@NonNull Task<Company> task) {
+                if(task.isSuccessful()){
+                    Company company = task.getResult();
+                    if(company.AttractionSuggestedList != null){
+                        company.AttractionSuggestedList.remove(attractionListId);
+                        UpdateFirebaseComapnyData(companyId, company);
+                    }
+                }
+            }
+        });
+    }
 }
