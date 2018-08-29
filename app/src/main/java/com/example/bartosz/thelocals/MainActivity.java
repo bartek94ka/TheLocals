@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IAttractionPassListener, IComapnyPassListener{
 
@@ -102,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            fragmentTransaction.replace(R.id.screen_area, fragment);
+
+            fragmentTransaction.replace(getVisibleFragment().getId(), fragment);
             fragmentTransaction.commit();
         }
 
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void UseDefaultFragment(){
         fragment = new AddCompany();
         //fragment = new CompanyAttractionSuggesstedList();
-        //        Fragment fragment = new Welcome();
+        //fragment = new Welcome();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -132,12 +134,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MainActivity.this.finish();
     }
 
+    public Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void PassAttractionList(ArrayList<Attraction> attractions) {
         Fragment selectedAttractionsOnMap = new SelectedAttractionsOnMap();
         Bundle args = new Bundle();
         args.putSerializable("attractions", attractions);
         selectedAttractionsOnMap.setArguments(args);
+        fragment = getVisibleFragment();
         getSupportFragmentManager().beginTransaction().
                 replace(fragment.getId(), selectedAttractionsOnMap).
                 commit();
@@ -151,8 +166,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         args.putSerializable("attractionList", attractionList.CompanyId);
         companyAttractionSuggesstedList.setArguments(args);
         FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), companyAttractionSuggesstedList);
-        fragment = companyAttractionSuggesstedList;
+        //fragment = companyAttractionSuggesstedList;
         /*
         getSupportFragmentManager().beginTransaction().
                 replace(fragment.getId(), selectedAttractionsOnMap).
@@ -168,8 +184,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         args.putString("companyId", id);
         comapnyAttractionSuggestedList.setArguments(args);
         FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionSuggestedList);
-        fragment = comapnyAttractionSuggestedList;
+        //fragment = comapnyAttractionSuggestedList;
         //
         // fragmentTransaction.addToBackStack("")
         fragmentTransaction.commit();
@@ -182,6 +199,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         args.putString("attractionListId", id);
         comapnyAttractionList.setArguments(args);
         FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        //fragmentTransaction.addToBackStack(null);
+        fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
         //fragmentTransaction.addToBackStack(null);
         fragment = comapnyAttractionList;

@@ -29,6 +29,7 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
     public void addListItemToAdapter(List<Attraction> list) {
         //Add list to current array list of data
         attractions.addAll(list);
+        SetSelectedItemsOnList();
         //Notify UI
         this.notifyDataSetChanged();
     }
@@ -47,8 +48,35 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
         return null;
     }
 
+    public void SetSelectedAttractionList(List<Attraction> attractions){
+        this.selectedAttractions = attractions;
+
+        //this.notifyDataSetChanged();
+    }
+
+    private void SetSelectedItemsOnList(){
+        for(int i=0; i< this.attractions.size(); i++){
+            for(int j=0; j< this.selectedAttractions.size(); j++){
+                Attraction attraction = this.attractions.get(i);
+                Attraction selectedAttraction = this.selectedAttractions.get(j);
+                if(attraction.Id.contains(selectedAttraction.Id)){
+                    this.attractions.get(i).setSelected(true);
+                }
+            }
+        }
+    }
+
     public List<Attraction> GetSelectedAttractionList(){
         return selectedAttractions;
+    }
+
+    private Attraction GetSelectedAttractionById(String id){
+        for (Attraction attraction : selectedAttractions){
+            if(attraction.Id == id){
+                return attraction;
+            }
+        }
+        return null;
     }
 
     public void ClearList(){
@@ -76,6 +104,13 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
 
         itemName.setText(attractions.get(position).Name);
         checkBox.setTag(attractions.get(position).Id);
+        /*Attraction selectedAttraction = GetSelectedAttractionById(attractions.get(position).Id);
+        if(selectedAttraction != null){
+            //Attraction attraction = GetAttraction(attractions.get(position).Id);
+            selectedAttraction.setSelected(true);
+            attractions.set(position, selectedAttraction);
+        }
+        */
         checkBox.setChecked(attractions.get(position).getSelected());
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

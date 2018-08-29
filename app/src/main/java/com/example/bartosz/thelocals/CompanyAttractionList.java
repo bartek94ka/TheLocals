@@ -71,9 +71,7 @@ public class CompanyAttractionList extends Fragment {
             public void onClick(View v) {
                 attractionList.Attractions = new ArrayList<>();
                 List<Attraction> selectedAttraction = attractionListAdapter.GetSelectedAttractionList();
-                for (Attraction attraction : selectedAttraction) {
-                    attractionList.Attractions.add(attraction);
-                }
+                attractionList.Attractions.addAll(selectedAttraction);
                 attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
                 //mListener.PassAttractionListToAttractionLists((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
                 //zapis listy do bazy
@@ -126,6 +124,9 @@ public class CompanyAttractionList extends Fragment {
             @Override
             public void onComplete(@NonNull Task<com.example.bartosz.thelocals.Models.AttractionList> task) {
                 attractionList = task.getResult();
+                if(attractionList.Attractions != null){
+                    attractionListAdapter.SetSelectedAttractionList(attractionList.Attractions);
+                }
             }
         });
         Thread thread = new ThreadGetMoreData();
