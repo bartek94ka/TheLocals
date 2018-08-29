@@ -45,7 +45,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
     }
 
     public void AddAllItemsToAdapter(List<AttractionList> attractionLists){
-        attractionLists.addAll(attractionLists);
+        this.attractionLists.addAll(attractionLists);
         this.notifyDataSetChanged();
     }
 

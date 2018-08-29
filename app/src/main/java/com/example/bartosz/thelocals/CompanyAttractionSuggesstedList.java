@@ -79,7 +79,7 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
 
                 attractionListManager.AddAttractionList(attractionsList);
                 attractionSugesstedListAdapter.AddListItemToAdapter(attractionsList);
-                companyManager.GetCompanyData(companyId).addOnCompleteListener(new OnCompleteListener<Company>() {
+                /*companyManager.GetCompanyData(companyId).addOnCompleteListener(new OnCompleteListener<Company>() {
                     @Override
                     public void onComplete(@NonNull Task<Company> task) {
                         if(task.isSuccessful()){
@@ -87,25 +87,14 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
                             if(company.AttractionSuggestedList == null){
                                 company.AttractionSuggestedList = new ArrayList<>();
                             }
-                            company.AttractionSuggestedList.add(attractionsList.Id);
+                            company.AttractionSuggestedList.add(attractionsList);
                             companyManager.UpdateFirebaseComapnyData(companyId, company);
                         }
                     }
                 });
+                */
             }
         });
-/*
-        if(attractionListsProvider != null){
-            attractionListsProvider.GetAttractionListsForCompany().addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
-                @Override
-                public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
-                    attractionLists = task.getResult();
-                    attractionSugesstedListAdapter.AddAllItemsToAdapter(attractionLists);
-                }
-            });
-
-        }
-*/
 
         // Inflate the layout for this fragment
         return view;
@@ -117,13 +106,29 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
         SetComapnyIdArguments();
 
         attractionListsProvider = new AttractionListsProvider(companyId);
+        attractionListsProvider.GetCompany().addOnCompleteListener(new OnCompleteListener<Company>() {
+            @Override
+            public void onComplete(@NonNull Task<Company> task) {
+                company = task.getResult();
+            }
+        });
         attractionListsProvider.GetAttractionListsForCompany().addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
+            @Override
+            public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
+                if(task.isSuccessful()){
+                    ArrayList<AttractionList> attractionLists = task.getResult();
+                    attractionSugesstedListAdapter.AddAllItemsToAdapter(attractionLists);
+                }
+            }
+        });
+        /*.addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
             @Override
             public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
                 attractionLists = task.getResult();
                 attractionSugesstedListAdapter.AddAllItemsToAdapter(attractionLists);
             }
         });
+        */
         attractionListManager = new AttractionListManager(getContext());
         companyManager = new CompanyManager(getContext());
 

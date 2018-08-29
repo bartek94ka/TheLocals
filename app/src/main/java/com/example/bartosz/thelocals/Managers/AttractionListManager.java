@@ -23,7 +23,7 @@ public class AttractionListManager {
 
     private FirebaseDatabase firebaseDatabase;
     private Context context;
-    private String collectionName = "AttractionLists";
+    private String collectionName = "AttractionList";
 
     public AttractionListManager(Context context){
         this.context = context;

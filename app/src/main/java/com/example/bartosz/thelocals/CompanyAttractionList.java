@@ -72,7 +72,7 @@ public class CompanyAttractionList extends Fragment {
                 attractionList.Attractions = new ArrayList<>();
                 List<Attraction> selectedAttraction = attractionListAdapter.GetSelectedAttractionList();
                 for (Attraction attraction : selectedAttraction) {
-                    attractionList.Attractions.add(attraction.Id);
+                    attractionList.Attractions.add(attraction);
                 }
                 attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
                 //mListener.PassAttractionListToAttractionLists((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
