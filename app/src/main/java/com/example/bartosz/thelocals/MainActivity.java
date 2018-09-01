@@ -1,6 +1,7 @@
 package com.example.bartosz.thelocals;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userManager = new UserManager();
 
-
+        CheckForPermissions();
     }
 
     @Override
@@ -113,8 +114,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(MainActivity.this, "Permission denied to read your Location", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    private void CheckForPermissions(){
+        int permission = getApplication().getBaseContext().checkSelfPermission(Manifest.permission.MAPS_RECEIVE);
+        if( permission == PackageManager.PERMISSION_DENIED){
+
+        }
+        else{
+            if(shouldShowRequestPermissionRationale(Manifest.permission.MAPS_RECEIVE)){
+                Toast.makeText(this, "Udostępnienie lokalizacji jest potrzebne, aby korzystać funkcji aplikacji", Toast.LENGTH_LONG).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.MAPS_RECEIVE}, 1);
+        }
+    }
+
     private void UseDefaultFragment(){
-        fragment = new AttractionDetails();
+        fragment = new SetMarkerOnMap();
+        //fragment = new AttractionDetails();
         //fragment = new AddCompany();
         //fragment = new CompanyAttractionSuggesstedList();
         //fragment = new Welcome();
