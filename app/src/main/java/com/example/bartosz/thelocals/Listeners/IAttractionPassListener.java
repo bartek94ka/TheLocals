@@ -8,4 +8,5 @@ import java.util.ArrayList;
 public interface IAttractionPassListener {
     void PassAttractionList(ArrayList<Attraction> attractions);
     void PassAttractionListToAttractionLists(AttractionList attractionList);
+    void PassAttractionIdToAttractionDetails(String attractionId, String provinceName);
 }

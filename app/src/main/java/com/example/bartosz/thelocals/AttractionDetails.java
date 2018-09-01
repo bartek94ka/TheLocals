@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Managers.ImageManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Providers.AttractionInfoProvider;
@@ -20,7 +21,7 @@ import bolts.Task;
 
 public class AttractionDetails extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    private IAttractionPassListener mListener;
 
     private View view;
     private TextView textViewName;
@@ -54,9 +55,11 @@ public class AttractionDetails extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        //attractionId = "-LKSWSFULGGDFiQLjxFm";
+        attractionId = "-LKSWVaw_uREipsrBltw";
+        SetPropertiesFromArguments();
         attractionInfoProvider = new AttractionInfoProvider(provinceName);
 
-        attractionId = "-LKSWSFULGGDFiQLjxFm";
         attractionImageView = (ImageView) view.findViewById(R.id.iMageview);
         textViewName = view.findViewById(R.id.attractionName);
         textViewDescription = view.findViewById(R.id.attractionDescription);
@@ -84,46 +87,27 @@ public class AttractionDetails extends Fragment {
 
     }
 
-    private void SetImageViewProperties(){
-        attractionImageView.setMinimumWidth(250);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (IAttractionPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IAttractionPassListener");
+        }
     }
-    /*
-        // TODO: Rename method, update argument and hook method into UI event
-        public void onButtonPressed(Uri uri) {
-            if (mListener != null) {
-                mListener.onFragmentInteraction(uri);
-            }
-        }
 
-        @Override
-        public void onAttach(Context context) {
-            super.onAttach(context);
-            if (context instanceof OnFragmentInteractionListener) {
-                //mListener = (OnFragmentInteractionListener) context;
-            } else {
-                throw new RuntimeException(context.toString()
-                        + " must implement OnFragmentInteractionListener");
-            }
-        }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
-        @Override
-        public void onDetach() {
-            super.onDetach();
-            mListener = null;
+    private void SetPropertiesFromArguments(){
+        Bundle args = getArguments();
+        if(args != null){
+            attractionId = (String)args.get("attractionId");
+            provinceName = (String)args.get("provinceName");
         }
-
-        *
-         * This interface must be implemented by activities that contain this
-         * fragment to allow an interaction in this fragment to be communicated
-         * to the activity and potentially other fragments contained in that
-         * activity.
-         * <p>
-         * See the Android Training lesson <a href=
-         * "http://developer.android.com/training/basics/fragments/communicating.html"
-         * >Communicating with Other Fragments</a> for more information.
-         */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

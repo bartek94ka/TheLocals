@@ -13,27 +13,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/Image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/iMageview"
-                    android:minWidth="200dp"
-                    android:minHeight="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
                     android:layout_gravity="center_horizontal"
-                    />
+                    android:layout_margin="3dp"
+                    android:minHeight="300dp"
+                    android:minWidth="300dp" />
+
                 <TextView
                     android:id="@+id/attractionName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textSize="32dp"
-                    android:textStyle="bold|italic"/>
+                    android:textStyle="bold|italic" />
 
             </LinearLayout>
             <LinearLayout

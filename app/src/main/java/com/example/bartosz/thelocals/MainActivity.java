@@ -179,6 +179,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void PassAttractionIdToAttractionDetails(String attractionId, String provinceName) {
+        Fragment attractionDetails = new AttractionDetails();
+        Bundle args = new Bundle();
+        args.putString("attractionId", attractionId);
+        args.putString("provinceName", provinceName);
+        attractionDetails.setArguments(args);
+        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.replace(fragment.getId(), attractionDetails);
+    }
+
+    @Override
     public void PassComapnyIdToComapnyAttractionSugesstedList(String id) {
         Fragment comapnyAttractionSuggestedList = new CompanyAttractionSuggesstedList();
         Bundle args = new Bundle();
