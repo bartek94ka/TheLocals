@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -15,27 +16,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
+import com.example.bartosz.thelocals.Listeners.IMapPassListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IAttractionPassListener, IComapnyPassListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        IAttractionPassListener, IComapnyPassListener, IMapPassListener{
 
 
     private UserManager userManager;
     private Fragment fragment;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        fragmentManager = getSupportFragmentManager();
+
         UseDefaultFragment();
 
         userManager = new UserManager();
@@ -62,6 +66,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+
+        int index = fragmentManager.getBackStackEntryCount() - 1;
+        List<Fragment> fragmentList = fragmentManager.getFragments();
+        Fragment currentFragment = getVisibleFragment();
+        try{
+            SetMarkerOnMap setMarkerOnMap = (SetMarkerOnMap) fragmentList.get(index);
+            MarkerOptions markerOptions = setMarkerOnMap.GetMarkerOption();
+            Bundle args = new Bundle();
+            args.putString("latitude", String.valueOf(markerOptions.getPosition().latitude));
+            args.putString("longitude", String.valueOf(markerOptions.getPosition().longitude));
+            currentFragment.setArguments(args);
+
+            //Fragment newAttraction = fragmentManager.popBackStack();
+            fragment.setArguments(args);
+            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //fragmentTransaction.replace(getVisibleFragment().getId(), newAttraction);
+            //fragmentTransaction.commit();
+        }catch(Exception ex){
+
+        }
+
+        /*
+        FragmentManager.BackStackEntry backEntry = (FragmentManager.BackStackEntry) fragmentManager.getBackStackEntryAt(index);
+        String tag = backEntry.getName();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        */
+
+        if(fragment.getId() == 1){
+
+            //fragment.setArguments();
+        }
+        //firstFragment.setData("yourString");
+        //finish();
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -101,10 +140,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if(fragment != null){
-            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-
+            //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.replace(getVisibleFragment().getId(), fragment);
             fragmentTransaction.commit();
         }
@@ -113,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -154,13 +193,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void UseDefaultFragment(){
-        fragment = new SetMarkerOnMap();
+        //fragment = new NewAttraction();
+        //fragment = new SetMarkerOnMap();
         //fragment = new AttractionDetails();
         //fragment = new AddCompany();
         //fragment = new CompanyAttractionSuggesstedList();
-        //fragment = new Welcome();
+        fragment = new Welcome();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.screen_area, fragment);
@@ -177,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public Fragment getVisibleFragment(){
-        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
         List<Fragment> fragments = fragmentManager.getFragments();
         if(fragments != null){
             for(Fragment fragment : fragments){
@@ -195,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         args.putSerializable("attractions", attractions);
         selectedAttractionsOnMap.setArguments(args);
         fragment = getVisibleFragment();
-        getSupportFragmentManager().beginTransaction().
+        fragmentManager.beginTransaction().
                 replace(fragment.getId(), selectedAttractionsOnMap).
                 commit();
 
@@ -207,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle args = new Bundle();
         args.putSerializable("attractionList", attractionList.CompanyId);
         companyAttractionSuggesstedList.setArguments(args);
-        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), companyAttractionSuggesstedList);
         //fragment = companyAttractionSuggesstedList;
@@ -226,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         args.putString("attractionId", attractionId);
         args.putString("provinceName", provinceName);
         attractionDetails.setArguments(args);
-        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), attractionDetails);
     }
@@ -237,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle args = new Bundle();
         args.putString("companyId", id);
         comapnyAttractionSuggestedList.setArguments(args);
-        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionSuggestedList);
         //fragment = comapnyAttractionSuggestedList;
@@ -252,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle args = new Bundle();
         args.putString("attractionListId", id);
         comapnyAttractionList.setArguments(args);
-        FragmentTransaction fragmentTransaction = (getSupportFragmentManager().beginTransaction());
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         //fragmentTransaction.addToBackStack(null);
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
@@ -260,6 +298,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragment = comapnyAttractionList;
         //
         // fragmentTransaction.addToBackStack("")
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void OpenSetMarkerOnMapFragment() {
+        Fragment comapnyAttractionList = new SetMarkerOnMap();
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
         fragmentTransaction.commit();
     }
 }

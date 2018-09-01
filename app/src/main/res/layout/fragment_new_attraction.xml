@@ -14,13 +14,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:text="Nowa atrakcja"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="italic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:textSize="18dp"
+            android:text="Województwo"/>
+
+        <Spinner
+            android:id="@+id/newAttractionProvince"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown" />
+
         <EditText
             android:id="@+id/newAttractionName"
             android:layout_marginTop="10dp"
@@ -65,7 +86,28 @@
             android:hint="Url źródła"
             android:inputType="textPersonName"/>
 
-        <EditText
+        <Button
+            android:id="@+id/setLocationButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ustaw lokalizację"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:textSize="18dp"
+            android:text="Długość geograficzna"/>
+
+        <TextView
             android:id="@+id/newAttractionLatitude"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
@@ -73,11 +115,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Szerokość geograficzna (y)"
-            android:inputType="textPersonName"/>
+            android:textSize="20dp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:textSize="18dp"
+            android:text="Szerokośc geograficzna"/>
 
-        <EditText
+        <TextView
             android:id="@+id/newAttractionLongitude"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
@@ -85,8 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Długość geograficzna (x)"
-            android:inputType="textPersonName"/>
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/newAttractionAddButton"

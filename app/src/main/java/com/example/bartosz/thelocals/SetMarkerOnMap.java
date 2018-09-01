@@ -73,12 +73,16 @@ public class SetMarkerOnMap extends Fragment implements OnMapReadyCallback {
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if(markerOptions == null){
-                   markerOptions = new MarkerOptions().position(latLng);
-                   map.addMarker(markerOptions);
-                }
+               map.clear();
+               markerOptions = new MarkerOptions().position(latLng);
+               map.addMarker(markerOptions);
+
             }
         });
+    }
+
+    public MarkerOptions GetMarkerOption(){
+        return markerOptions;
     }
 
     private void InitializeVeribles(){

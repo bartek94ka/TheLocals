@@ -1,24 +1,33 @@
 package com.example.bartosz.thelocals;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bartosz.thelocals.Listeners.IMapPassListener;
 import com.example.bartosz.thelocals.Models.Attraction;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class NewAttraction extends Fragment implements View.OnClickListener {
+public class NewAttraction extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private FirebaseDatabase _database;
     private DatabaseReference _databaseRef;
@@ -30,8 +39,13 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
     private EditText etSourceUrl;
     private EditText etLatitude;
     private EditText etLongitude;
+    private TextView textViewNewAttractionLatitude;
+    private TextView textViewNewAttractionLongitude;
     private Button buttonAdd;
+    private Button buttonSetLocation;
+    private Spinner spinnerProvince;
 
+    private IMapPassListener mapPassListener;
 
     public NewAttraction(){
         _database = FirebaseDatabase.getInstance();
@@ -44,8 +58,6 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_attraction, container, false);
 
-        buttonAdd = (Button) view.findViewById(R.id.newAttractionAddButton);
-        buttonAdd.setOnClickListener(this);
 
         return inflater.inflate(R.layout.fragment_new_attraction, null);
     }
@@ -59,10 +71,32 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
         etDescription = (EditText) view.findViewById(R.id.newAttractionDescription);
         etPhotoUrl = (EditText) view.findViewById(R.id.newAttractionPhotoUrl);
         etSourceUrl = (EditText) view.findViewById(R.id.newAttractionSourceUrl);
-        etLatitude = (EditText) view.findViewById(R.id.newAttractionLatitude);
-        etLongitude = (EditText) view.findViewById(R.id.newAttractionLongitude);
+        spinnerProvince = view.findViewById(R.id.newAttractionProvince);
+        buttonAdd = view.findViewById(R.id.newAttractionAddButton);
+        buttonSetLocation = view.findViewById(R.id.setLocationButton);
+        textViewNewAttractionLatitude = view.findViewById(R.id.newAttractionLatitude);
+        textViewNewAttractionLongitude = view.findViewById(R.id.newAttractionLongitude);
 
+        SetMarkerOption();
+        SetAdapter();
+        SetListeners();
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            mapPassListener = (IMapPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IMapPassListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mapPassListener = null;
     }
 
     @Override
@@ -70,12 +104,39 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.newAttractionAddButton:
             {
-                AddAttraction();
+                //AddAttraction();
+                break;
+            }
+            case R.id.setLocationButton:
+            {
+
                 break;
             }
         }
     }
 
+    private void SetListeners(){
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddAttraction();
+            }
+        });
+        buttonSetLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapPassListener.OpenSetMarkerOnMapFragment();
+            }
+        });
+    }
+
+    private void SetAdapter(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.
+                createFromResource(getContext(), R.array.Provinces, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerProvince.setAdapter(adapter);
+    }
 
     private void AddAttraction()
     {
@@ -113,5 +174,25 @@ public class NewAttraction extends Fragment implements View.OnClickListener {
         etSourceUrl.setText("");
         etLongitude.setText("");
         etLatitude.setText("");
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private void SetMarkerOption(){
+        Bundle args = getArguments();
+        if(args != null){
+            String latitude = (String)args.get("latitude");
+            String longitude = (String)args.get("longitude");
+            textViewNewAttractionLatitude.setText(latitude);
+            textViewNewAttractionLongitude.setText(longitude);
+        }
     }
 }
