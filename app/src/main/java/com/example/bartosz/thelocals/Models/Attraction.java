@@ -10,6 +10,7 @@ public class Attraction {
     public String CreationDate;
     public String Name;
     public String Description;
+    public String Province;
     public String PhotoUrl;
     public String SourceUrl;
     public String Longitude;
@@ -20,11 +21,12 @@ public class Attraction {
         //CreationDate = new Date().toString();
         isSelected = false;
     }
-    public Attraction(String name, String description, String photoUrl, String sourceUrl, String longitude, String latitude){
+    public Attraction(String name, String description, String province, String photoUrl, String sourceUrl, String longitude, String latitude){
         isSelected = false;
         CreationDate = new Date().toString();
         Name = name;
         Description = description;
+        Province = province;
         PhotoUrl = photoUrl;
         SourceUrl = sourceUrl;
         Longitude = longitude;

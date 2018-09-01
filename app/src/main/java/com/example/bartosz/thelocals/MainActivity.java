@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void UseDefaultFragment(){
-        fragment = new AddCompany();
+        fragment = new AttractionDetails();
+        //fragment = new AddCompany();
         //fragment = new CompanyAttractionSuggesstedList();
         //fragment = new Welcome();
 

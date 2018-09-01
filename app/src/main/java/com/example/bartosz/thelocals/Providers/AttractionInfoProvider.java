@@ -26,7 +26,7 @@ public class AttractionInfoProvider {
 
     public Task<Attraction> GetAttractionById(String attractionId){
         final TaskCompletionSource<Attraction> taskCompletionSource = new TaskCompletionSource<>();
-        final DatabaseReference reference = firebaseDatabase.getReference(collectionName).child(attractionId);
+        final DatabaseReference reference = firebaseDatabase.getReference(collectionName  + "/" + provinceName).child(attractionId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
