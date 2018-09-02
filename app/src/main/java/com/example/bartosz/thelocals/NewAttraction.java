@@ -146,13 +146,14 @@ public class NewAttraction extends Fragment implements View.OnClickListener, Ada
         String description = etDescription.getText().toString().trim();
         String photoUrl = etPhotoUrl.getText().toString().trim();
         String sourceUrl = etSourceUrl.getText().toString().trim();
-        Double Latitude = Double.parseDouble(etLatitude.getText().toString().trim());
-        Double Longitude = Double.parseDouble(etLongitude.getText().toString().trim());
+        Double latitude = Double.parseDouble(textViewNewAttractionLatitude.getText().toString().trim());
+        Double longitude = Double.parseDouble(textViewNewAttractionLongitude.getText().toString().trim());
+        String province = spinnerProvince.getSelectedItem().toString();
 
         //Attraction attraction = new Attraction(name, description, photoUrl, sourceUrl, Longitude, Latitude);
-        Attraction attraction = null;
+        Attraction attraction = new Attraction(name, description, province, photoUrl, sourceUrl, longitude.toString(), latitude.toString());
         try{
-            String key = _database.getReference("Attractions").push().getKey();
+            String key = _database.getReference("Attractions/" + ).push().getKey();
             _database.getReference("Attractions").child(key).setValue(attraction).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -172,8 +173,8 @@ public class NewAttraction extends Fragment implements View.OnClickListener, Ada
         etDescription.setText("");
         etPhotoUrl.setText("");
         etSourceUrl.setText("");
-        etLongitude.setText("");
-        etLatitude.setText("");
+        textViewNewAttractionLongitude.setText("");
+        textViewNewAttractionLatitude.setText("");
     }
 
     @Override
