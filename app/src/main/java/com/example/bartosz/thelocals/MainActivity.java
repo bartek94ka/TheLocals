@@ -3,6 +3,7 @@ package com.example.bartosz.thelocals;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,9 @@ import com.example.bartosz.thelocals.Listeners.IWelcomePageListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
@@ -213,11 +216,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void LogoutUserAndChangeActivity(){
         //TODO check if user was register by service - without FB
-        FirebaseAuth.getInstance().signOut();
+
+//        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
         userManager.LogoutUser();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
-        MainActivity.this.finish();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null && FirebaseAuth.getInstance().getCurrentUser() == null){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            MainActivity.this.finish();
+        }
     }
 
     public Fragment getVisibleFragment(){

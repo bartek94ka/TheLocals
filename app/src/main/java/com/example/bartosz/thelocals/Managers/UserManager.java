@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Models.User;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
@@ -211,6 +212,7 @@ public class UserManager {
         if(_firebaseAuth.getCurrentUser() != null){
             _firebaseAuth.signOut();
         }
+
     }
 
     public static boolean isEmailValid(String email) {
