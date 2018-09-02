@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new AddCompany();
         } else if (id == R.id.nav_userSettings) {
             fragment = new UserSettings();
+        } else if (id == R.id.nav_companyList){
+            fragment = new CompanyList();
         }
 
         if(fragment != null){
@@ -301,6 +303,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragment = comapnyAttractionList;
         //
         // fragmentTransaction.addToBackStack("")
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassCompanyIdToCompanyDetails(String id) {
+        Fragment companyDetails = new CompanyDetails();
+        Bundle args = new Bundle();
+        args.putString("companyId", id);
+        companyDetails.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), companyDetails);
         fragmentTransaction.commit();
     }
 

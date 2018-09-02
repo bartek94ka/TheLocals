@@ -9,6 +9,11 @@
             android:icon="@mipmap/ic_home_black_24dp"
             android:title="Home" />
 
+        <item
+            android:id="@+id/nav_companyList"
+            android:icon="@mipmap/ic_group_black_24dp"
+            android:title="List biur" />
+
         <item android:id="@+id/nav_logout"
             android:icon="@mipmap/ic_settings_power_black_24dp"
             android:title="Wyloguj"/>
@@ -20,7 +25,7 @@
         <item
             android:id="@+id/nav_addCompany"
             android:icon="@mipmap/ic_my_location_black_24dp"
-            android:title="Dodaj firmę" />
+            android:title="Dodaj biuro" />
 
         <item
             android:id="@+id/nav_userSettings"

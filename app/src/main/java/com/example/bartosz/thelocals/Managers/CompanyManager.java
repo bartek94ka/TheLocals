@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,5 +95,32 @@ public class CompanyManager {
                 }
             }
         });
+    }
+
+    public Task<ArrayList<Company>> GetAllCompanies(){
+        final TaskCompletionSource<ArrayList<Company>> taskCompletionSource = new TaskCompletionSource<>();
+        final ArrayList<Company> list = new ArrayList<>();
+        final DatabaseReference localReference = firebaseDatabase.getReference().child(collectionName);
+        localReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Company company = snapshot.getValue(Company.class);
+                        if(company != null){
+                            list.add(company);
+                        }
+                    }
+                    localReference.removeEventListener(this);
+                }
+                taskCompletionSource.setResult(list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return taskCompletionSource.getTask();
     }
 }
