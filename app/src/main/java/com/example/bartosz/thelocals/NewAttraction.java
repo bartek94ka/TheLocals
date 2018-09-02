@@ -27,7 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class NewAttraction extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class NewAttraction extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private FirebaseDatabase _database;
     private DatabaseReference _databaseRef;
@@ -99,22 +99,6 @@ public class NewAttraction extends Fragment implements View.OnClickListener, Ada
         mapPassListener = null;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.newAttractionAddButton:
-            {
-                //AddAttraction();
-                break;
-            }
-            case R.id.setLocationButton:
-            {
-
-                break;
-            }
-        }
-    }
-
     private void SetListeners(){
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +137,7 @@ public class NewAttraction extends Fragment implements View.OnClickListener, Ada
         //Attraction attraction = new Attraction(name, description, photoUrl, sourceUrl, Longitude, Latitude);
         Attraction attraction = new Attraction(name, description, province, photoUrl, sourceUrl, longitude.toString(), latitude.toString());
         try{
-            String key = _database.getReference("Attractions/" + ).push().getKey();
+            String key = _database.getReference("Attractions/" + attraction.Province).push().getKey();
             _database.getReference("Attractions").child(key).setValue(attraction).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
