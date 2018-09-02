@@ -19,6 +19,8 @@ import com.example.bartosz.thelocals.Managers.UserManager;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.FacebookCallback;
@@ -36,6 +38,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import android.content.Intent;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Console;
 
 import bolts.Task;
@@ -83,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         // App code
                         handleFacebookAccessToken(loginResult.getAccessToken());
+
                         Toast.makeText(getApplicationContext(), "Zalogowano przez Facebook", Toast.LENGTH_SHORT).show();
                     }
 
@@ -113,9 +120,9 @@ public class LoginActivity extends AppCompatActivity {
                     String email = firebaseAuth.getCurrentUser().getEmail();
                     if(email != null && firebaseAuth.getCurrentUser() != null)
                     {
-                        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(loginIntent);
-                        LoginActivity.this.finish();
+                        //Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        //startActivity(loginIntent);
+                        //LoginActivity.this.finish();
                     }
                 }
             }
@@ -157,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth.removeAuthStateListener(_authStateListener);
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
+    private void handleFacebookAccessToken(final AccessToken token) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential)
@@ -165,9 +172,26 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                         if (task.isComplete()) {
+                            FirebaseUser user = task.getResult().getUser();
+                            final String uid = user.getUid();
                             // Sign in success, update UI with the signed-in user's information
                             //Log.d(TAG, "signInWithCredential:success");
                             Toast.makeText(getApplicationContext(), "signInWithCredential:success", Toast.LENGTH_SHORT).show();
+                            GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    JSONObject obj = response.getJSONObject();
+                                    try {
+                                        String name = obj.getString("name");
+                                        String id = obj.getString("id");
+                                        _userManager.AddUserToDatabase(getApplication().getBaseContext(), uid, "", name, "", "Wielkopolskie");
+                                        //_userManager.
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            request.executeAsync();
                             user = firebaseAuth.getCurrentUser();
                             int a = 5;
                             //updateUI(user);

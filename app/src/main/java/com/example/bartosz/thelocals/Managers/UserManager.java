@@ -136,6 +136,30 @@ public class UserManager {
         }
     }
 
+    public void AddUserToDatabase(Context context, String id, String email, String name, String surname, String province){
+        String userId = _firebaseAuth.getCurrentUser().getUid();
+        User newUser = new User(userId, email, name, surname, province);
+        try {
+
+            _database.getReference().child("Users").child(userId).setValue(newUser)
+                    .addOnCompleteListener((Activity) context, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                Log.d("TAG", "AddUserToDatabase:success");
+                                //Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            }else
+                            {
+                                //Toast.makeText(context, "Could not register. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }catch (Exception ex){
+            System.out.print(ex.getMessage());
+        }
+    }
+
     private void CompleteRegistration(final Context context, final ProgressDialog progressDialog, String email, String name, String surname){
         String userId = _firebaseAuth.getCurrentUser().getUid();
         User newUser = CreateUserObject(email, name, surname);
@@ -162,8 +186,8 @@ public class UserManager {
     }
 
     public User CreateUserObject(String email, String name, String surname) {
-        User newCreatedUser = new User(email, name, surname);
-        return newCreatedUser;
+        //User newCreatedUser = new User(email, name, surname);
+        return null;
     }
 
     public void LoginUser(final Context context, String email, String password){

@@ -19,6 +19,7 @@ import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.User;
 import com.example.bartosz.thelocals.Validators.UserDataValidator;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.AuthResult;
@@ -80,29 +81,6 @@ public class UserSettings extends Fragment implements View.OnClickListener {
         FillBasicUserData();
 
     }
-/*
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-*/
 
     @Override
     public void onClick(View v) {
@@ -160,9 +138,16 @@ public class UserSettings extends Fragment implements View.OnClickListener {
 
     private void FillBasicUserData(){
         try{
-            _user = _userManager.getUserData(_currentUser.getUid()).getResult();
-            _settingsName.setText(_user.Name);
-            _settingsSurname.setText(_user.Surname);
+            _userManager.getUserData(_currentUser.getUid()).onSuccessTask(new SuccessContinuation<User, Void>() {
+                @NonNull
+                @Override
+                public Task<Void> then(@Nullable User user) throws Exception {
+                    _user = user;
+                    _settingsName.setText(_user.Name);
+                    _settingsSurname.setText(_user.Surname);
+                    return null;
+                }
+            });
         }catch(Exception ex){
 
         }
