@@ -73,6 +73,7 @@ public class CompanyAttractionList extends Fragment {
                 List<Attraction> selectedAttraction = attractionListAdapter.GetSelectedAttractionList();
                 attractionList.Attractions.addAll(selectedAttraction);
                 attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
+                comapnyPassListener.PassComapnyIdToComapnyAttractionSugesstedList(attractionList.CompanyId);
                 //mListener.PassAttractionListToAttractionLists((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
                 //zapis listy do bazy
             }

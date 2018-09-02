@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Listeners.IMapPassListener;
+import com.example.bartosz.thelocals.Listeners.IWelcomePageListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        IAttractionPassListener, IComapnyPassListener, IMapPassListener{
+        IAttractionPassListener, IComapnyPassListener, IMapPassListener, IWelcomePageListener {
 
 
     private UserManager userManager;
@@ -198,7 +199,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //fragment = new AttractionDetails();
         //fragment = new AddCompany();
         //fragment = new CompanyAttractionSuggesstedList();
-        fragment = new Welcome();
+        //fragment = new Welcome();
+        fragment = new CompanyDetails();
+
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -232,11 +235,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle args = new Bundle();
         args.putSerializable("attractions", attractions);
         selectedAttractionsOnMap.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
-        fragmentManager.beginTransaction().
-                replace(fragment.getId(), selectedAttractionsOnMap).
-                commit();
-
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), selectedAttractionsOnMap);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -307,6 +310,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void GoToWelcomePage() {
+        Fragment comapnyAttractionList = new Welcome();
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
         fragmentTransaction.commit();
     }

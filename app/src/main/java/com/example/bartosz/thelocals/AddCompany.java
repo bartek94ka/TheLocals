@@ -28,6 +28,10 @@ public class AddCompany extends Fragment implements View.OnClickListener{
     private EditText etAddress;
     private EditText etPhoneNumber;
     private EditText etEmail;
+    private EditText etLogoUrl;
+    private EditText etUrlAddress;
+    private EditText etDescription;
+
     private Button buttonNext;
 
     public AddCompany() {
@@ -54,6 +58,9 @@ public class AddCompany extends Fragment implements View.OnClickListener{
         etAddress = view.findViewById(R.id.companyAddress);
         etPhoneNumber = view.findViewById(R.id.companyPhoneNumber);
         etEmail = view.findViewById(R.id.companyEmail);
+        etLogoUrl = view.findViewById(R.id.companyLogoUrl);
+        etUrlAddress = view.findViewById(R.id.companyUrlAddress);
+        etDescription = view.findViewById(R.id.companyDescription);
 
     }
 
@@ -83,8 +90,12 @@ public class AddCompany extends Fragment implements View.OnClickListener{
         String address = etAddress.getText().toString().trim();
         String phoneNumber = etPhoneNumber.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
+        String logoUrl = etLogoUrl.getText().toString().trim();
+        String urlAddress = etUrlAddress.getText().toString().trim();
+        String decription = etDescription.getText().toString().trim();
 
-        Company company = new Company(name, address, "", "", "", phoneNumber, email, null);
+        Company company = new Company(name, address, decription, urlAddress, logoUrl, phoneNumber, email, null);
+
         String id = UUID.randomUUID().toString();
         company.Id = id;
         try{

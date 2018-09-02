@@ -1,6 +1,7 @@
 package com.example.bartosz.thelocals;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Adapters.CompanyAttractionSugesstedListAdapter;
+import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
+import com.example.bartosz.thelocals.Listeners.IWelcomePageListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
 import com.example.bartosz.thelocals.Managers.CompanyManager;
 import com.example.bartosz.thelocals.Models.Attraction;
@@ -36,6 +39,7 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
 
     private View view;
     private ListView listViewAttractionLists;
+    private IWelcomePageListener iWelcomePageListener;
 
     private AttractionListsProvider attractionListsProvider;
     private AttractionListManager attractionListManager;
@@ -61,12 +65,11 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
 
         Button saveButton = view.findViewById(R.id.saveListsButton);
         Button addListItemButton = view.findViewById(R.id.addListItemButton);
-        Button deleteListItemButton  = view.findViewById(R.id.deleteListItemButton);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                iWelcomePageListener.GoToWelcomePage();
             }
         });
         addListItemButton.setOnClickListener(new View.OnClickListener() {
@@ -79,24 +82,9 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
 
                 attractionListManager.AddAttractionList(attractionsList);
                 attractionSugesstedListAdapter.AddListItemToAdapter(attractionsList);
-                /*companyManager.GetCompanyData(companyId).addOnCompleteListener(new OnCompleteListener<Company>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Company> task) {
-                        if(task.isSuccessful()){
-                            company = task.getResult();
-                            if(company.AttractionSuggestedList == null){
-                                company.AttractionSuggestedList = new ArrayList<>();
-                            }
-                            company.AttractionSuggestedList.add(attractionsList);
-                            companyManager.UpdateFirebaseComapnyData(companyId, company);
-                        }
-                    }
-                });
-                */
             }
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -121,40 +109,32 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
                 }
             }
         });
-        /*.addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
-            @Override
-            public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
-                attractionLists = task.getResult();
-                attractionSugesstedListAdapter.AddAllItemsToAdapter(attractionLists);
-            }
-        });
-        */
+
         attractionListManager = new AttractionListManager(getContext());
         companyManager = new CompanyManager(getContext());
 
-        /*
-        InitializeLocalVeribles();
-        listViewAttractionLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int a = 5;
-                selectedAttractionList = (AttractionList)attractionSugesstedListAdapter.getItem(position);
-                Toast.makeText(getContext(), "Kliknięto: " +position, Toast.LENGTH_SHORT);
-            }
-        });
-*/
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /*
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.Planets, android.R.layout.simple_list_item_1);
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
-        */
         InitializeLocalVeribles();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            iWelcomePageListener = (IWelcomePageListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IWelcomePageListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        iWelcomePageListener = null;
     }
 
     private void SetAttractionListsForCompany(){
