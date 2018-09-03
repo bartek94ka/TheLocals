@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etPassword;
     private EditText etConfirmPassword;
     private EditText etName;
-    private EditText etSurname;
+    private Spinner spinnerProvince;
 
     private Button buttonRegister;
     private TextView tvLoginLink;
@@ -55,7 +57,8 @@ public class RegisterActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.regPassword);
         etConfirmPassword = (EditText) findViewById(R.id.regConfirmPassword);
         etName = (EditText) findViewById(R.id.regName);
-        etSurname = (EditText) findViewById(R.id.regSurname);
+        spinnerProvince = findViewById(R.id.regProvince);
+        SetAdacpter();
 
         buttonRegister = (Button) findViewById(R.id.regButton);
         tvLoginLink = (TextView) findViewById(R.id.regLoginHere);
@@ -76,7 +79,6 @@ public class RegisterActivity extends AppCompatActivity {
                 String password  = etPassword.getText().toString().trim();
                 String confirmPassword = etConfirmPassword.getText().toString().trim();
                 String name = etName.getText().toString().trim();
-                String surname = etSurname.getText().toString().trim();
                 if(!password.contains(confirmPassword)){
                     Toast.makeText(getApplicationContext(), "Hasła się nie zgadzają", Toast.LENGTH_SHORT).show();
                 }
@@ -119,14 +121,17 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 Log.d("TAG", "createUserWithEmail:success");
-                                Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Zarejestrowano pomyślnie", Toast.LENGTH_SHORT).show();
+                                String name = etName.getText().toString().trim();
+                                String province = (String)spinnerProvince.getSelectedItem();
+                                _userManager.AddUserToDatabase(getApplicationContext(), _firebaseAuth.getUid(), "", name, "", province);
                                 //TODO extend class by adding data od user
                                 Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
                                 RegisterActivity.this.startActivity(registerIntent);
                                 RegisterActivity.this.finish();
                             } else {
                                 Log.d("TAG", "createUserWithEmail:fail");
-                                Toast.makeText(RegisterActivity.this, "Could not register. Please try again", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Nie udało się zarejestrować. Spróbuj ponownie", Toast.LENGTH_SHORT).show();
                             }
                             _progressBar.hide();
                         }
@@ -134,5 +139,14 @@ public class RegisterActivity extends AppCompatActivity {
         }catch (Exception ex){
             System.out.print(ex.getMessage());
         }
+    }
+
+    private void SetAdacpter(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.
+                createFromResource(getApplicationContext(), R.array.Provinces, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerProvince.setAdapter(adapter);
     }
 }

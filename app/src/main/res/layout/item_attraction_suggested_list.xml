@@ -34,7 +34,8 @@
                     android:text="Nazwa trasy"
                     android:layout_marginTop="15dp"
                     android:textColor="#00a7f5"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:hint="Nazwa trasy"/>
 
             </android.support.v7.widget.LinearLayoutCompat>
         </RelativeLayout>
@@ -47,20 +48,22 @@
 
             <ImageButton
                 android:id="@+id/item_edit_attraction_list"
-                android:minWidth="120px"
-                android:minHeight="120px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="5dp"
-                android:src="@mipmap/ic_add_circle_black_24dp" />
+                android:background="@color/cardview_light_background"
+                android:minHeight="120px"
+                android:minWidth="120px"
+                android:src="@mipmap/ic_settings_black_24dp" />
 
             <ImageButton
                 android:id="@+id/item_remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:background="@color/cardview_light_background"
                 android:minHeight="120px"
                 android:minWidth="120px"
                 android:src="@mipmap/ic_delete_black_24dp"

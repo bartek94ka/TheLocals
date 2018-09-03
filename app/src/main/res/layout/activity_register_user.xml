@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textPersonName"/>
+            android:inputType="textEmailAddress"/>
 
         <EditText
             android:id="@+id/regName"
@@ -43,19 +43,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Imię"
+            android:hint="Nazwa użytkownika"
             android:inputType="textPersonName"/>
 
-        <EditText
-            android:id="@+id/regSurname"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="13dp"
             android:layout_marginRight="10dp"
+            android:textSize="18dp"
+            android:text="Województwo"/>
+
+        <Spinner
+            android:id="@+id/regProvince"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Nazwisko"
-            android:inputType="textPersonName"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown" />
 
         <EditText
             android:id="@+id/regPassword"

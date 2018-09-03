@@ -14,23 +14,23 @@
             android:icon="@mipmap/ic_group_black_24dp"
             android:title="List biur" />
 
-        <item android:id="@+id/nav_logout"
-            android:icon="@mipmap/ic_settings_power_black_24dp"
-            android:title="Wyloguj"/>
-
         <item
             android:id="@+id/nav_newAttraction"
             android:icon="@mipmap/ic_group_black_24dp"
-            android:title="Dodaj atrakcję" />
+            android:title="Zaproponuj atrakcję" />
         <item
             android:id="@+id/nav_addCompany"
             android:icon="@mipmap/ic_my_location_black_24dp"
-            android:title="Dodaj biuro" />
+            android:title="Dodaj biuro przewodników" />
 
         <item
             android:id="@+id/nav_userSettings"
             android:icon="@mipmap/ic_my_location_black_24dp"
             android:title="Ustawienia konta" />
+
+        <item android:id="@+id/nav_logout"
+            android:icon="@mipmap/ic_settings_power_black_24dp"
+            android:title="Wyloguj"/>
     </group>
 
 
