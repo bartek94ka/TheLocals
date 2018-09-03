@@ -11,7 +11,10 @@ public class AttractionList {
     public String CompanyId;
     public Date CreationDate;
     public String Name;
-    //public List<Attraction> Attractions;
+    public String Province;
+    public String Description;
+    public String Duration;
+    public String AdditionalInfo;
     public List<Attraction> Attractions;
 
     public AttractionList(){
