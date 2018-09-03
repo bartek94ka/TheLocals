@@ -9,10 +9,12 @@ public class UserDataValidator {
             Toast.makeText(context, "Name can not be empty!", Toast.LENGTH_SHORT).show();
             return false;
         }
+        /*
         if(surname.isEmpty()){
             Toast.makeText(context, "Surname can not be empty!", Toast.LENGTH_SHORT).show();
             return false;
         }
+        */
         return true;
     }
 }

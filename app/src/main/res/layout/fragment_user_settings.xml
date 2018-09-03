@@ -20,18 +20,27 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:hint="Name"/>
+            android:hint="Nazwa użytkownika"/>
 
-        <EditText
-            android:id="@+id/settingsSurname"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="13dp"
             android:layout_marginRight="10dp"
+            android:textSize="18dp"
+            android:text="Województwo"/>
+
+        <Spinner
+            android:id="@+id/settingsProvince"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Surname"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/settingsSaveButton"
@@ -39,7 +48,7 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="Zapisz"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
@@ -54,7 +63,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
-            android:hint="Old Password"/>
+            android:hint="Stare hasło"/>
 
         <EditText
             android:id="@+id/settingsNewPassword"
@@ -65,7 +74,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textVisiblePassword"
-            android:hint="New Password"/>
+            android:hint="Nowe hasło"/>
 
         <EditText
             android:id="@+id/settingsConfirmNewPassword"
@@ -76,7 +85,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
-            android:hint="Confirm New Password"/>
+            android:hint="Potwierdź nowe hasło"/>
 
         <Button
             android:id="@+id/settingsChangePasswordButton"
@@ -84,7 +93,7 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Password"
+            android:text="Zmień hasło"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"

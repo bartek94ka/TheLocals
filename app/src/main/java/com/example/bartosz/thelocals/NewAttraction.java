@@ -57,9 +57,7 @@ public class NewAttraction extends Fragment implements AdapterView.OnItemSelecte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_attraction, container, false);
-
-
-        return inflater.inflate(R.layout.fragment_new_attraction, null);
+        return view;
     }
 
     @Override

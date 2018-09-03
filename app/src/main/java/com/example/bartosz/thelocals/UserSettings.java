@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,13 +40,13 @@ public class UserSettings extends Fragment implements View.OnClickListener {
     private User _user;
 
     private EditText _settingsName;
-    private EditText _settingsSurname;
     private Button _settingsSaveButton;
 
     private EditText _settingsOldPassword;
     private EditText _settingsNewPassword;
     private EditText _settingsConfirmPassword;
     private Button _settingsChangePasswordButton;
+    private Spinner spinnerProvince;
 
     //private OnFragmentInteractionListener mListener;
     private UserManager _userManager;
@@ -79,7 +81,6 @@ public class UserSettings extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         InitializeLocalVeribles();
         FillBasicUserData();
-
     }
 
     @Override
@@ -111,8 +112,7 @@ public class UserSettings extends Fragment implements View.OnClickListener {
                 break;
             case R.id.settingsSaveButton:
                 final String name = _settingsName.getText().toString().trim();
-                final String surname = _settingsSurname.getText().toString().trim();
-                if(_userDataValidator.IsDataCorrect(getActivity(), name, surname) == true){
+                if(_userDataValidator.IsDataCorrect(getActivity(), name, "") == true){
                     Thread thread = new ThreadUpdateData();
                     thread.start();
                 }
@@ -129,11 +129,27 @@ public class UserSettings extends Fragment implements View.OnClickListener {
         _currentUser = _firebaseAuth.getCurrentUser();
 
         _settingsName = view.findViewById(R.id.settingsName);
-        _settingsSurname = (EditText) view.findViewById(R.id.settingsSurname);
+        spinnerProvince = view.findViewById(R.id.settingsProvince);
 
         _settingsOldPassword = (EditText) view.findViewById(R.id.settingsOldPassword);
         _settingsNewPassword = (EditText) view.findViewById(R.id.settingsNewPassword);
         _settingsConfirmPassword = (EditText) view.findViewById(R.id.settingsConfirmNewPassword);
+    }
+
+    private void SetAdapter(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.
+                createFromResource(getContext(), R.array.Provinces, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerProvince.setAdapter(adapter);
+        int selectedPosition = GetProvinceUserAdapterPosition(adapter);
+        spinnerProvince.setSelection(selectedPosition);
+    }
+
+    private int GetProvinceUserAdapterPosition(ArrayAdapter<CharSequence> adapter){
+        int position = adapter.getPosition(_user.SelectedProvince);
+        return position;
     }
 
     private void FillBasicUserData(){
@@ -144,23 +160,22 @@ public class UserSettings extends Fragment implements View.OnClickListener {
                 public Task<Void> then(@Nullable User user) throws Exception {
                     _user = user;
                     _settingsName.setText(_user.Name);
-                    _settingsSurname.setText(_user.Surname);
+                    SetAdapter();
                     return null;
                 }
             });
         }catch(Exception ex){
 
         }
-
     }
 
     public class ThreadUpdateData extends Thread {
         @Override
         public void run() {
             final String name = _settingsName.getText().toString().trim();
-            final String surname = _settingsSurname.getText().toString().trim();
             _user.Name = name;
-            _user.Surname = surname;
+            _user.FullName = _user.Name;
+            _user.SelectedProvince = (String)spinnerProvince.getSelectedItem();
             _userManager.UpdateFirebaseUserData(_currentUser.getUid(), _user);
         }
     }
