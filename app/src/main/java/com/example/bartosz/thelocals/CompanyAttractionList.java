@@ -56,7 +56,7 @@ public class CompanyAttractionList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_attraction_list, container, false);
+        view = inflater.inflate(R.layout.fragment_comapny_attraction_list, container, false);
         Button nextButton = view.findViewById(R.id.nextButton);
         Button saveButton = view.findViewById(R.id.saveListsButton);
         Button backButton = view.findViewById(R.id.backButton);
@@ -115,7 +115,7 @@ public class CompanyAttractionList extends Fragment {
         listViewAttractions = view.findViewById(R.id.listview_attractions);
 
         handler = new MyHandler();
-        SetComapnyIdArguments();
+        SetAttracionListIdArguments();
         attractionInfoProvider = new AttractionInfoProvider(provinceName);
         attractionListAdapter = new CompanyAttractionListAdapter(getContext());
         attractionListAdapter.ClearList();
@@ -135,7 +135,7 @@ public class CompanyAttractionList extends Fragment {
 
     }
 
-    private void SetComapnyIdArguments(){
+    private void SetAttracionListIdArguments(){
         Bundle args = getArguments();
         if(args != null){
             attractionListId = (String)args.get("attractionListId");

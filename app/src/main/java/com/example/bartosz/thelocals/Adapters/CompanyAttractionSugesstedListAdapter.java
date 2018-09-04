@@ -116,7 +116,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
                 @Override
                 public void onClick(View v) {
                     String attractionListId = (String) v.getTag();
-                    mListener.PassAttractionListIdToCompanyAttractionList(attractionListId);
+                    mListener.PassAttractionListIdToCompanyAttractionListDetails(attractionListId);
                     //move to another window
                 }
             });

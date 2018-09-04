@@ -24,6 +24,7 @@ import com.example.bartosz.thelocals.Models.Attraction;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -130,10 +131,12 @@ public class NewAttraction extends Fragment implements AdapterView.OnItemSelecte
         String sourceUrl = etSourceUrl.getText().toString().trim();
         Double latitude = Double.parseDouble(textViewNewAttractionLatitude.getText().toString().trim());
         Double longitude = Double.parseDouble(textViewNewAttractionLongitude.getText().toString().trim());
+        String userId = FirebaseAuth.getInstance().getUid();
         String province = spinnerProvince.getSelectedItem().toString();
 
         //Attraction attraction = new Attraction(name, description, photoUrl, sourceUrl, Longitude, Latitude);
         Attraction attraction = new Attraction(name, description, province, photoUrl, sourceUrl, longitude.toString(), latitude.toString());
+        attraction.UserId = userId;
         try{
             String key = _database.getReference("Attractions/" + attraction.Province).push().getKey();
             _database.getReference("Attractions").child(key).setValue(attraction).addOnCompleteListener(new OnCompleteListener<Void>() {

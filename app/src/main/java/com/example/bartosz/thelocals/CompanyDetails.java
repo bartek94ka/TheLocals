@@ -48,7 +48,7 @@ public class CompanyDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        companyId = "f93fd190-4c8c-4e53-9cab-a9e8bef0f288";
+        //companyId = "f93fd190-4c8c-4e53-9cab-a9e8bef0f288";
         SetPropertiesFromArguments();
         companyManager = new CompanyManager(getContext());
         InitializeVeribles();

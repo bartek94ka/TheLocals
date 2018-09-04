@@ -29,6 +29,7 @@ import com.example.bartosz.thelocals.Models.Company;
 import com.example.bartosz.thelocals.Providers.AttractionListsProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,10 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
             public void onClick(View v) {
                 final AttractionList attractionsList = new AttractionList();
                 attractionsList.Id = UUID.randomUUID().toString();
+                attractionsList.Description = "";
+                attractionsList.Duration = "";
+                attractionsList.AdditionalInfo = "";
+                attractionsList.UserId = FirebaseAuth.getInstance().getUid();
                 attractionsList.CompanyId = companyId;
 
 

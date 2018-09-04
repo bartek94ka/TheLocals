@@ -15,6 +15,7 @@ public class Attraction {
     public String SourceUrl;
     public String Longitude;
     public String Latitude;
+    public String UserId;
     public Boolean IsValidated;
 
     public Attraction(){

@@ -15,6 +15,7 @@ public class AttractionList {
     public String Description;
     public String Duration;
     public String AdditionalInfo;
+    public String UserId;
     public List<Attraction> Attractions;
 
     public AttractionList(){

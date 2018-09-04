@@ -204,8 +204,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //fragment = new AttractionDetails();
         //fragment = new AddCompany();
         //fragment = new CompanyAttractionSuggesstedList();
-        //fragment = new Welcome();
-        fragment = new CompanyDetails();
+        fragment = new Welcome();
+        //fragment = new CompanyDetails();
 
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -305,9 +305,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         //fragmentTransaction.addToBackStack(null);
         fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
-        //fragmentTransaction.addToBackStack(null);
         fragment = comapnyAttractionList;
+        //
+        // fragmentTransaction.addToBackStack("")
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassAttractionListIdToCompanyAttractionListDetails(String id) {
+        Fragment comapnyAttractionListDetails = new CompanyAttractionListDetails();
+        Bundle args = new Bundle();
+        args.putString("attractionListId", id);
+        comapnyAttractionListDetails.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        //fragmentTransaction.addToBackStack(null);
+        fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), comapnyAttractionListDetails);
+        fragment = comapnyAttractionListDetails;
         //
         // fragmentTransaction.addToBackStack("")
         fragmentTransaction.commit();
@@ -328,20 +345,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void OpenSetMarkerOnMapFragment() {
-        Fragment comapnyAttractionList = new SetMarkerOnMap();
+        Fragment setMarkerOnMap = new SetMarkerOnMap();
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
+        fragmentTransaction.replace(fragment.getId(), setMarkerOnMap);
         fragmentTransaction.commit();
     }
 
     @Override
     public void GoToWelcomePage() {
-        Fragment comapnyAttractionList = new Welcome();
+        Fragment welcome = new Welcome();
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
-        fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
+        fragmentTransaction.replace(fragment.getId(), welcome);
         fragmentTransaction.commit();
     }
 }

@@ -20,6 +20,12 @@ public class AttractionListsProvider {
     private String collectionName;
     private String companyId;
 
+    public AttractionListsProvider(){
+        companyCollectionName = "Companies";
+        collectionName = "AttractionList";
+        firebaseDatabase = FirebaseDatabase.getInstance();
+    }
+
     public AttractionListsProvider(String companyId){
         companyCollectionName = "Companies";
         collectionName = "AttractionList";
@@ -84,7 +90,7 @@ public class AttractionListsProvider {
 
                 AttractionList attractionList = dataSnapshot.getValue(AttractionList.class);
                 if(attractionList != null){
-                    attractionList.Id = companyId;
+                    attractionList.Id = dataSnapshot.getKey();
                 }
                 taskCompletionSource.setResult(attractionList);
                 reference.removeEventListener(this);
