@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
@@ -27,15 +27,14 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <EditText
+                <TextView
                     android:id="@+id/item_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nazwa trasy"
                     android:layout_marginTop="15dp"
                     android:textColor="#00a7f5"
-                    android:textSize="15dp"
-                    android:hint="Nazwa trasy"/>
+                    android:textSize="15dp" />
 
             </android.support.v7.widget.LinearLayoutCompat>
         </RelativeLayout>
@@ -43,31 +42,16 @@
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:orientation="horizontal"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:gravity="center">
 
-            <ImageButton
-                android:id="@+id/item_edit_attraction_list"
+            <Button
+                android:id="@+id/item_Details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="5dp"
-                android:background="@color/cardview_light_background"
-                android:minHeight="120px"
-                android:minWidth="120px"
-                android:src="@mipmap/ic_settings_black_24dp" />
-
-            <ImageButton
-                android:id="@+id/item_remove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_alignParentRight="true"
-                android:background="@color/cardview_light_background"
-                android:minHeight="120px"
-                android:minWidth="120px"
-                android:src="@mipmap/ic_delete_black_24dp"
-                android:text="Details" />
+                android:text="Szczegóły"/>
 
         </RelativeLayout>
     </android.support.v7.widget.LinearLayoutCompat>

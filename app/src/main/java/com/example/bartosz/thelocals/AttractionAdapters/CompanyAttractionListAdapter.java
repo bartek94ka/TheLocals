@@ -56,11 +56,12 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
                 Attraction selectedAttraction = selectedAttractions.get(j);
                 if(attraction.Id.contains(selectedAttraction.Id)){
                     this.selectedAttractions = selectedAttractions;
-
+                    this.notifyDataSetChanged();
+                    return;
                 }
             }
         }
-        this.notifyDataSetChanged();
+
     }
 
     private void SetSelectedItemsOnList(){
@@ -115,7 +116,6 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
         checkBox.setTag(attractions.get(position).Id);
         Attraction selectedAttraction = GetSelectedAttractionById(attractions.get(position).Id);
         if(selectedAttraction != null){
-            //Attraction attraction = GetAttraction(attractions.get(position).Id);
             selectedAttraction.setSelected(true);
             attractions.set(position, selectedAttraction);
         }

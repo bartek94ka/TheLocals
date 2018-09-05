@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +95,33 @@ public class AttractionListManager {
 
                     }
                 });
+        return taskCompletionSource.getTask();
+    }
+
+    public Task<ArrayList<AttractionList>> GetAllAttracionLists(){
+        final TaskCompletionSource<ArrayList<AttractionList>> taskCompletionSource = new TaskCompletionSource<>();
+        final ArrayList<AttractionList> list = new ArrayList<>();
+        final DatabaseReference localReference = firebaseDatabase.getReference().child(collectionName);
+        localReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        AttractionList attractionList = snapshot.getValue(AttractionList.class);
+                        if(attractionList != null){
+                            list.add(attractionList);
+                        }
+                    }
+                    localReference.removeEventListener(this);
+                }
+                taskCompletionSource.setResult(list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         return taskCompletionSource.getTask();
     }
 }

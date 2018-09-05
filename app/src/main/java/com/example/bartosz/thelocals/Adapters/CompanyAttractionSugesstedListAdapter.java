@@ -102,7 +102,7 @@ public class CompanyAttractionSugesstedListAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
-        View v = View.inflate(context, R.layout.item_attraction_suggested_list, null);
+        View v = View.inflate(context, R.layout.item_company_attraction_suggested_list, null);
         //selectedAttractionList = (AttractionList)getItem(position);
         AttractionList attractionList = GetAttractionByPosition(position);
 

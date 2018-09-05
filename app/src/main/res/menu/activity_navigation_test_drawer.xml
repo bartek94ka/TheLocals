@@ -10,6 +10,11 @@
             android:title="Home" />
 
         <item
+            android:id="@+id/nav_attractionSuggesstedList"
+            android:icon="@mipmap/ic_group_black_24dp"
+            android:title="List tras" />
+
+        <item
             android:id="@+id/nav_companyList"
             android:icon="@mipmap/ic_group_black_24dp"
             android:title="List biur" />
