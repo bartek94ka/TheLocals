@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.bartosz.thelocals.Adapters.AttractionSuggesstedListAdapter;
+import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.Models.Company;

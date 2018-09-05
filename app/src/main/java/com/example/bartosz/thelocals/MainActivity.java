@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Listeners.IMapPassListener;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        IAttractionPassListener, IComapnyPassListener, IMapPassListener, IWelcomePageListener {
+        IAttractionPassListener, IComapnyPassListener, IMapPassListener, IWelcomePageListener, IAttractionListPassListener {
 
 
     private UserManager userManager;
@@ -362,6 +363,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), welcome);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassAttractionListIdToAttractionListDetails(String attractionListId) {
+        Fragment attractionListDetails = new AttractionListDetails();
+        Bundle args = new Bundle();
+        args.putString("attractionListId", attractionListId);
+        attractionListDetails.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), attractionListDetails);
         fragmentTransaction.commit();
     }
 }

@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.R;
 
@@ -15,11 +16,13 @@ import java.util.List;
 
 public class AttractionSuggesstedListAdapter extends BaseAdapter {
 
+    private IAttractionListPassListener mListener;
     private Context context;
     private List<AttractionList> attractionLists;
 
     public AttractionSuggesstedListAdapter(Context context){
         this.context = context;
+        mListener = (IAttractionListPassListener) context;
         attractionLists = new ArrayList<>();
     }
 
@@ -50,7 +53,7 @@ public class AttractionSuggesstedListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = View.inflate(context, R.layout.item_attraction_suggested_list, null);
-        AttractionList attractionList = GetAttractionListByPosition(position);
+        final AttractionList attractionList = GetAttractionListByPosition(position);
 
         TextView itemName = view.findViewById(R.id.item_name);
         itemName.setText(attractionList.Name);
@@ -59,6 +62,7 @@ public class AttractionSuggesstedListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //Go to attractionlist details
+                mListener.PassAttractionListIdToAttractionListDetails(attractionList.Id);
             }
         });
         return view;
