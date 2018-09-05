@@ -76,26 +76,32 @@ public class CompanyAttractionListDetails extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = etName.getText().toString().trim();
-                String province = (String)spinnerProvince.getSelectedItem();
-                String duration = etDuration.getText().toString().trim();
-                String description = etDescription.getText().toString().trim();
-                String additionalInfo = etAdditionalInfo.getText().toString().trim();
-                attractionList.Name = name;
-                attractionList.Province = province;
-                attractionList.Duration = duration;
-                attractionList.Description = description;
-                attractionList.AdditionalInfo = additionalInfo;
-                attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
+                UpdateAttracionList();
             }
         });
 
         setAttractionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            mListener.PassAttractionListIdToCompanyAttractionList(attractionListId);
+            String province = (String)spinnerProvince.getSelectedItem();
+            UpdateAttracionList();
+            mListener.PassAttractionListIdToCompanyAttractionList(attractionListId, province);
             }
         });
+    }
+
+    private void UpdateAttracionList(){
+        String name = etName.getText().toString().trim();
+        String province = (String)spinnerProvince.getSelectedItem();
+        String duration = etDuration.getText().toString().trim();
+        String description = etDescription.getText().toString().trim();
+        String additionalInfo = etAdditionalInfo.getText().toString().trim();
+        attractionList.Name = name;
+        attractionList.Province = province;
+        attractionList.Duration = duration;
+        attractionList.Description = description;
+        attractionList.AdditionalInfo = additionalInfo;
+        attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
     }
 
     @Override

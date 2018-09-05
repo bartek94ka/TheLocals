@@ -12,7 +12,11 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AttractionListsProvider {
     private FirebaseDatabase firebaseDatabase;
@@ -41,13 +45,11 @@ public class AttractionListsProvider {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        GenericTypeIndicator<AttractionList> type = new GenericTypeIndicator<AttractionList>() {};
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                         AttractionList attractionList = snapshot.getValue(AttractionList.class);
                         if(attractionList != null){
                             list.add(attractionList);
                         }
-                        //list.add(attractionList);
                     }
                 }
                 taskCompletionSource.setResult(list);

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.Models.Company;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AttractionListManager {
@@ -32,9 +34,24 @@ public class AttractionListManager {
 
     public void UpdateFirebaseAttractionList(String id, AttractionList attractionList){
         Map<String,Object> taskMap = new HashMap<String,Object>();
+        HashMap<String, Attraction> attractions = attractionList.Attractions;
+        attractionList.Attractions = null;
         taskMap.put(id, attractionList);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(collectionName);
         reference.updateChildren(taskMap);
+        taskMap.clear();
+        attractionList.Attractions = attractions;
+        taskMap.put(id, attractionList);
+        reference.updateChildren(taskMap);
+        /*
+        if(attractions != null){
+
+            for (Attraction attraction: attractions) {
+                FirebaseDatabase.getInstance().getReference(collectionName + "/" + attractionList.Id + "/" + "Attractions").child(attraction.Id).setValue(attraction);
+            }
+
+        }
+        */
     }
 
     public void AddAttractionList(AttractionList attractionList){

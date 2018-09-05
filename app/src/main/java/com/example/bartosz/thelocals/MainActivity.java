@@ -297,10 +297,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void PassAttractionListIdToCompanyAttractionList(String id) {
+    public void PassAttractionListIdToCompanyAttractionList(String id, String provinceName) {
         Fragment comapnyAttractionList = new CompanyAttractionList();
         Bundle args = new Bundle();
         args.putString("attractionListId", id);
+        args.putString("provinceName", provinceName);
         comapnyAttractionList.setArguments(args);
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         //fragmentTransaction.addToBackStack(null);

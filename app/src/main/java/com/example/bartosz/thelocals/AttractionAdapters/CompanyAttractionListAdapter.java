@@ -48,10 +48,19 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
         return null;
     }
 
-    public void SetSelectedAttractionList(List<Attraction> attractions){
-        this.selectedAttractions = attractions;
+    public void SetSelectedAttractionList(List<Attraction> selectedAttractions){
 
-        //this.notifyDataSetChanged();
+        for(int i=0; i< this.attractions.size(); i++){
+            for(int j=0; j< selectedAttractions.size(); j++){
+                Attraction attraction = this.attractions.get(i);
+                Attraction selectedAttraction = selectedAttractions.get(j);
+                if(attraction.Id.contains(selectedAttraction.Id)){
+                    this.selectedAttractions = selectedAttractions;
+
+                }
+            }
+        }
+        this.notifyDataSetChanged();
     }
 
     private void SetSelectedItemsOnList(){
@@ -72,7 +81,7 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
 
     private Attraction GetSelectedAttractionById(String id){
         for (Attraction attraction : selectedAttractions){
-            if(attraction.Id == id){
+            if(attraction.Id.contains(id)){
                 return attraction;
             }
         }
@@ -104,13 +113,13 @@ public class CompanyAttractionListAdapter extends BaseAdapter{
 
         itemName.setText(attractions.get(position).Name);
         checkBox.setTag(attractions.get(position).Id);
-        /*Attraction selectedAttraction = GetSelectedAttractionById(attractions.get(position).Id);
+        Attraction selectedAttraction = GetSelectedAttractionById(attractions.get(position).Id);
         if(selectedAttraction != null){
             //Attraction attraction = GetAttraction(attractions.get(position).Id);
             selectedAttraction.setSelected(true);
             attractions.set(position, selectedAttraction);
         }
-        */
+
         checkBox.setChecked(attractions.get(position).getSelected());
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

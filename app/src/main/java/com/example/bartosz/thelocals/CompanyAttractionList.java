@@ -26,8 +26,13 @@ import com.example.bartosz.thelocals.Providers.AttractionListsProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import bolts.Continuation;
 
@@ -69,9 +74,13 @@ public class CompanyAttractionList extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attractionList.Attractions = new ArrayList<>();
+                attractionList.Attractions = new HashMap<>();
                 List<Attraction> selectedAttraction = attractionListAdapter.GetSelectedAttractionList();
-                attractionList.Attractions.addAll(selectedAttraction);
+                if(selectedAttraction != null){
+                    for(Attraction attraction : selectedAttraction){
+                        attractionList.Attractions.put(attraction.Id, attraction);
+                    }
+                }
                 attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
                 comapnyPassListener.PassComapnyIdToComapnyAttractionSugesstedList(attractionList.CompanyId);
                 //mListener.PassAttractionListToAttractionLists((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
@@ -121,24 +130,29 @@ public class CompanyAttractionList extends Fragment {
         attractionListAdapter.ClearList();
         listViewAttractions.setAdapter(attractionListAdapter);
         attractionListManager = new AttractionListManager(getContext());
-        attractionListManager.GetAttractionListById(attractionListId).addOnCompleteListener(new OnCompleteListener<com.example.bartosz.thelocals.Models.AttractionList>() {
-            @Override
-            public void onComplete(@NonNull Task<com.example.bartosz.thelocals.Models.AttractionList> task) {
-                attractionList = task.getResult();
-                if(attractionList.Attractions != null){
-                    attractionListAdapter.SetSelectedAttractionList(attractionList.Attractions);
-                }
-            }
-        });
         Thread thread = new ThreadGetMoreData();
         thread.start();
 
+    }
+
+    private ArrayList<Attraction> GetAttractionListFromHashMap(HashMap<String, Attraction> hashMap){
+        Object[] array = hashMap.values().toArray();
+        ArrayList<Attraction> attractions = new ArrayList<>();
+        if(array != null){
+            for(Object object: array){
+                Attraction attraction = (Attraction)object;
+                attractions.add(attraction);
+            }
+        }
+
+        return attractions;
     }
 
     private void SetAttracionListIdArguments(){
         Bundle args = getArguments();
         if(args != null){
             attractionListId = (String)args.get("attractionListId");
+            provinceName = (String)args.get("provinceName");
         }
     }
 
@@ -153,12 +167,16 @@ public class CompanyAttractionList extends Fragment {
                 case 1:
                     //Update data adapter and UI
                     attractionListAdapter.addListItemToAdapter((ArrayList<Attraction>)msg.obj);
-                    int count = ((ArrayList<Attraction>) msg.obj).size();
-                    if(count == 0){
-                        //_informText.setVisibility(View.VISIBLE);
-                    }
-                    //Remove loading view after update listview
-                    //_listViewUser.removeFooterView(_footerView);
+                    attractionListManager.GetAttractionListById(attractionListId).addOnCompleteListener(new OnCompleteListener<com.example.bartosz.thelocals.Models.AttractionList>() {
+                        @Override
+                        public void onComplete(@NonNull Task<com.example.bartosz.thelocals.Models.AttractionList> task) {
+                            attractionList = task.getResult();
+                            if(attractionList.Attractions != null){
+                                ArrayList<Attraction> values = GetAttractionListFromHashMap(attractionList.Attractions);
+                                attractionListAdapter.SetSelectedAttractionList(values);
+                            }
+                        }
+                    });
                     break;
                 default:
                     break;
