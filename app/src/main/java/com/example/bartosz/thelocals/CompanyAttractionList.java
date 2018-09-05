@@ -144,7 +144,6 @@ public class CompanyAttractionList extends Fragment {
                 attractions.add(attraction);
             }
         }
-
         return attractions;
     }
 

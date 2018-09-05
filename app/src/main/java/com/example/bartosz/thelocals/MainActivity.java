@@ -281,7 +281,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         attractionDetails.setArguments(args);
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(fragment.getId(), attractionDetails);
+        fragmentTransaction.commit();
     }
 
     @Override
