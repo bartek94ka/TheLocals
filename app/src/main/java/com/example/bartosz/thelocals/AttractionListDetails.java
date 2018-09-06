@@ -8,10 +8,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.bartosz.thelocals.Adapters.AttractionListAttractionAdapter;
+import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
+import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
@@ -30,9 +33,11 @@ public class AttractionListDetails extends Fragment {
     private TextView attractionListAttractionCount;
     private TextView attractionListDescription;
     private TextView attractionListAdditionalInfo;
+    private Button buttonSeeAtractionsOnMap;
     private ListView attractionListAttracions;
-    private AttractionListAttractionAdapter adapter;
 
+    private AttractionListAttractionAdapter adapter;
+    private IAttractionPassListener mListener;
     private String attractionListId;
     private AttractionListManager attractionListManager;
     private AttractionList attractionList;
@@ -51,16 +56,19 @@ public class AttractionListDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list_details));
         //companyId = "f93fd190-4c8c-4e53-9cab-a9e8bef0f288";
         SetPropertiesFromArguments();
         attractionListManager = new AttractionListManager(getContext());
         adapter = new AttractionListAttractionAdapter(getContext());
         InitializeVeribles();
         SetAttrcationListProperties();
+        SetButtonEvents();
     }
 
     private void InitializeVeribles(){
 
+        buttonSeeAtractionsOnMap = view.findViewById(R.id.buttonSeeAtractionsOnMap);
         attractionListName = view.findViewById(R.id.attractionListName);
         attractionListProvince = view.findViewById(R.id.attractionListProvince);
         attractionListDuration = view.findViewById(R.id.attractionListDuration);
@@ -93,6 +101,15 @@ public class AttractionListDetails extends Fragment {
         });
     }
 
+    private void SetButtonEvents(){
+        buttonSeeAtractionsOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.PassAttractionList((ArrayList<Attraction>) adapter.GetAttractionList());
+            }
+        });
+    }
+
     private ArrayList<Attraction> GetAttractionListFromHashMap(HashMap<String, Attraction> hashMap){
         Object[] array = hashMap.values().toArray();
         ArrayList<Attraction> attractions = new ArrayList<>();
@@ -108,11 +125,17 @@ public class AttractionListDetails extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        try {
+            mListener = (IAttractionPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IAttractionPassListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
     private void SetPropertiesFromArguments(){

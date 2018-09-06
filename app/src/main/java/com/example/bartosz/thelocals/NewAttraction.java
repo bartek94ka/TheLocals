@@ -64,7 +64,7 @@ public class NewAttraction extends Fragment implements AdapterView.OnItemSelecte
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_new_attraction));
         _progressBar = new ProgressDialog(getContext());
         etName = (EditText) view.findViewById(R.id.newAttractionName);
         etDescription = (EditText) view.findViewById(R.id.newAttractionDescription);

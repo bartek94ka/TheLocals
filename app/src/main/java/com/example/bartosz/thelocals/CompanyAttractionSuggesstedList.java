@@ -97,7 +97,7 @@ public class CompanyAttractionSuggesstedList extends ListFragment implements OnI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SetComapnyIdArguments();
-
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_company_attracion_suggessted_list));
         attractionListsProvider = new AttractionListsProvider(companyId);
         attractionListsProvider.GetCompany().addOnCompleteListener(new OnCompleteListener<Company>() {
             @Override

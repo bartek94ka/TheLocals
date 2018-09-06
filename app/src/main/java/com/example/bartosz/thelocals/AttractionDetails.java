@@ -54,7 +54,7 @@ public class AttractionDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_details));
         //attractionId = "-LKSWSFULGGDFiQLjxFm";
         attractionId = "-LKSWVaw_uREipsrBltw";
         SetPropertiesFromArguments();

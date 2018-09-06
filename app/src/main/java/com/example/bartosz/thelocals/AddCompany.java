@@ -52,6 +52,7 @@ public class AddCompany extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_add_company));
         companyManager = new CompanyManager(getContext());
 
         etName = view.findViewById(R.id.companyName);

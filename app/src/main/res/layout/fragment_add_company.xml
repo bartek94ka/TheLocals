@@ -14,18 +14,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:text="Nowa firma"
-                android:textAlignment="center"
-                android:textSize="30sp"
-                android:textStyle="italic" />
-
             <EditText
                 android:id="@+id/companyName"
                 android:layout_width="match_parent"

@@ -16,6 +16,22 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps_test">Map</string>
 
+    <string name="fragment_home">Strona główna</string>
+    <string name="fragment_attraction_sugessted_list">Lista tras</string>
+    <string name="fragment_company_list">Lista biur</string>
+    <string name="fragment_new_attraction">Zaproponuj atrakcję</string>
+    <string name="fragmnet_add_company">Dodaj biuro podróży</string>
+    <string name="fragment_user_settings">Ustawienia konta</string>
+    <string name="fragment_attraction_details">Szczegóły atrakcji</string>
+    <string name="fragment_attraction_list_details">Szczegóły trasy</string>
+    <string name="fragment_selected_attractions_map">Lokalizacja atrakcji</string>
+    <string name="fragmnet_set_marker_on_map">Ustaw lokalizację atrakcji</string>
+    <string name="fragmnet_company_detials">Szczegóły biura</string>
+    <string name="fragmnet_company_attracion_suggessted_list">Trasy turystyczne</string>
+    <string name="fragmnet_company_attracion_list_details">Szczegóły trasy</string>
+    <string name="fragmnet_company_attracion_list">Wybierz atrakcje dla trasy</string>
+
+
     <!-- Collection names>
     <string name="Attractions">Attractions2</string>
 -->

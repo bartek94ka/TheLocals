@@ -52,6 +52,7 @@ public class SetMarkerOnMap extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_set_marker_on_map));
         InitializeVeribles();
     }
 

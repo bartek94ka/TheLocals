@@ -72,7 +72,7 @@ public class SelectedAttractionsOnMap extends Fragment implements NavigationView
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_selected_attractions_map));
         SetAttractionListFromArguments();
         googleMapProvider = new GoogleMapProvider();
         //attractionInfoProvider = new AttractionInfoProvider("Wielkopolskie");

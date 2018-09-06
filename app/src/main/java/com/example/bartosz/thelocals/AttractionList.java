@@ -75,7 +75,7 @@ public class AttractionList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        //((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
         InitializeLocalVeribles();
     }
 

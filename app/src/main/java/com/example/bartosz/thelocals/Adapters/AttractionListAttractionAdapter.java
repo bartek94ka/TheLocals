@@ -30,6 +30,11 @@ public class AttractionListAttractionAdapter extends BaseAdapter {
         attractions.addAll(list);
         this.notifyDataSetChanged();
     }
+
+    public List<Attraction> GetAttractionList(){
+        return attractions;
+    }
+
     @Override
     public int getCount() {
         return attractions.size();

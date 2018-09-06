@@ -110,6 +110,15 @@
                     android:layout_height="wrap_content"
                     android:textSize="18dp"/>
 
+                <Button
+                    android:id="@+id/buttonSeeAtractionsOnMap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_alignParentRight="true"
+                    android:text="Zobacz atrakcje na mapie"/>
+
                 <TextView
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"

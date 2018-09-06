@@ -113,7 +113,7 @@ public class CompanyAttractionListDetails extends Fragment {
     private void InitializeLocalVeribles(){
         handler = new MyHandler();
         SetAttracionListIdArguments();
-
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_company_attracion_list_details));
         etName = view.findViewById(R.id.attractionListName);
         etDuration = view.findViewById(R.id.attractionListDuration);
         etDescription = view.findViewById(R.id.attractionListDescription);
@@ -169,15 +169,17 @@ public class CompanyAttractionListDetails extends Fragment {
     }
 
     private void UpdateInterface(AttractionList attractionList){
-        if(attractionList.Name != null)
-            etName.setText(attractionList.Name);
-        if(attractionList.Duration != null)
-            etDuration.setText(attractionList.Duration);
-        if(attractionList.Description != null)
-            etDescription.setText(attractionList.Description);
-        if(attractionList.AdditionalInfo != null)
-            etAdditionalInfo.setText(attractionList.AdditionalInfo);
-        SetAdapter();
+        if(attractionList != null){
+            if(attractionList.Name != null)
+                etName.setText(attractionList.Name);
+            if(attractionList.Duration != null)
+                etDuration.setText(attractionList.Duration);
+            if(attractionList.Description != null)
+                etDescription.setText(attractionList.Description);
+            if(attractionList.AdditionalInfo != null)
+                etAdditionalInfo.setText(attractionList.AdditionalInfo);
+            SetAdapter();
+        }
     }
 
     private void SetAdapter(){

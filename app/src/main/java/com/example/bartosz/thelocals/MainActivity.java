@@ -241,6 +241,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
     }
 
+    public void SetActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     public void PassAttractionList(ArrayList<Attraction> attractions) {
         Fragment selectedAttractionsOnMap = new SelectedAttractionsOnMap();
