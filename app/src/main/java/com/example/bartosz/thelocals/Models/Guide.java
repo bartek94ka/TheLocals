@@ -13,9 +13,9 @@ public class Guide {
     public String PhoneNumber;
     public String AboutMe;
     public String PhotoUrl;
-    public List<String> Attractions;
+    //public List<String> Attractions;
     public List<String> Languages;
-    public List<String> Specialization;
+    //public List<String> Specialization;
     public Boolean IsValidated;
 
     public Guide(){
@@ -29,9 +29,8 @@ public class Guide {
         PhoneNumber = phoneNumber;
         AboutMe = aboutMe;
         PhotoUrl = photoUrl;
-        Attractions = attractions;
         Languages = languages;
-        Specialization = specialization;
+        //Specialization = specialization;
         IsValidated = false;
     }
 }

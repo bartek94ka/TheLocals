@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
+import com.example.bartosz.thelocals.Listeners.IGuidePassListener;
 import com.example.bartosz.thelocals.Listeners.IMapPassListener;
 import com.example.bartosz.thelocals.Listeners.IWelcomePageListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
@@ -37,7 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        IAttractionPassListener, IComapnyPassListener, IMapPassListener, IWelcomePageListener, IAttractionListPassListener {
+        IAttractionPassListener, IComapnyPassListener, IMapPassListener, IWelcomePageListener, IAttractionListPassListener,
+        IGuidePassListener {
 
 
     private UserManager userManager;
@@ -146,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new CompanyList();
         } else if (id == R.id.nav_attractionSuggesstedList){
             fragment = new AttractionSuggesstedList();
+        } else if (id == R.id.nav_addGuide){
+            fragment = new AddGuide();
         }
 
         if(fragment != null){
@@ -383,5 +387,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(fragment.getId(), attractionListDetails);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassAttractionListIdToGuideAttractionListDetails(String id) {
+
     }
 }

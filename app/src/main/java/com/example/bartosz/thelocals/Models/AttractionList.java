@@ -7,9 +7,6 @@ import java.util.Map;
 
 public class AttractionList {
     public String Id;
-
-
-
     public String CompanyId;
     public Date CreationDate;
     public String Name;
@@ -18,6 +15,7 @@ public class AttractionList {
     public String Duration;
     public String AdditionalInfo;
     public String UserId;
+    public String GuideId;
     public HashMap<String,Attraction> Attractions;
 
     public AttractionList(){

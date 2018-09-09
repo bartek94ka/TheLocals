@@ -2,6 +2,7 @@ package com.example.bartosz.thelocals.Providers;
 
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.Models.Company;
+import com.example.bartosz.thelocals.Models.Guide;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +42,33 @@ public class AttractionListsProvider {
         final TaskCompletionSource<ArrayList<AttractionList>> taskCompletionSource = new TaskCompletionSource<>();
         final ArrayList<AttractionList> list = new ArrayList<>();
         final Query query = firebaseDatabase.getReference().child(collectionName).orderByChild("CompanyId").equalTo(companyId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        AttractionList attractionList = snapshot.getValue(AttractionList.class);
+                        if(attractionList != null){
+                            list.add(attractionList);
+                        }
+                    }
+                }
+                taskCompletionSource.setResult(list);
+                query.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
+    public Task<ArrayList<AttractionList>> GetAttractionListsForGuide(String guideId){
+        final TaskCompletionSource<ArrayList<AttractionList>> taskCompletionSource = new TaskCompletionSource<>();
+        final ArrayList<AttractionList> list = new ArrayList<>();
+        final Query query = firebaseDatabase.getReference().child(collectionName).orderByChild("GuideId").equalTo(guideId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
