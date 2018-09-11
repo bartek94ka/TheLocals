@@ -28,6 +28,7 @@
     <string name="fragment_selected_attractions_map">Lokalizacja atrakcji</string>
     <string name="fragmnet_set_marker_on_map">Ustaw lokalizację atrakcji</string>
     <string name="fragmnet_company_detials">Szczegóły biura</string>
+    <string name="fragmnet_guide_detials">Szczegóły przewodnika</string>
     <string name="fragmnet_company_attracion_suggessted_list">Trasy turystyczne</string>
     <string name="fragmnet_company_attracion_list_details">Szczegóły trasy</string>
     <string name="fragmnet_company_attracion_list">Wybierz atrakcje dla trasy</string>

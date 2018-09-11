@@ -7,9 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Listeners.IGuidePassListener;
-import com.example.bartosz.thelocals.Models.Company;
 import com.example.bartosz.thelocals.Models.Guide;
 import com.example.bartosz.thelocals.R;
 
@@ -62,6 +60,7 @@ public class GuideListAdapter extends BaseAdapter{
         buttonDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            guidePassListener.PassGuideIdToGuideDetails(guide.Id);
                 //comapnyPassListener.PassCompanyIdToCompanyDetails(company.Id);
             }
         });

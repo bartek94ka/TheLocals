@@ -440,4 +440,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(fragment.getId(), guideTripList);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public void PassGuideIdToGuideDetails(String id){
+        Fragment guideDetails = new GuideDetails();
+        Bundle args = new Bundle();
+        args.putString("guideId", id);
+        guideDetails.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.replace(fragment.getId(), guideDetails);
+        fragmentTransaction.commit();
+    }
 }
