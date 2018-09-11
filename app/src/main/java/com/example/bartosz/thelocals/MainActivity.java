@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new AttractionSuggesstedList();
         } else if (id == R.id.nav_addGuide){
             fragment = new AddGuide();
+        } else if (id == R.id.nav_guideList){
+            fragment = new GuideList();
         }
 
         if(fragment != null){

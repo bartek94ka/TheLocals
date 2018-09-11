@@ -19,6 +19,7 @@
     <string name="fragment_home">Strona główna</string>
     <string name="fragment_attraction_sugessted_list">Lista tras</string>
     <string name="fragment_company_list">Lista biur</string>
+    <string name="fragment_guide_list">Lista przewodników</string>
     <string name="fragment_new_attraction">Zaproponuj atrakcję</string>
     <string name="fragmnet_add_company">Dodaj biuro podróży</string>
     <string name="fragment_user_settings">Ustawienia konta</string>

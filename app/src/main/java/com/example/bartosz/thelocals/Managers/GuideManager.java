@@ -100,18 +100,18 @@ public class GuideManager {
         });
     }
 
-    public Task<ArrayList<Company>> GetAllCompanies(){
-        final TaskCompletionSource<ArrayList<Company>> taskCompletionSource = new TaskCompletionSource<>();
-        final ArrayList<Company> list = new ArrayList<>();
+    public Task<ArrayList<Guide>> GetAllGuides(){
+        final TaskCompletionSource<ArrayList<Guide>> taskCompletionSource = new TaskCompletionSource<>();
+        final ArrayList<Guide> list = new ArrayList<>();
         final DatabaseReference localReference = firebaseDatabase.getReference().child(collectionName);
         localReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Company company = snapshot.getValue(Company.class);
-                        if(company != null){
-                            list.add(company);
+                        Guide guide = snapshot.getValue(Guide.class);
+                        if(guide != null){
+                            list.add(guide);
                         }
                     }
                     localReference.removeEventListener(this);
