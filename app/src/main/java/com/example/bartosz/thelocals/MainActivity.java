@@ -303,9 +303,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), comapnyAttractionSuggestedList);
-        //fragment = comapnyAttractionSuggestedList;
-        //
-        // fragmentTransaction.addToBackStack("")
         fragmentTransaction.commit();
     }
 
@@ -389,8 +386,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void PassAttractionListIdToGuideAttractionListDetails(String id) {
 
+
+    @Override
+    public void PassAttractionListIdToGuideTripDetails(String id) {
+        Fragment guideTripDetails = new GuideTripDetails();
+        Bundle args = new Bundle();
+        args.putString("attractionListId", id);
+        guideTripDetails.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.replace(fragment.getId(), guideTripDetails);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassAttractionListIdToGuideTripList(String id) {
+        Fragment guideTripList = new GuideTripList();
+        Bundle args = new Bundle();
+        args.putString("guideId", id);
+        guideTripList.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.replace(fragment.getId(), guideTripList);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassAttractionListIdToCompanyAttraction(String id, String provinceName){
+        Fragment comapnyAttractionList = new CompanyAttractionList();
+        Bundle args = new Bundle();
+        args.putString("attractionListId", id);
+        args.putString("provinceName", provinceName);
+        comapnyAttractionList.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), comapnyAttractionList);
+        fragment = comapnyAttractionList;
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassGuideIdToGuideTripList(String id){
+        Fragment guideTripList = new GuideTripList();
+        Bundle args = new Bundle();
+        args.putString("guideId", id);
+        guideTripList.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.replace(fragment.getId(), guideTripList);
+        fragmentTransaction.commit();
     }
 }

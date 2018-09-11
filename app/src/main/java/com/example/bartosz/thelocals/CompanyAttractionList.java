@@ -16,8 +16,10 @@ import android.widget.ListView;
 
 import com.example.bartosz.thelocals.AttractionAdapters.AttractionListAdapter;
 import com.example.bartosz.thelocals.AttractionAdapters.CompanyAttractionListAdapter;
+import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
+import com.example.bartosz.thelocals.Listeners.IGuidePassListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
@@ -45,6 +47,7 @@ public class CompanyAttractionList extends Fragment {
     private Handler handler;
 
     private IAttractionPassListener mListener;
+    private IAttractionListPassListener attractionListPassListener;
     private IComapnyPassListener comapnyPassListener;
     private AttractionInfoProvider attractionInfoProvider;
     private CompanyAttractionListAdapter attractionListAdapter;
@@ -91,7 +94,11 @@ public class CompanyAttractionList extends Fragment {
             @Override
             public void onClick(View v) {
                 //mListener.PassAttractionListToAttractionLists(attractionList);
-                comapnyPassListener.PassComapnyIdToComapnyAttractionSugesstedList(attractionList.CompanyId);
+                if(attractionList.CompanyId != ""){
+                    comapnyPassListener.PassComapnyIdToComapnyAttractionSugesstedList(attractionList.CompanyId);
+                }else{
+                    attractionListPassListener.PassGuideIdToGuideTripList(attractionList.GuideId);
+                }
             }
         });
         return view;
@@ -109,6 +116,11 @@ public class CompanyAttractionList extends Fragment {
             comapnyPassListener = (IComapnyPassListener) context;
         }catch(ClassCastException e){
             throw new ClassCastException(context.toString() + " must implement IComapnyPassListener");
+        }
+        try {
+            attractionListPassListener = (IAttractionListPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IAttractionListPassListener");
         }
     }
 

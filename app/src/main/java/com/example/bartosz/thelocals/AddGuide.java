@@ -102,6 +102,7 @@ public class AddGuide extends Fragment {
         }catch(Exception ex){
             System.out.print(ex.getMessage());
         }
+        listener.PassAttractionListIdToGuideTripList(id);
     }
 
     private void ResetTextFields() {

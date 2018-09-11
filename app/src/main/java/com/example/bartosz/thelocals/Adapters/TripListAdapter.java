@@ -115,7 +115,7 @@ public class TripListAdapter extends BaseAdapter{
                 @Override
                 public void onClick(View v) {
                     String attractionListId = (String) v.getTag();
-                    mListener.PassAttractionListIdToGuideAttractionListDetails(attractionListId);
+                    mListener.PassAttractionListIdToGuideTripDetails(attractionListId);
                 }
             });
         }

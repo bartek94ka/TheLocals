@@ -43,10 +43,7 @@ public class GuideTripList extends ListFragment{
     private AttractionListsProvider attractionListsProvider;
     private AttractionListManager attractionListManager;
     private GuideManager guideManager;
-    private List<AttractionList> attractionLists;
-    private AttractionList selectedAttractionList;
     private String guideId;
-    private Guide guide;
 
     private TripListAdapter tripListAdapter;
 
