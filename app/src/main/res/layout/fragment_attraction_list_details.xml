@@ -139,12 +139,13 @@
                 <ListView
                     android:id="@+id/listview_attractions"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="300dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:divider="@android:color/holo_blue_dark"
-                    android:dividerHeight="5dp"></ListView>
+                    android:dividerHeight="5dp"
+                    android:nestedScrollingEnabled="true"></ListView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -14,10 +14,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.bartosz.thelocals.Adapters.AttractionListDisplayAdapter;
 import com.example.bartosz.thelocals.AttractionAdapters.AttractionListAdapter;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Models.Attraction;
+import com.example.bartosz.thelocals.Models.User;
 import com.example.bartosz.thelocals.Providers.AttractionInfoProvider;
+import com.example.bartosz.thelocals.Managers.UserManager;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -33,7 +38,9 @@ public class AttractionList extends Fragment {
 
     private IAttractionPassListener mListener;
     private AttractionInfoProvider attractionInfoProvider;
-    private AttractionListAdapter attractionListAdapter;
+    //private AttractionListAdapter attractionListAdapter;
+    private AttractionListDisplayAdapter adapter;
+    private UserManager userManager;
     private String provinceName = "Wielkopolskie";
 
     public AttractionList() {
@@ -45,8 +52,9 @@ public class AttractionList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_attraction_list, container, false);
-        Button nextButton = view.findViewById(R.id.nextButton);
-        Button saveButton = view.findViewById(R.id.saveListsButton);
+        //Button nextButton = view.findViewById(R.id.nextButton);
+        //Button saveButton = view.findViewById(R.id.saveListsButton);
+        /*
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +67,7 @@ public class AttractionList extends Fragment {
                 //mListener.PassAttractionListToAttractionLists( attractionListAdapter.GetSelectedAttractionList());
             }
         });
+        */
         return view;
     }
 
@@ -75,6 +84,7 @@ public class AttractionList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
         //((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
         InitializeLocalVeribles();
     }
@@ -82,16 +92,25 @@ public class AttractionList extends Fragment {
     private void InitializeLocalVeribles(){
 
         listViewAttractions = view.findViewById(R.id.listview_attractions);
-
+        adapter = new AttractionListDisplayAdapter(getContext());
+        adapter.ClearList();
         handler = new MyHandler();
-        attractionInfoProvider = new AttractionInfoProvider(provinceName);
+        userManager = new UserManager();
+        final Thread thread = new ThreadGetMoreData();
+        userManager.getUserData(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                provinceName = user.SelectedProvince;
+                attractionInfoProvider = new AttractionInfoProvider(provinceName);
+                thread.start();
+            }
+        });
+
+        /*
         attractionListAdapter = new AttractionListAdapter(getContext());
         attractionListAdapter.ClearList();
         listViewAttractions.setAdapter(attractionListAdapter);
-
-        Thread thread = new ThreadGetMoreData();
-        thread.start();
-
+        */
     }
 
     public class MyHandler extends Handler {
@@ -104,7 +123,7 @@ public class AttractionList extends Fragment {
                     break;
                 case 1:
                     //Update data adapter and UI
-                    attractionListAdapter.addListItemToAdapter((ArrayList<Attraction>)msg.obj);
+                    adapter.addListItemToAdapter((ArrayList<Attraction>)msg.obj);
                     int count = ((ArrayList<Attraction>) msg.obj).size();
                     if(count == 0){
                         //_informText.setVisibility(View.VISIBLE);

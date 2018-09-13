@@ -108,10 +108,11 @@ public class GuideManager {
         final TaskCompletionSource<ArrayList<Guide>> taskCompletionSource = new TaskCompletionSource<>();
         final ArrayList<Guide> list = new ArrayList<>();
         final DatabaseReference localReference = firebaseDatabase.getReference().child(collectionName);
+        /*
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Pobieranie listy przewodników...");
         progressDialog.show();
-
+*/
         localReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -125,7 +126,7 @@ public class GuideManager {
                     localReference.removeEventListener(this);
                 }
                 taskCompletionSource.setResult(list);
-                progressDialog.hide();
+  //              progressDialog.hide();
             }
 
             @Override

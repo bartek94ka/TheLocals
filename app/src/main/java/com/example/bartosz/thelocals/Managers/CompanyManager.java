@@ -104,9 +104,11 @@ public class CompanyManager {
         final TaskCompletionSource<ArrayList<Company>> taskCompletionSource = new TaskCompletionSource<>();
         final ArrayList<Company> list = new ArrayList<>();
         final DatabaseReference localReference = firebaseDatabase.getReference().child(collectionName);
+        /*
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Ładowanie listy biur...");
         progressDialog.show();
+        */
         localReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,7 +122,7 @@ public class CompanyManager {
                     localReference.removeEventListener(this);
                 }
                 taskCompletionSource.setResult(list);
-                progressDialog.hide();
+                //progressDialog.hide();
             }
 
             @Override
