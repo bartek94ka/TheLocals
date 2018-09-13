@@ -450,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         guideDetails.setArguments(args);
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(fragment.getId(), guideDetails);
         fragmentTransaction.commit();
     }
@@ -462,6 +463,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         companyDetails.setArguments(args);
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(fragment.getId(), companyDetails);
         fragmentTransaction.commit();
     }

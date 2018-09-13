@@ -56,7 +56,7 @@ public class GuideDetails extends Fragment {
         email = view.findViewById(R.id.guideEmail);
         phoneNumber = view.findViewById(R.id.guidePhoneNumber);
         city = view.findViewById(R.id.guideCity);
-        aboutMe = view.findViewById(R.id.guideCity);
+        aboutMe = view.findViewById(R.id.guideAboutMe);
         SetGuideProperties();
     }
 

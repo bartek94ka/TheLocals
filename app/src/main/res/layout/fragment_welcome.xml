@@ -33,14 +33,6 @@
                 android:layout_weight="0.25"></LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="THE LOCALS"
-            android:textSize="36sp"></TextView>
-
         <Button
             android:id="@+id/settingsChangePasswordButton"
             style="@style/Widget.AppCompat.Button.Colored"
