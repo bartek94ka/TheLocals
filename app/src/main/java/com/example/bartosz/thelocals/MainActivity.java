@@ -3,11 +3,8 @@ package com.example.bartosz.thelocals;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -31,10 +28,8 @@ import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_attractionList){
             fragment = new com.example.bartosz.thelocals.AttractionList();
         } else if (id == R.id.nav_addedCompanies){
-            fragment = new EditCompany();
+            fragment = new EditCompanyList();
         }
 
         if(fragment != null){
@@ -358,6 +353,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragment = getVisibleFragment();
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(fragment.getId(), companyDetails);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassCompanyIdToCompanyEdit(String id) {
+        Fragment editCompany = new EditCompany();
+        Bundle args = new Bundle();
+        args.putString("companyId", id);
+        editCompany.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(fragment.getId(), editCompany);
         fragmentTransaction.commit();
     }
 

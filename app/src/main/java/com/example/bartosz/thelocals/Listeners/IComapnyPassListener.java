@@ -5,4 +5,5 @@ public interface IComapnyPassListener {
     void PassAttractionListIdToCompanyAttractionList(String id, String provinceName);
     void PassAttractionListIdToCompanyAttractionListDetails(String id);
     void PassCompanyIdToCompanyDetails(String id);
+    void PassCompanyIdToCompanyEdit(String id);
 }

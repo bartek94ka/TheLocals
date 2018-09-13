@@ -59,7 +59,7 @@ public class EditCompanyAdapter extends BaseAdapter {
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.PassComapnyIdToComapnyAttractionSugesstedList(company.Id);
+                listener.PassCompanyIdToCompanyEdit(company.Id);
             }
         });
         return v;

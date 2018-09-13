@@ -3,32 +3,38 @@ package com.example.bartosz.thelocals;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
 
-import com.example.bartosz.thelocals.Adapters.CompanyListAdapter;
-import com.example.bartosz.thelocals.Adapters.EditCompanyAdapter;
+import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Managers.CompanyManager;
 import com.example.bartosz.thelocals.Models.Company;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import java.util.ArrayList;
 
 public class EditCompany extends Fragment {
 
-    private View view;
-    private ListView listViewCompanies;
-    private Handler handler;
     private CompanyManager companyManager;
-    private EditCompanyAdapter adapter;
+    private IComapnyPassListener listener;
+
+    private EditText etName;
+    private EditText etAddress;
+    private EditText etPhoneNumber;
+    private EditText etEmail;
+    private EditText etLogoUrl;
+    private EditText etUrlAddress;
+    private EditText etDescription;
+
+    private Button buttonEdit;
+    private String companyId;
+    private Company company;
 
     public EditCompany() {
         // Required empty public constructor
@@ -38,8 +44,15 @@ public class EditCompany extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_edit_company, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_company, container, false);
+        buttonEdit = view.findViewById(R.id.nextButton);
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UpdateCompanyData();
+                listener.PassComapnyIdToComapnyAttractionSugesstedList(companyId);
+            }
+        });
         return view;
     }
 
@@ -47,51 +60,75 @@ public class EditCompany extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_edit_company));
-        InitializeLocalVeribles();
-    }
-
-    private void InitializeLocalVeribles() {
-        listViewCompanies = view.findViewById(R.id.listview_companies);
-        handler = new MyHandler();
         companyManager = new CompanyManager(getContext());
-        adapter = new EditCompanyAdapter(getContext());
-        adapter.ClearList();
-        listViewCompanies.setAdapter(adapter);
+        SetPropertiesFromArguments();
+        etName = view.findViewById(R.id.companyName);
+        etAddress = view.findViewById(R.id.companyAddress);
+        etPhoneNumber = view.findViewById(R.id.companyPhoneNumber);
+        etEmail = view.findViewById(R.id.companyEmail);
+        etLogoUrl = view.findViewById(R.id.companyLogoUrl);
+        etUrlAddress = view.findViewById(R.id.companyUrlAddress);
+        etDescription = view.findViewById(R.id.companyDescription);
+        FillCompanyData();
 
-        Thread thread = new ThreadGetMoreData();
-        thread.start();
     }
 
-    public class MyHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    //Add loading view during search processing
-                    //listViewAttractions.addFooterView(_footerView);
-                    break;
-                case 1:
-                    //Update data adapter and UI
-                    adapter.AddAllCompaniesToAdapter((ArrayList<Company>)msg.obj);
-                    break;
-            }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (IComapnyPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IComapnyPassListener");
         }
     }
 
-    public class ThreadGetMoreData extends Thread {
-        @Override
-        public void run() {
-            companyManager.GetAllCompanies().addOnCompleteListener(new OnCompleteListener<ArrayList<Company>>() {
-                @Override
-                public void onComplete(@NonNull Task<ArrayList<Company>> task) {
-                    if(task.isSuccessful()){
-                        handler.sendEmptyMessage(0);
-                        ArrayList<Company> lstResult = task.getResult();
-                        Message msg = handler.obtainMessage(1, lstResult);
-                        handler.sendMessage(msg);
-                    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    private void FillCompanyData(){
+        companyManager.GetCompanyData(companyId).addOnCompleteListener(new OnCompleteListener<Company>() {
+            @Override
+            public void onComplete(@NonNull Task<Company> task) {
+                if(task.isSuccessful()){
+                    company = task.getResult();
+                    etAddress.setText(company.Address);
+                    etDescription.setText(company.Description);
+                    etEmail.setText(company.Email);
+                    etLogoUrl.setText(company.LogoUrl);
+                    etName.setText(company.Name);
+                    etPhoneNumber.setText(company.PhoneNumber);
+                    etUrlAddress.setText(company.UrlAddress);
                 }
-            });
+            }
+        });
+    }
+
+    private void UpdateCompanyData(){
+        String name = etName.getText().toString().trim();
+        String address = etAddress.getText().toString().trim();
+        String phoneNumber = etPhoneNumber.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String logoUrl = etLogoUrl.getText().toString().trim();
+        String urlAddress = etUrlAddress.getText().toString().trim();
+        String decription = etDescription.getText().toString().trim();
+        company.Name = name;
+        company.Address = address;
+        company.Description = decription;
+        company.PhoneNumber = phoneNumber;
+        company.Email = email;
+        company.LogoUrl = logoUrl;
+        company.UrlAddress = urlAddress;
+        companyManager.UpdateFirebaseComapnyData(companyId, company);
+    }
+
+    private void SetPropertiesFromArguments(){
+        Bundle args = getArguments();
+        if(args != null){
+            companyId = (String)args.get("companyId");
         }
     }
 }
