@@ -20,8 +20,8 @@
                 android:layout_weight="0.25"></LinearLayout>
             <ImageView
                 android:id="@+id/home_Logo"
-                android:layout_width="290dp"
-                android:layout_height="290dp"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
                 android:layout_weight="0.5"
                 android:src="@mipmap/logo_app_transparent"
                 android:scaleType="fitXY"

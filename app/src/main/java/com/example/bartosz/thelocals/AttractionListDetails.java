@@ -92,7 +92,11 @@ public class AttractionListDetails extends Fragment {
                     attractionListName.setText(attractionList.Name);
                     attractionListProvince.setText(attractionList.Province);
                     attractionListDuration.setText(attractionList.Duration + " h");
-                    attractionListAttractionCount.setText(String.valueOf(attractionList.Attractions.size()));
+                    if(attractionList.Attractions == null){
+                        attractionListAttractionCount.setText("0");
+                    }else{
+                        attractionListAttractionCount.setText(String.valueOf(attractionList.Attractions.size()));
+                    }
                     attractionListDescription.setText(attractionList.Description);
                     attractionListAdditionalInfo.setText(attractionList.AdditionalInfo);
                     if(attractionList.Attractions != null){
@@ -100,7 +104,6 @@ public class AttractionListDetails extends Fragment {
                         adapter.AddListItemToAdapter(values);
                     }
                 }
-
             }
         });
     }
