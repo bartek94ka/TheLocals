@@ -23,7 +23,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="Nazwa"
-                android:inputType="textCapSentences" />
+                android:inputType="textCapSentences|textAutoCorrect" />
 
             <EditText
                 android:id="@+id/companyAddress"
@@ -45,7 +45,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="Numer telefonu"
-                android:inputType="number" />
+                android:inputType="phone" />
 
             <EditText
                 android:id="@+id/companyEmail"
@@ -89,7 +89,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="Opis firmy"
-                android:inputType="textCapSentences" />
+                android:inputType="textCapSentences|textAutoCorrect" />
 
             <Button
                 android:id="@+id/nextButton"
