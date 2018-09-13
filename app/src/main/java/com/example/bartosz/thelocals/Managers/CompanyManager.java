@@ -62,7 +62,9 @@ public class CompanyManager {
 
     public void AddComapny(Company company){
         try {
-
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Dodawanie firmy...");
+            progressDialog.show();
             firebaseDatabase.getReference().child(collectionName).child(company.Id).setValue(company).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -70,11 +72,12 @@ public class CompanyManager {
                             if(task.isSuccessful())
                             {
                                 Log.d("TAG", "AddComapny:success");
-                                Toast.makeText(context, "Comapny created successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Pomyślnie dodano firmę", Toast.LENGTH_SHORT).show();
                             }else
                             {
-                                Toast.makeText(context, "Could not created comapny. Please try again", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Nie udało się dodać firmy. Spróbuj ponownie", Toast.LENGTH_SHORT).show();
                             }
+                            progressDialog.hide();
                         }
                     });
         }catch (Exception ex){
@@ -101,6 +104,9 @@ public class CompanyManager {
         final TaskCompletionSource<ArrayList<Company>> taskCompletionSource = new TaskCompletionSource<>();
         final ArrayList<Company> list = new ArrayList<>();
         final DatabaseReference localReference = firebaseDatabase.getReference().child(collectionName);
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Ładowanie listy biur...");
+        progressDialog.show();
         localReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,6 +120,7 @@ public class CompanyManager {
                     localReference.removeEventListener(this);
                 }
                 taskCompletionSource.setResult(list);
+                progressDialog.hide();
             }
 
             @Override

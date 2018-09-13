@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals.Managers;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -63,7 +64,9 @@ public class GuideManager {
 
     public void AddGuide(Guide guide){
         try {
-
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Dodawanie przewodnika...");
+            progressDialog.show();
             firebaseDatabase.getReference().child(collectionName).child(guide.Id).setValue(guide).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -71,11 +74,12 @@ public class GuideManager {
                             if(task.isSuccessful())
                             {
                                 Log.d("TAG", "AddGuide:success");
-                                Toast.makeText(context, "Guide created successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Dodano przewodnika", Toast.LENGTH_SHORT).show();
                             }else
                             {
-                                Toast.makeText(context, "Could not created guide. Please try again", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Nie udało się dodać przewodnika. Spróbuj ponownie", Toast.LENGTH_SHORT).show();
                             }
+                            progressDialog.hide();
                         }
                     });
         }catch (Exception ex){
@@ -104,6 +108,10 @@ public class GuideManager {
         final TaskCompletionSource<ArrayList<Guide>> taskCompletionSource = new TaskCompletionSource<>();
         final ArrayList<Guide> list = new ArrayList<>();
         final DatabaseReference localReference = firebaseDatabase.getReference().child(collectionName);
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Pobieranie listy przewodników...");
+        progressDialog.show();
+
         localReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -117,6 +125,7 @@ public class GuideManager {
                     localReference.removeEventListener(this);
                 }
                 taskCompletionSource.setResult(list);
+                progressDialog.hide();
             }
 
             @Override

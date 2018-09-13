@@ -1,8 +1,10 @@
 package com.example.bartosz.thelocals.Managers;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bartosz.thelocals.Models.Attraction;
@@ -57,15 +59,19 @@ public class AttractionListManager {
 
     public void AddAttractionList(AttractionList attractionList){
         try{
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Dodawanie atrakcji...");
+            progressDialog.show();
             firebaseDatabase.getReference().child(collectionName).child(attractionList.Id).setValue(attractionList).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         Log.d("TAG", "AddAttractionList:success");
-                        Toast.makeText(context, "attraction list created successfully", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "attraction list created successfully", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(context, "Could not created attraction list. Please try again", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "Could not created attraction list. Please try again", Toast.LENGTH_SHORT).show();
                     }
+                    progressDialog.hide();
                 }
             });
         }catch (Exception ex){

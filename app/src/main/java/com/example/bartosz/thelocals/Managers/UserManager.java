@@ -81,7 +81,7 @@ public class UserManager {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d("PasswordUpdate", "Password updated");
-                    Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Hasło zmienione pomyślnie", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("PasswordUpadte", "Error password not updated");
                 }

@@ -23,7 +23,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="Imię"
-                android:inputType="textCapWords" />
+                android:inputType="textCapSentences" />
 
             <EditText
                 android:id="@+id/guideLastName"
@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="Nazwisko"
-                android:inputType="textCapWords" />
+                android:inputType="textCapSentences" />
 
             <EditText
                 android:id="@+id/guidePhoneNumber"
@@ -67,7 +67,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="Miasto"
-                android:inputType="textCapWords" />
+                android:inputType="textCapSentences" />
 
             <EditText
                 android:id="@+id/guideAboutMe"
@@ -78,7 +78,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="O mnie"
-                android:inputType="textCapWords" />
+                android:inputType="textCapSentences" />
 
             <EditText
                 android:id="@+id/guidePhotoUrl"

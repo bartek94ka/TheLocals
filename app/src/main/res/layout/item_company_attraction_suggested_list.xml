@@ -35,7 +35,8 @@
                     android:layout_marginTop="15dp"
                     android:textColor="#00a7f5"
                     android:textSize="15dp"
-                    android:hint="Nazwa trasy"/>
+                    android:hint="Nazwa trasy"
+                    android:inputType="textCapSentences"/>
 
             </android.support.v7.widget.LinearLayoutCompat>
         </RelativeLayout>

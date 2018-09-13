@@ -123,32 +123,36 @@ public class NewAttraction extends Fragment implements AdapterView.OnItemSelecte
 
     private void AddAttraction()
     {
-        _progressBar.setMessage("Dodawanie atrakcji ...");
-        _progressBar.show();
-        String name = etName.getText().toString().trim();
-        String description = etDescription.getText().toString().trim();
-        String photoUrl = etPhotoUrl.getText().toString().trim();
-        String sourceUrl = etSourceUrl.getText().toString().trim();
-        Double latitude = Double.parseDouble(textViewNewAttractionLatitude.getText().toString().trim());
-        Double longitude = Double.parseDouble(textViewNewAttractionLongitude.getText().toString().trim());
-        String userId = FirebaseAuth.getInstance().getUid();
-        String province = spinnerProvince.getSelectedItem().toString();
-
-        //Attraction attraction = new Attraction(name, description, photoUrl, sourceUrl, Longitude, Latitude);
-        Attraction attraction = new Attraction(name, description, province, photoUrl, sourceUrl, longitude.toString(), latitude.toString());
-        attraction.UserId = userId;
         try{
-            String key = _database.getReference("Attractions/" + attraction.Province).push().getKey();
-            _database.getReference("Attractions").child(key).setValue(attraction).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    _progressBar.hide();
-                    Toast.makeText(getContext(), "Dodano atrakcję" , Toast.LENGTH_SHORT).show();
-                    ResetTextFields();
-                }
-            });
-        }catch(Exception ex){
-            System.out.print(ex.getMessage());
+            String name = etName.getText().toString().trim();
+            String description = etDescription.getText().toString().trim();
+            String photoUrl = etPhotoUrl.getText().toString().trim();
+            String sourceUrl = etSourceUrl.getText().toString().trim();
+            Double latitude = Double.parseDouble(textViewNewAttractionLatitude.getText().toString().trim());
+            Double longitude = Double.parseDouble(textViewNewAttractionLongitude.getText().toString().trim());
+            String userId = FirebaseAuth.getInstance().getUid();
+            String province = spinnerProvince.getSelectedItem().toString();
+
+            Attraction attraction = new Attraction(name, description, province, photoUrl, sourceUrl, longitude.toString(), latitude.toString());
+            attraction.UserId = userId;
+            try{
+                _progressBar.setMessage("Dodawanie atrakcji ...");
+                _progressBar.show();
+                String key = _database.getReference("Attractions2/" + attraction.Province).push().getKey();
+                _database.getReference("Attractions2/" + attraction.Province).child(key).setValue(attraction).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        _progressBar.hide();
+                        Toast.makeText(getContext(), "Dodano atrakcję" , Toast.LENGTH_SHORT).show();
+                        ResetTextFields();
+                    }
+                });
+            }catch(Exception ex){
+                System.out.print(ex.getMessage());
+
+            }
+        }
+        catch (Exception ex2){
 
         }
     }
