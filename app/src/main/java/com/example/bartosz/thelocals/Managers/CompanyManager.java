@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -123,6 +124,33 @@ public class CompanyManager {
                 }
                 taskCompletionSource.setResult(list);
                 //progressDialog.hide();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
+    public Task<ArrayList<Company>> GetCompaniesAddedByUserId(String userId){
+        final TaskCompletionSource<ArrayList<Company>> taskCompletionSource = new TaskCompletionSource<>();
+        final ArrayList<Company> list = new ArrayList<>();
+        final Query query = firebaseDatabase.getReference().child(collectionName).orderByChild("UserId").equalTo(userId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Company company = snapshot.getValue(Company.class);
+                        if(company != null){
+                            list.add(company);
+                        }
+                    }
+                }
+                taskCompletionSource.setResult(list);
+                query.removeEventListener(this);
             }
 
             @Override

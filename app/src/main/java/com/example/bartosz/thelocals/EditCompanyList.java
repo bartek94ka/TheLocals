@@ -16,6 +16,7 @@ import com.example.bartosz.thelocals.Managers.CompanyManager;
 import com.example.bartosz.thelocals.Models.Company;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -78,7 +79,7 @@ public class EditCompanyList extends Fragment {
     public class ThreadGetMoreData extends Thread {
         @Override
         public void run() {
-            companyManager.GetAllCompanies().addOnCompleteListener(new OnCompleteListener<ArrayList<Company>>() {
+            companyManager.GetCompaniesAddedByUserId(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<ArrayList<Company>>() {
                 @Override
                 public void onComplete(@NonNull Task<ArrayList<Company>> task) {
                     if(task.isSuccessful()){
