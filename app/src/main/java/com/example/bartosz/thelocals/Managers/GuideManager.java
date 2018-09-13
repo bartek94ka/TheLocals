@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -127,6 +128,33 @@ public class GuideManager {
                 }
                 taskCompletionSource.setResult(list);
   //              progressDialog.hide();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
+    public Task<ArrayList<Guide>> GetGuidesAddedByUserId(String userId){
+        final TaskCompletionSource<ArrayList<Guide>> taskCompletionSource = new TaskCompletionSource<>();
+        final ArrayList<Guide> list = new ArrayList<>();
+        final Query query = firebaseDatabase.getReference().child(collectionName).orderByChild("UserId").equalTo(userId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Guide guide = snapshot.getValue(Guide.class);
+                        if(guide != null){
+                            list.add(guide);
+                        }
+                    }
+                }
+                taskCompletionSource.setResult(list);
+                query.removeEventListener(this);
             }
 
             @Override

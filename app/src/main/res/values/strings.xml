@@ -35,6 +35,8 @@
     <string name="fragment_attraction_list">Lista atrakcji w regionie</string>
     <string name="fragment_edit_company_list">Dodane biura</string>
     <string name="fragment_edit_company">Edytuj dane biura</string>
+    <string name="fragment_edit_guide_list">Dodani przewodnicy</string>
+    <string name="fragment_edit_guide">Edytuj dane przewodnika</string>
 
 
     <string name="collection_guides">Guides</string>
