@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
+import com.example.bartosz.thelocals.Listeners.IGuidePassListener;
 import com.example.bartosz.thelocals.Models.Company;
 import com.example.bartosz.thelocals.Models.Guide;
 import com.example.bartosz.thelocals.R;
@@ -17,12 +18,12 @@ import java.util.List;
 
 public class EditGuideAdapter extends BaseAdapter {
     private Context context;
-    private IComapnyPassListener listener;
+    private IGuidePassListener listener;
     private List<Guide> guideList;
 
     public EditGuideAdapter(Context context){
         this.context = context;
-        listener = (IComapnyPassListener) context;
+        listener = (IGuidePassListener) context;
         guideList = new ArrayList<>();
     }
 
@@ -60,7 +61,7 @@ public class EditGuideAdapter extends BaseAdapter {
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //listener.PassCompanyIdToCompanyEdit(company.Id);
+                listener.PassGuideIdToGuideEdit(guide.Id);
             }
         });
         return v;

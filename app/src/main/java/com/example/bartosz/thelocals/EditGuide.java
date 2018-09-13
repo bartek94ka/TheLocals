@@ -1,7 +1,7 @@
 package com.example.bartosz.thelocals;
 
-
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,15 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Listeners.IGuidePassListener;
 import com.example.bartosz.thelocals.Managers.GuideManager;
 import com.example.bartosz.thelocals.Models.Guide;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
-import java.util.UUID;
-
-public class AddGuide extends Fragment {
+public class EditGuide extends Fragment {
 
     private View view;
     private EditText guideFirstName;
@@ -30,31 +28,45 @@ public class AddGuide extends Fragment {
     private EditText guideEmail;
     private EditText guideAboutMe;
     private EditText guidePhotoUrl;
-    private Button buttonNext;
+    private Button buttonEdit;
 
     private GuideManager guideManager;
     private IGuidePassListener listener;
+    private String guideId;
+    private Guide guide;
 
-    public AddGuide() {
+    public EditGuide() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_add_guide, container, false);
+        // Inflate the layout for this fragment
+        view =  inflater.inflate(R.layout.fragment_edit_guide, container, false);
+        buttonEdit = view.findViewById(R.id.nextEdit);
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UpdateGuideData();
+                listener.PassAttractionListIdToGuideTripList(guideId);
+            }
+        });
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_edit_guide));
+        SetPropertiesFromArguments();
         InitializeVeribles();
-        SetButtonListener();
+        FillGuideData();
     }
 
     @Override
     public void onAttach(Context context) {
+        super.onAttach(context);
         super.onAttach(context);
         try {
             listener = (IGuidePassListener) context;
@@ -63,10 +75,15 @@ public class AddGuide extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
     private void InitializeVeribles(){
         guideManager = new GuideManager(getContext());
 
-        buttonNext = view.findViewById(R.id.nextButton);
         guideFirstName = view.findViewById(R.id.guideFirstName);
         guideLastName = view.findViewById(R.id.guideLastName);
         guidePhoneNumber = view.findViewById(R.id.guidePhoneNumber);
@@ -76,16 +93,25 @@ public class AddGuide extends Fragment {
         guidePhotoUrl = view.findViewById(R.id.guidePhotoUrl);
     }
 
-    private void SetButtonListener(){
-        buttonNext.setOnClickListener(new View.OnClickListener() {
+    private void FillGuideData(){
+        guideManager.GetGuide(guideId).addOnCompleteListener(new OnCompleteListener<Guide>() {
             @Override
-            public void onClick(View v) {
-                AddGuide();
+            public void onComplete(@NonNull Task<Guide> task) {
+                if(task.isSuccessful()){
+                    guide = task.getResult();
+                    guideFirstName.setText(guide.FirstName);
+                    guideLastName.setText(guide.LastName);
+                    guideAboutMe.setText(guide.AboutMe);
+                    guideCity.setText(guide.City);
+                    guideEmail.setText(guide.Email);
+                    guidePhotoUrl.setText(guide.PhotoUrl);
+                    guidePhoneNumber.setText(guide.PhoneNumber);
+                }
             }
         });
     }
 
-    private void AddGuide(){
+    private void UpdateGuideData(){
         String firstName = guideFirstName.getText().toString().trim();
         String lastName = guideLastName.getText().toString().trim();
         String phoneNumber = guidePhoneNumber.getText().toString().trim();
@@ -93,26 +119,20 @@ public class AddGuide extends Fragment {
         String city = guideCity.getText().toString().trim();
         String aboutMe = guideAboutMe.getText().toString().trim();
         String photoUrl = guidePhotoUrl.getText().toString().trim();
-
-        Guide guide = new Guide(firstName, lastName, email, city, phoneNumber, aboutMe, photoUrl, null, null,null, FirebaseAuth.getInstance().getUid());
-        String id = UUID.randomUUID().toString();
-        guide.Id = id;
-        try{
-            guideManager.AddGuide(guide);
-            ResetTextFields();
-        }catch(Exception ex){
-            System.out.print(ex.getMessage());
-        }
-        listener.PassAttractionListIdToGuideTripList(id);
+        guide.FirstName = firstName;
+        guide.LastName = lastName;
+        guide.PhoneNumber = phoneNumber;
+        guide.Email = email;
+        guide.City = city;
+        guide.AboutMe = aboutMe;
+        guide.PhotoUrl = photoUrl;
+        guideManager.UpdateFirebaseGuideData(guideId, guide);
     }
 
-    private void ResetTextFields() {
-        guideFirstName.setText("");
-        guideLastName.setText("");
-        guidePhoneNumber.setText("");
-        guideEmail.setText("");
-        guideCity.setText("");
-        guideAboutMe.setText("");
-        guidePhotoUrl.setText("");
+    private void SetPropertiesFromArguments(){
+        Bundle args = getArguments();
+        if(args != null){
+            guideId = (String)args.get("guideId");
+        }
     }
 }

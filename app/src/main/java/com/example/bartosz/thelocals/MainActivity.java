@@ -430,6 +430,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void PassGuideIdToGuideEdit(String id) {
+        Fragment editGuide = new EditGuide();
+        Bundle args = new Bundle();
+        args.putString("guideId", id);
+        editGuide.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.replace(fragment.getId(), editGuide);
+        fragmentTransaction.commit();
+    }
+
+    @Override
     public void PassAttractionListIdToCompanyAttraction(String id, String provinceName){
         Fragment comapnyAttractionList = new CompanyAttractionList();
         Bundle args = new Bundle();
