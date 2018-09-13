@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.bartosz.thelocals.Listeners.IAttractionListDetailsPassListener;
 import com.example.bartosz.thelocals.Listeners.IGuidePassListener;
 import com.example.bartosz.thelocals.Models.Guide;
 import com.example.bartosz.thelocals.R;
@@ -16,13 +17,13 @@ import java.util.List;
 
 public class GuideListAdapter extends BaseAdapter{
 
-    private IGuidePassListener guidePassListener;
+    private IAttractionListDetailsPassListener attractionListDetailsPassListener;
     private Context context;
     private List<Guide> guideList;
 
     public GuideListAdapter(Context context){
         this.context = context;
-        guidePassListener = (IGuidePassListener) context;
+        attractionListDetailsPassListener = (IAttractionListDetailsPassListener) context;
         guideList = new ArrayList<>();
     }
 
@@ -60,8 +61,7 @@ public class GuideListAdapter extends BaseAdapter{
         buttonDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            guidePassListener.PassGuideIdToGuideDetails(guide.Id);
-                //comapnyPassListener.PassCompanyIdToCompanyDetails(company.Id);
+            attractionListDetailsPassListener.PassGuideIdToGuideDetails(guide.Id);
             }
         });
         return view;

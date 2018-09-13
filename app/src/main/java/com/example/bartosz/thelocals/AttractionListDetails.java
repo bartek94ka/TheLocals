@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.bartosz.thelocals.Adapters.AttractionListAttractionAdapter;
+import com.example.bartosz.thelocals.Listeners.IAttractionListDetailsPassListener;
+import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
@@ -34,10 +36,12 @@ public class AttractionListDetails extends Fragment {
     private TextView attractionListDescription;
     private TextView attractionListAdditionalInfo;
     private Button buttonSeeAtractionsOnMap;
+    private Button buttonSeeOrganizator;
     private ListView attractionListAttracions;
 
     private AttractionListAttractionAdapter adapter;
-    private IAttractionPassListener mListener;
+    private IAttractionPassListener attractionPassListener;
+    private IAttractionListDetailsPassListener iAttractionListDetailsPassListener;
     private String attractionListId;
     private AttractionListManager attractionListManager;
     private AttractionList attractionList;
@@ -57,7 +61,6 @@ public class AttractionListDetails extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list_details));
-        //companyId = "f93fd190-4c8c-4e53-9cab-a9e8bef0f288";
         SetPropertiesFromArguments();
         attractionListManager = new AttractionListManager(getContext());
         adapter = new AttractionListAttractionAdapter(getContext());
@@ -68,6 +71,7 @@ public class AttractionListDetails extends Fragment {
 
     private void InitializeVeribles(){
 
+        buttonSeeOrganizator = view.findViewById(R.id.buttonSeeOrganizator);
         buttonSeeAtractionsOnMap = view.findViewById(R.id.buttonSeeAtractionsOnMap);
         attractionListName = view.findViewById(R.id.attractionListName);
         attractionListProvince = view.findViewById(R.id.attractionListProvince);
@@ -105,7 +109,17 @@ public class AttractionListDetails extends Fragment {
         buttonSeeAtractionsOnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.PassAttractionList((ArrayList<Attraction>) adapter.GetAttractionList());
+                attractionPassListener.PassAttractionList((ArrayList<Attraction>) adapter.GetAttractionList());
+            }
+        });
+        buttonSeeOrganizator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!attractionList.CompanyId.isEmpty()){
+                    iAttractionListDetailsPassListener.PassCompanyIdToComapnyDetails(attractionList.CompanyId);
+                }else if(!attractionList.GuideId.isEmpty()){
+                    iAttractionListDetailsPassListener.PassGuideIdToGuideDetails(attractionList.GuideId);
+                }
             }
         });
     }
@@ -126,16 +140,22 @@ public class AttractionListDetails extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (IAttractionPassListener) context;
+            attractionPassListener = (IAttractionPassListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement IAttractionPassListener");
+        }
+        try {
+            iAttractionListDetailsPassListener = (IAttractionListDetailsPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IAttractionListDetailsPassListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        attractionPassListener = null;
+        iAttractionListDetailsPassListener = null;
     }
 
     private void SetPropertiesFromArguments(){

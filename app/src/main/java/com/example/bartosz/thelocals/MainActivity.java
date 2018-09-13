@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.bartosz.thelocals.Listeners.IAttractionListDetailsPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
@@ -39,7 +40,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         IAttractionPassListener, IComapnyPassListener, IMapPassListener, IWelcomePageListener, IAttractionListPassListener,
-        IGuidePassListener {
+        IGuidePassListener, IAttractionListDetailsPassListener {
 
 
     private UserManager userManager;
@@ -450,6 +451,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), guideDetails);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void PassCompanyIdToComapnyDetails(String id) {
+        Fragment companyDetails = new CompanyDetails();
+        Bundle args = new Bundle();
+        args.putString("companyId", id);
+        companyDetails.setArguments(args);
+        FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
+        fragment = getVisibleFragment();
+        fragmentTransaction.replace(fragment.getId(), companyDetails);
         fragmentTransaction.commit();
     }
 }
