@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.bartosz.thelocals.Adapters.AttractionListAttractionAdapter;
 import com.example.bartosz.thelocals.Adapters.AttractionListDisplayAdapter;
 import com.example.bartosz.thelocals.AttractionAdapters.AttractionListAdapter;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 import bolts.Continuation;
+import bolts.Task;
 
 
 public class AttractionList extends Fragment {
@@ -94,6 +96,7 @@ public class AttractionList extends Fragment {
         listViewAttractions = view.findViewById(R.id.listview_attractions);
         adapter = new AttractionListDisplayAdapter(getContext());
         adapter.ClearList();
+        listViewAttractions.setAdapter(adapter);
         handler = new MyHandler();
         userManager = new UserManager();
         final Thread thread = new ThreadGetMoreData();
@@ -105,6 +108,7 @@ public class AttractionList extends Fragment {
                 thread.start();
             }
         });
+        //listViewAttractions.setAdapter(adapter);
 
         /*
         attractionListAdapter = new AttractionListAdapter(getContext());
