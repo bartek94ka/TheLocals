@@ -33,6 +33,7 @@
     <string name="fragmnet_company_attracion_list_details">Szczegóły trasy</string>
     <string name="fragmnet_company_attracion_list">Wybierz atrakcje dla trasy</string>
     <string name="fragment_attraction_list">Lista atrakcji w regionie</string>
+    <string name="fragment_edit_company">Dodane biura</string>
 
 
     <string name="collection_guides">Guides</string>

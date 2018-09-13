@@ -16,6 +16,7 @@ import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Listeners.IGuidePassListener;
 import com.example.bartosz.thelocals.Managers.GuideManager;
 import com.example.bartosz.thelocals.Models.Guide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.UUID;
 
@@ -93,7 +94,7 @@ public class AddGuide extends Fragment {
         String aboutMe = guideAboutMe.getText().toString().trim();
         String photoUrl = guidePhotoUrl.getText().toString().trim();
 
-        Guide guide = new Guide(firstName, lastName, email, city, phoneNumber, aboutMe, photoUrl, null, null,null);
+        Guide guide = new Guide(firstName, lastName, email, city, phoneNumber, aboutMe, photoUrl, null, null,null, FirebaseAuth.getInstance().getUid());
         String id = UUID.randomUUID().toString();
         guide.Id = id;
         try{

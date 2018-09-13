@@ -16,6 +16,7 @@ import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Managers.CompanyManager;
 import com.example.bartosz.thelocals.Models.Company;
 import com.example.bartosz.thelocals.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.UUID;
 
@@ -95,7 +96,7 @@ public class AddCompany extends Fragment implements View.OnClickListener{
         String urlAddress = etUrlAddress.getText().toString().trim();
         String decription = etDescription.getText().toString().trim();
 
-        Company company = new Company(name, address, decription, urlAddress, logoUrl, phoneNumber, email, null);
+        Company company = new Company(name, address, decription, urlAddress, logoUrl, phoneNumber, email, FirebaseAuth.getInstance().getUid());
 
         String id = UUID.randomUUID().toString();
         company.Id = id;

@@ -40,7 +40,15 @@
             android:id="@+id/nav_userSettings"
             android:icon="@mipmap/ic_settings_black_24dp"
             android:title="Ustawienia konta" />
-        <item 
+        <item
+            android:id="@+id/nav_addedCompanies"
+            android:icon="@mipmap/ic_add_circle_black_24dp"
+            android:title="Dodane biura" />
+        <item
+            android:id="@+id/nav_addedGuides"
+            android:icon="@mipmap/ic_person_black_24dp"
+            android:title="Zgłoszeni przewodnicy" />
+        <item
 			android:id="@+id/nav_logout"
             android:icon="@mipmap/ic_settings_power_black_24dp"
             android:title="Wyloguj"/>

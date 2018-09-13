@@ -11,11 +11,12 @@ public class Company {
     public String LogoUrl;
     public String PhoneNumber;
     public String Email;
+    public String UserId;
     public List<AttractionList> AttractionSuggestedList;
     public Boolean IsValidated;
 
     public Company(){}
-    public Company(String name, String address, String description, String urlAddress, String logoUrl, String phoneNumber, String email, List<AttractionList> attractionSuggestedList){
+    public Company(String name, String address, String description, String urlAddress, String logoUrl, String phoneNumber, String email, String userId){
         Name = name;
         Address = address;
         Email = email;
@@ -23,7 +24,7 @@ public class Company {
         UrlAddress = urlAddress;
         LogoUrl = logoUrl;
         PhoneNumber = phoneNumber;
-        AttractionSuggestedList = attractionSuggestedList;
+        UserId = userId;
         IsValidated = false;
     }
 }

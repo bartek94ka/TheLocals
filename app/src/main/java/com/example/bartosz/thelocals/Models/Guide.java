@@ -13,6 +13,7 @@ public class Guide {
     public String PhoneNumber;
     public String AboutMe;
     public String PhotoUrl;
+    public String UserId;
     //public List<String> Attractions;
     public List<String> Languages;
     //public List<String> Specialization;
@@ -21,7 +22,7 @@ public class Guide {
     public Guide(){
         CreationDate = new Date();
     }
-    public Guide(String firstName, String lastName, String email, String city, String phoneNumber, String aboutMe, String photoUrl, List<String> attractions, List<String> languages, List<String> specialization){
+    public Guide(String firstName, String lastName, String email, String city, String phoneNumber, String aboutMe, String photoUrl, List<String> attractions, List<String> languages, List<String> specialization, String userId){
         FirstName = firstName;
         LastName = lastName;
         Email = email;
@@ -31,6 +32,7 @@ public class Guide {
         PhotoUrl = photoUrl;
         Languages = languages;
         //Specialization = specialization;
+        UserId = userId;
         IsValidated = false;
     }
 }
