@@ -17,15 +17,18 @@ public class AttractionList {
     public String UserId;
     public String GuideId;
     public HashMap<String,Attraction> Attractions;
+    public Integer VisitsCounter;
 
     public AttractionList(){
         CreationDate = new Date();
+        VisitsCounter = 0;
     }
     public AttractionList(String name, String companyId, HashMap<String,Attraction> attractions){
         CreationDate = new Date();
         CompanyId = companyId;
         Name = name;
         Attractions = attractions;
+        VisitsCounter = 0;
     }
     /*
     public AttractionList(String name, String companyId, List<Attraction> attractions){

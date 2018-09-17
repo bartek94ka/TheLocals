@@ -46,15 +46,6 @@ public class AttractionListManager {
         attractionList.Attractions = attractions;
         taskMap.put(id, attractionList);
         reference.updateChildren(taskMap);
-        /*
-        if(attractions != null){
-
-            for (Attraction attraction: attractions) {
-                FirebaseDatabase.getInstance().getReference(collectionName + "/" + attractionList.Id + "/" + "Attractions").child(attraction.Id).setValue(attraction);
-            }
-
-        }
-        */
     }
 
     public void AddAttractionList(AttractionList attractionList){

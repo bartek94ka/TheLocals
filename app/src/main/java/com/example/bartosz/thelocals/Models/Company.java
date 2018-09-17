@@ -14,9 +14,13 @@ public class Company {
     public String UserId;
     public List<AttractionList> AttractionSuggestedList;
     public Boolean IsValidated;
+    public Integer VisitsCounter;
 
-    public Company(){}
+    public Company(){
+        VisitsCounter = 0;
+    }
     public Company(String name, String address, String description, String urlAddress, String logoUrl, String phoneNumber, String email, String userId){
+        VisitsCounter = 0;
         Name = name;
         Address = address;
         Email = email;

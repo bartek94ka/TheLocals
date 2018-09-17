@@ -17,12 +17,14 @@ public class Attraction {
     public String Latitude;
     public String UserId;
     public Boolean IsValidated;
+    public Integer VisitsCounter;
 
     public Attraction(){
-        //CreationDate = new Date().toString();
+        VisitsCounter = 0;
         isSelected = false;
     }
     public Attraction(String name, String description, String province, String photoUrl, String sourceUrl, String longitude, String latitude){
+        VisitsCounter = 0;
         isSelected = false;
         CreationDate = new Date().toString();
         Name = name;

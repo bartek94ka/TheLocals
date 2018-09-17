@@ -18,11 +18,14 @@ public class Guide {
     public List<String> Languages;
     //public List<String> Specialization;
     public Boolean IsValidated;
+    public Integer VisitsCounter;
 
     public Guide(){
         CreationDate = new Date();
+        VisitsCounter = 0;
     }
     public Guide(String firstName, String lastName, String email, String city, String phoneNumber, String aboutMe, String photoUrl, List<String> attractions, List<String> languages, List<String> specialization, String userId){
+        VisitsCounter = 0;
         FirstName = firstName;
         LastName = lastName;
         Email = email;

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
+import com.example.bartosz.thelocals.Managers.AttractionManager;
 import com.example.bartosz.thelocals.Managers.ImageManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Providers.AttractionInfoProvider;
@@ -32,7 +33,8 @@ public class AttractionDetails extends Fragment {
 
     private AttractionInfoProvider attractionInfoProvider;
     private ImageManager imageManager;
-    private String provinceName = "Wielkopolskie";
+    private AttractionManager attractionManager;
+    private String provinceName;
     private String attractionId;
 
     private Attraction attraction;
@@ -47,7 +49,6 @@ public class AttractionDetails extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_attraction_details, container, false);
-
         return view;
     }
 
@@ -71,6 +72,7 @@ public class AttractionDetails extends Fragment {
 
     private void InitializeLocalVeribles(){
 
+        attractionManager = new AttractionManager(getContext());
         attractionInfoProvider.GetAttractionById(attractionId).
                 continueWith(new Continuation<Attraction, Void>() {
                     @Override
@@ -81,10 +83,20 @@ public class AttractionDetails extends Fragment {
                         textViewProvince.setText(attraction.Province);
                         textViewSource.setText(attraction.SourceUrl);
                         new ImageManager(attractionImageView).execute(attraction.PhotoUrl);
+                        IncrementAttractionVisitsCounter();
                         return null;
                     }
                 });
 
+    }
+
+    private void IncrementAttractionVisitsCounter(){
+        if(attraction.VisitsCounter == null){
+            attraction.VisitsCounter = 1;
+        }else{
+            attraction.VisitsCounter++;
+        }
+        attractionManager.UpdateAttractionVisitsCounter(attractionId, attraction);
     }
 
     @Override

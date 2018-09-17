@@ -32,7 +32,7 @@ public class GuideManager {
 
     public GuideManager(Context context){
         this.context = context;
-        collectionName = context.getString(R.string.collection_guides);;
+        collectionName = context.getString(R.string.collection_guides);
         firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
