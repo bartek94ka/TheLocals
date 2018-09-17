@@ -42,6 +42,9 @@
 
     <string name="collection_guides">Guides</string>
     <string name="collection_attractions">Attractions2</string>
+    <string name="collection_attraction_list">AttractionList</string>
+    <string name="collection_companies">Companies</string>
+    <string name="collection_users">Users</string>
 
     <!-- Collection names>
     <string name="Attractions">Attractions2</string>

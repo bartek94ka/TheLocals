@@ -103,9 +103,19 @@ public class AttractionListDetails extends Fragment {
                         ArrayList<Attraction> values = GetAttractionListFromHashMap(attractionList.Attractions);
                         adapter.AddListItemToAdapter(values);
                     }
+                    IncrementAttractionListVisitsCounter();
                 }
             }
         });
+    }
+
+    private void IncrementAttractionListVisitsCounter(){
+        if(attractionList.VisitsCounter == null){
+            attractionList.VisitsCounter = 1;
+        }else{
+            attractionList.VisitsCounter++;
+        }
+        attractionListManager.UpdateAttractionListVisitsCounter(attractionList);
     }
 
     private void SetButtonEvents(){

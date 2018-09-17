@@ -63,6 +63,13 @@ public class GuideManager {
         reference.updateChildren(taskMap);
     }
 
+    public void UpdateGuideVisitsCounter(Guide guide){
+        Map<String,Object> taskMap = new HashMap<String,Object>();
+        taskMap.put("VisitsCounter", guide.VisitsCounter);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(collectionName).child(guide.Id);
+        reference.updateChildren(taskMap);
+    }
+
     public void AddGuide(Guide guide){
         try {
             final ProgressDialog progressDialog = new ProgressDialog(context);

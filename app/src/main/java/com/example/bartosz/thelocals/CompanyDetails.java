@@ -32,6 +32,7 @@ public class CompanyDetails extends Fragment {
 
     private CompanyManager companyManager;
     private String companyId;
+    private Company company;
 
     public CompanyDetails() {
         // Required empty public constructor
@@ -71,8 +72,7 @@ public class CompanyDetails extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Company> task) {
                         if(task.isSuccessful()){
-                            Company company = task.getResult();
-
+                            company = task.getResult();
                             comapnyName.setText(company.Name);
                             companyEmail.setText(company.Email);
                             companyAddress.setText(company.Address);
@@ -82,9 +82,19 @@ public class CompanyDetails extends Fragment {
                             if(!company.LogoUrl.isEmpty()){
                                 new ImageManager(companyLogo).execute(company.LogoUrl);
                             }
+                            IncrementCompanyVisitsCounter();
                         }
                     }
                 });
+    }
+
+    private void IncrementCompanyVisitsCounter(){
+        if(company.VisitsCounter == null){
+            company.VisitsCounter = 1;
+        }else{
+            company.VisitsCounter++;
+        }
+        companyManager.UpdateCompanyVisitsCounter(company);
     }
 
     private void SetPropertiesFromArguments(){

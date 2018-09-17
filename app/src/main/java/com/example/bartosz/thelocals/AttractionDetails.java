@@ -96,7 +96,7 @@ public class AttractionDetails extends Fragment {
         }else{
             attraction.VisitsCounter++;
         }
-        attractionManager.UpdateAttractionVisitsCounter(attractionId, attraction);
+        attractionManager.UpdateAttractionVisitsCounter(attraction);
     }
 
     @Override

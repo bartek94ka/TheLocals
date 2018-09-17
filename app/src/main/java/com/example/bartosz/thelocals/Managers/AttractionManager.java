@@ -21,13 +21,10 @@ public class AttractionManager {
         collectionName = context.getString(R.string.collection_attractions);
     }
 
-    public void UpdateAttractionVisitsCounter(String id, Attraction attraction){
+    public void UpdateAttractionVisitsCounter(Attraction attraction){
         Map<String,Object> taskMap = new HashMap<String,Object>();
-        //taskMap.put(id, attraction);
         taskMap.put("VisitsCounter", attraction.VisitsCounter);
-        //collectionName = collectionName + "\\" + attraction.Province;
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(collectionName).child(attraction.Province).child(attraction.Id);
-
         reference.updateChildren(taskMap);
     }
 }

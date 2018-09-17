@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.Company;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,6 +59,13 @@ public class CompanyManager {
         Map<String,Object> taskMap = new HashMap<String,Object>();
         taskMap.put(id, comapny);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(collectionName);
+        reference.updateChildren(taskMap);
+    }
+
+    public void UpdateCompanyVisitsCounter(Company company){
+        Map<String,Object> taskMap = new HashMap<String,Object>();
+        taskMap.put("VisitsCounter", company.VisitsCounter);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(collectionName).child(company.Id);
         reference.updateChildren(taskMap);
     }
 

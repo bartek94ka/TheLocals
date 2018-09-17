@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.Models.Company;
+import com.example.bartosz.thelocals.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
@@ -28,11 +29,12 @@ public class AttractionListManager {
 
     private FirebaseDatabase firebaseDatabase;
     private Context context;
-    private String collectionName = "AttractionList";
+    private String collectionName;
 
     public AttractionListManager(Context context){
         this.context = context;
         firebaseDatabase = FirebaseDatabase.getInstance();
+        collectionName = context.getString(R.string.collection_attraction_list);
     }
 
     public void UpdateFirebaseAttractionList(String id, AttractionList attractionList){
@@ -45,6 +47,13 @@ public class AttractionListManager {
         taskMap.clear();
         attractionList.Attractions = attractions;
         taskMap.put(id, attractionList);
+        reference.updateChildren(taskMap);
+    }
+
+    public void UpdateAttractionListVisitsCounter(AttractionList attractionList){
+        Map<String,Object> taskMap = new HashMap<String,Object>();
+        taskMap.put("VisitsCounter", attractionList.VisitsCounter);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(collectionName).child(attractionList.Id);
         reference.updateChildren(taskMap);
     }
 

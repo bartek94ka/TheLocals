@@ -30,6 +30,7 @@ public class GuideDetails extends Fragment {
 
     private GuideManager guideManager;
     private String guideId;
+    private Guide guide;
 
     public GuideDetails() {
         // Required empty public constructor
@@ -65,7 +66,7 @@ public class GuideDetails extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Guide> task) {
                 if(task.isSuccessful()){
-                    Guide guide = task.getResult();
+                    guide = task.getResult();
                     fullName.setText(guide.FirstName + " " + guide.LastName);
                     email.setText(guide.Email);
                     phoneNumber.setText(guide.PhoneNumber);
@@ -74,9 +75,19 @@ public class GuideDetails extends Fragment {
                     if(!guide.PhotoUrl.isEmpty()){
                         new ImageManager(guidePhoto).execute(guide.PhotoUrl);
                     }
+                    IncrementGuideVisitsCounter();
                 }
             }
         });
+    }
+
+    private void IncrementGuideVisitsCounter(){
+        if(guide.VisitsCounter == null){
+            guide.VisitsCounter = 1;
+        }else{
+            guide.VisitsCounter++;
+        }
+        guideManager.UpdateGuideVisitsCounter(guide);
     }
 
     private void SetGuideIdArguments(){
