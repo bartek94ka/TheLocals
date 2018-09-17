@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -119,6 +120,36 @@ public class AttractionListManager {
                         }
                     }
                     localReference.removeEventListener(this);
+                }
+                taskCompletionSource.setResult(list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return taskCompletionSource.getTask();
+    }
+
+    public Task<ArrayList<AttractionList>> GetAllAttracionListsFromProvinceOrderByVisitsCounter(final String province){
+        final TaskCompletionSource<ArrayList<AttractionList>> taskCompletionSource = new TaskCompletionSource<>();
+        final ArrayList<AttractionList> list = new ArrayList<>();
+        final Query query = firebaseDatabase.getReference().child(collectionName).orderByChild("VisitsCounter");
+        //query.orderByChild("Province").equalTo(province);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        AttractionList attractionList = snapshot.getValue(AttractionList.class);
+                        if(attractionList != null){
+                            if(attractionList.Province.equals(province)){
+                                list.add(attractionList);
+                            }
+                        }
+                    }
+                    query.removeEventListener(this);
                 }
                 taskCompletionSource.setResult(list);
             }

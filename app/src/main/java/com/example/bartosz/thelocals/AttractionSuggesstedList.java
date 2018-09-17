@@ -16,12 +16,16 @@ import android.widget.ListView;
 import com.example.bartosz.thelocals.Adapters.AttractionSuggesstedListAdapter;
 import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
+import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.example.bartosz.thelocals.Models.Company;
+import com.example.bartosz.thelocals.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class AttractionSuggesstedList extends Fragment {
@@ -31,6 +35,8 @@ public class AttractionSuggesstedList extends Fragment {
     private Handler handler;
     private AttractionListManager attractionListManager;
     private AttractionSuggesstedListAdapter adapter;
+    private UserManager userManager;
+    private User user;
 
     public AttractionSuggesstedList() {
     }
@@ -57,9 +63,21 @@ public class AttractionSuggesstedList extends Fragment {
         attractionListManager = new AttractionListManager(getContext());
         adapter = new AttractionSuggesstedListAdapter(getContext());
         listViewAttractionLists.setAdapter(adapter);
+        userManager = new UserManager();
+        SetUserData();
+    }
 
-        Thread thread = new ThreadGetMoreData();
-        thread.start();
+    private void SetUserData(){
+        userManager.getUserData(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<User>() {
+            @Override
+            public void onComplete(@NonNull Task<User> task) {
+                if(task.isSuccessful()){
+                    user = task.getResult();
+                    Thread thread = new ThreadGetMoreData();
+                    thread.start();
+                }
+            }
+        });
     }
 
     private class MyHandler extends Handler {
@@ -81,12 +99,13 @@ public class AttractionSuggesstedList extends Fragment {
     private class ThreadGetMoreData extends Thread {
         @Override
         public void run() {
-            attractionListManager.GetAllAttracionLists().addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
+            attractionListManager.GetAllAttracionListsFromProvinceOrderByVisitsCounter(user.SelectedProvince).addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
                 @Override
                 public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
                     if(task.isSuccessful()){
                         handler.sendEmptyMessage(0);
                         ArrayList<AttractionList> lstResult = task.getResult();
+                        Collections.reverse(lstResult);
                         Message msg = handler.obtainMessage(1, lstResult);
                         handler.sendMessage(msg);
                     }
