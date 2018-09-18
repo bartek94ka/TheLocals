@@ -35,6 +35,7 @@ public class AttractionListDetails extends Fragment {
     private TextView attractionListAttractionCount;
     private TextView attractionListDescription;
     private TextView attractionListAdditionalInfo;
+    private TextView attractionListVisitsCounter;
     private Button buttonSeeAtractionsOnMap;
     private Button buttonSeeOrganizator;
     private ListView attractionListAttracions;
@@ -80,6 +81,7 @@ public class AttractionListDetails extends Fragment {
         attractionListDescription = view.findViewById(R.id.attractionListDescription);
         attractionListAdditionalInfo = view.findViewById(R.id.attractionListAdditionalInfo);
         attractionListAttracions = view.findViewById(R.id.listview_attractions);
+        attractionListVisitsCounter = view.findViewById(R.id.attractionListsVisitsCounter);
         attractionListAttracions.setAdapter(adapter);
     }
 
@@ -104,6 +106,7 @@ public class AttractionListDetails extends Fragment {
                         adapter.AddListItemToAdapter(values);
                     }
                     IncrementAttractionListVisitsCounter();
+                    attractionListVisitsCounter.setText(attractionList.VisitsCounter.toString());
                 }
             }
         });

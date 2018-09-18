@@ -110,6 +110,20 @@
                     android:layout_height="wrap_content"
                     android:textSize="18dp"/>
 
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Liczba wyświetleń"
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/attractionListsVisitsCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"/>
+
                 <Button
                     android:id="@+id/buttonSeeOrganizator"
                     android:layout_width="wrap_content"

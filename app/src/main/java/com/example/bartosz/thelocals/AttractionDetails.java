@@ -30,6 +30,7 @@ public class AttractionDetails extends Fragment {
     private TextView textViewProvince;
     private TextView textViewSource;
     private ImageView attractionImageView;
+    private TextView textViewVisitsCounter;
 
     private AttractionInfoProvider attractionInfoProvider;
     private ImageManager imageManager;
@@ -56,8 +57,6 @@ public class AttractionDetails extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_details));
-        //attractionId = "-LKSWSFULGGDFiQLjxFm";
-        attractionId = "-LKSWVaw_uREipsrBltw";
         SetPropertiesFromArguments();
         attractionInfoProvider = new AttractionInfoProvider(provinceName);
 
@@ -66,6 +65,7 @@ public class AttractionDetails extends Fragment {
         textViewDescription = view.findViewById(R.id.attractionDescription);
         textViewProvince = view.findViewById(R.id.attractionProvince);
         textViewSource = view.findViewById(R.id.attractionSource);
+        textViewVisitsCounter = view.findViewById(R.id.attractionVisitsCounter);
 
         InitializeLocalVeribles();
     }
@@ -84,6 +84,7 @@ public class AttractionDetails extends Fragment {
                         textViewSource.setText(attraction.SourceUrl);
                         new ImageManager(attractionImageView).execute(attraction.PhotoUrl);
                         IncrementAttractionVisitsCounter();
+                        textViewVisitsCounter.setText(attraction.VisitsCounter.toString());
                         return null;
                     }
                 });

@@ -27,6 +27,7 @@ public class GuideDetails extends Fragment {
     private TextView phoneNumber;
     private TextView city;
     private TextView aboutMe;
+    private TextView visitsCounter;
 
     private GuideManager guideManager;
     private String guideId;
@@ -58,6 +59,7 @@ public class GuideDetails extends Fragment {
         phoneNumber = view.findViewById(R.id.guidePhoneNumber);
         city = view.findViewById(R.id.guideCity);
         aboutMe = view.findViewById(R.id.guideAboutMe);
+        visitsCounter = view.findViewById(R.id.guideVisitsCounter);
         SetGuideProperties();
     }
 
@@ -76,6 +78,7 @@ public class GuideDetails extends Fragment {
                         new ImageManager(guidePhoto).execute(guide.PhotoUrl);
                     }
                     IncrementGuideVisitsCounter();
+                    visitsCounter.setText(guide.VisitsCounter.toString());
                 }
             }
         });

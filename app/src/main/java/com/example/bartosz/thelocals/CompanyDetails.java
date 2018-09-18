@@ -29,6 +29,7 @@ public class CompanyDetails extends Fragment {
     private TextView companyAddress;
     private TextView companyDescription;
     private TextView companyUrlAddress;
+    private TextView companyVisitsCounter;
 
     private CompanyManager companyManager;
     private String companyId;
@@ -64,6 +65,7 @@ public class CompanyDetails extends Fragment {
         companyPhoneNumber = view.findViewById(R.id.companyPhoneNumber);
         companyUrlAddress = view.findViewById(R.id.companyUrlAddress);
         companyDescription = view.findViewById(R.id.companyDescription);
+        companyVisitsCounter = view.findViewById(R.id.companyVisitsCounter);
     }
 
     private void SetCompanyProperties(){
@@ -83,6 +85,7 @@ public class CompanyDetails extends Fragment {
                                 new ImageManager(companyLogo).execute(company.LogoUrl);
                             }
                             IncrementCompanyVisitsCounter();
+                            companyVisitsCounter.setText(company.VisitsCounter.toString());
                         }
                     }
                 });
