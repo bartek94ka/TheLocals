@@ -40,10 +40,9 @@ public class AttractionList extends Fragment {
 
     private IAttractionPassListener mListener;
     private AttractionInfoProvider attractionInfoProvider;
-    //private AttractionListAdapter attractionListAdapter;
     private AttractionListDisplayAdapter adapter;
     private UserManager userManager;
-    private String provinceName = "Wielkopolskie";
+    private String provinceName;
 
     public AttractionList() {
     }
@@ -54,22 +53,6 @@ public class AttractionList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_attraction_list, container, false);
-        //Button nextButton = view.findViewById(R.id.nextButton);
-        //Button saveButton = view.findViewById(R.id.saveListsButton);
-        /*
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.PassAttractionList((ArrayList<Attraction>) attractionListAdapter.GetSelectedAttractionList());
-            }
-        });
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //mListener.PassAttractionListToAttractionLists( attractionListAdapter.GetSelectedAttractionList());
-            }
-        });
-        */
         return view;
     }
 
@@ -87,7 +70,6 @@ public class AttractionList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
-        //((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
         InitializeLocalVeribles();
     }
 
@@ -108,13 +90,6 @@ public class AttractionList extends Fragment {
                 thread.start();
             }
         });
-        //listViewAttractions.setAdapter(adapter);
-
-        /*
-        attractionListAdapter = new AttractionListAdapter(getContext());
-        attractionListAdapter.ClearList();
-        listViewAttractions.setAdapter(attractionListAdapter);
-        */
     }
 
     public class MyHandler extends Handler {
@@ -128,12 +103,6 @@ public class AttractionList extends Fragment {
                 case 1:
                     //Update data adapter and UI
                     adapter.addListItemToAdapter((ArrayList<Attraction>)msg.obj);
-                    int count = ((ArrayList<Attraction>) msg.obj).size();
-                    if(count == 0){
-                        //_informText.setVisibility(View.VISIBLE);
-                    }
-                    //Remove loading view after update listview
-                    //_listViewUser.removeFooterView(_footerView);
                     break;
                 default:
                     break;

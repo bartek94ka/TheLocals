@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals;
 
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,8 +23,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,11 +80,7 @@ public class SelectedAttractionsOnMap extends Fragment implements NavigationView
         ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_selected_attractions_map));
         SetAttractionListFromArguments();
         googleMapProvider = new GoogleMapProvider();
-        //attractionInfoProvider = new AttractionInfoProvider("Wielkopolskie");
-        //attractionInfoProvider = new AttractionInfoProvider("Kujawsko-pomorskie");
         attractionMarkerProvider = new AttractionMarkerProvider();
-        //ArrayList<Attraction> list = attractionInfoProvider.GetAllAttractions().getResult();
-        //SetAttractionListRegionName("region name");
         gpsTracker = new GPSTracker(getContext());
         location = gpsTracker.getLocation();
         mapView = (MapView) view.findViewById(R.id.map);
@@ -106,11 +107,18 @@ public class SelectedAttractionsOnMap extends Fragment implements NavigationView
 
         map.clear();
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (final Attraction attraction: attractions) {
+        for (int i = 0; i< attractions.size(); i++) {
 
-            MarkerOptions marker = attractionMarkerProvider.GetMarker(attraction);
-            builder.include(marker.getPosition());
-            map.addMarker(marker);
+            MarkerOptions markerOptions = attractionMarkerProvider.GetMarker(attractions.get(i));
+            builder.include(markerOptions.getPosition());
+            map.addMarker(markerOptions);
+            //Add lines between attractions
+            /*
+            if(i > 0){
+                MarkerOptions markerOptionsOld = attractionMarkerProvider.GetMarker(attractions.get(i-1));
+                map.addPolyline(new PolylineOptions().add(markerOptionsOld.getPosition(), markerOptions.getPosition()).width(5).color(Color.RED));
+            }
+            */
         }
         LatLngBounds bounds = builder.build();
         int padding = 40;
