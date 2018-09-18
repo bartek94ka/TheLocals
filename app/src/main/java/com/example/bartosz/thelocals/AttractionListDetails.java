@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class AttractionListDetails extends Fragment {
@@ -103,6 +104,7 @@ public class AttractionListDetails extends Fragment {
                     attractionListAdditionalInfo.setText(attractionList.AdditionalInfo);
                     if(attractionList.Attractions != null){
                         ArrayList<Attraction> values = GetAttractionListFromHashMap(attractionList.Attractions);
+                        Collections.sort(values);
                         adapter.AddListItemToAdapter(values);
                     }
                     IncrementAttractionListVisitsCounter();

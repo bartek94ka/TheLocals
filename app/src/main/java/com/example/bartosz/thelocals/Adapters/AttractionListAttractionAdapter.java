@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AttractionListAttractionAdapter extends BaseAdapter {
 
-    IAttractionPassListener listener;
+    private IAttractionPassListener listener;
     private Context context;
     private List<Attraction> attractions;
 

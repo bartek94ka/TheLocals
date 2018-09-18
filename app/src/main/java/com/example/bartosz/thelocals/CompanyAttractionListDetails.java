@@ -1,7 +1,6 @@
 package com.example.bartosz.thelocals;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,16 +13,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
+import com.example.bartosz.thelocals.Adapters.AttractionChangeOrderAdapter;
 import com.example.bartosz.thelocals.Listeners.IComapnyPassListener;
 import com.example.bartosz.thelocals.Managers.AttractionListManager;
+import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.AttractionList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import bolts.Continuation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class CompanyAttractionListDetails extends Fragment {
 
@@ -38,6 +44,8 @@ public class CompanyAttractionListDetails extends Fragment {
     private EditText etDuration;
     private EditText etDescription;
     private EditText etAdditionalInfo;
+    private ListView listViewAttractions;
+    private AttractionChangeOrderAdapter adapter;
 
     private Handler handler;
     private IComapnyPassListener mListener;
@@ -69,7 +77,7 @@ public class CompanyAttractionListDetails extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.PassComapnyIdToComapnyAttractionSugesstedList(attractionList.CompanyId);
+            mListener.PassComapnyIdToComapnyAttractionSugesstedList(attractionList.CompanyId);
             }
         });
 
@@ -101,6 +109,16 @@ public class CompanyAttractionListDetails extends Fragment {
         attractionList.Duration = duration;
         attractionList.Description = description;
         attractionList.AdditionalInfo = additionalInfo;
+        attractionList.Attractions = new HashMap<>();
+        List<Attraction> attractions = adapter.GetAttracionList();
+        if(attractions != null){
+            int order = 1;
+            for(Attraction attraction : attractions){
+                attraction.AttracionListOrder = order;
+                attractionList.Attractions.put(attraction.Id, attraction);
+                order++;
+            }
+        }
         attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
     }
 
@@ -119,8 +137,10 @@ public class CompanyAttractionListDetails extends Fragment {
         etDescription = view.findViewById(R.id.attractionListDescription);
         etAdditionalInfo = view.findViewById(R.id.attractionListAdditionalInfo);
         spinnerProvince = view.findViewById(R.id.attractionListProvince);
-
+        listViewAttractions = view.findViewById(R.id.listview_attractions);
         attractionListManager = new AttractionListManager(getContext());
+        adapter = new AttractionChangeOrderAdapter(getContext());
+        listViewAttractions.setAdapter(adapter);
 
         Thread thread = new ThreadGetData();
         thread.start();
@@ -160,6 +180,11 @@ public class CompanyAttractionListDetails extends Fragment {
                 case 1:
                     //Update data adapter and UI
                     attractionList = ((AttractionList) msg.obj);
+                    if(attractionList.Attractions != null){
+                        ArrayList<Attraction> values = GetAttractionListFromHashMap(attractionList.Attractions);
+                        Collections.sort(values);
+                        adapter.AddAllItemsToAdapter(values);
+                    }
                     UpdateInterface(attractionList);
                     break;
                 default:
@@ -216,5 +241,17 @@ public class CompanyAttractionListDetails extends Fragment {
                 }
             });
         }
+    }
+
+    private ArrayList<Attraction> GetAttractionListFromHashMap(HashMap<String, Attraction> hashMap){
+        Object[] array = hashMap.values().toArray();
+        ArrayList<Attraction> attractions = new ArrayList<>();
+        if(array != null){
+            for(Object object: array){
+                Attraction attraction = (Attraction)object;
+                attractions.add(attraction);
+            }
+        }
+        return attractions;
     }
 }

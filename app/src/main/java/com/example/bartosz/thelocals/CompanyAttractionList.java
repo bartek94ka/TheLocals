@@ -2,16 +2,19 @@ package com.example.bartosz.thelocals;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.bartosz.thelocals.AttractionAdapters.AttractionListAdapter;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +58,7 @@ public class CompanyAttractionList extends Fragment {
     private AttractionListManager attractionListManager;
     private AttractionList attractionList;
     private String attractionListId;
-    private String provinceName = "Wielkopolskie";
+    private String provinceName;
 
     public CompanyAttractionList() {
     }
@@ -77,7 +81,7 @@ public class CompanyAttractionList extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attractionList.Attractions = new HashMap<>();
+                attractionList.Attractions = new LinkedHashMap<>();
                 List<Attraction> selectedAttraction = attractionListAdapter.GetSelectedAttractionList();
                 if(selectedAttraction != null){
                     for(Attraction attraction : selectedAttraction){
@@ -101,6 +105,7 @@ public class CompanyAttractionList extends Fragment {
                 }
             }
         });
+
         return view;
     }
 
@@ -144,7 +149,42 @@ public class CompanyAttractionList extends Fragment {
         attractionListManager = new AttractionListManager(getContext());
         Thread thread = new ThreadGetMoreData();
         thread.start();
+        ListViewSetOnDragListener();
+    }
 
+
+    private void ListViewSetOnDragListener(){
+        listViewAttractions.setOnDragListener(new View.OnDragListener() {
+            Drawable enterShape = getResources().getDrawable(R.drawable.shape_droptarget);
+            Drawable normalShape = getResources().getDrawable(R.drawable.shape);
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                int action = dragEvent.getAction();
+                switch (dragEvent.getAction()){
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        break;
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        view.setBackgroundDrawable(enterShape);
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        view.setBackground(normalShape);
+                    case DragEvent.ACTION_DROP:
+                        View v = (View) dragEvent.getLocalState();
+                        ViewGroup owner = (ViewGroup) v.getParent();
+                        owner.removeView(v);
+                        LinearLayout container = (LinearLayout) v;
+                        container.addView(v);
+                        v.setVisibility(View.VISIBLE);
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        view.setBackgroundDrawable(normalShape);
+                    default:
+                        break;
+                }
+
+                return true;
+            }
+        });
     }
 
     private ArrayList<Attraction> GetAttractionListFromHashMap(HashMap<String, Attraction> hashMap){

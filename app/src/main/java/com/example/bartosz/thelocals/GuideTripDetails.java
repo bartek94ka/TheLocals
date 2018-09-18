@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.bartosz.thelocals.Adapters.AttractionChangeOrderAdapter;
 import com.example.bartosz.thelocals.Adapters.AttractionListAttractionAdapter;
 import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
@@ -26,7 +27,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class GuideTripDetails extends Fragment {
 
@@ -41,9 +44,10 @@ public class GuideTripDetails extends Fragment {
     private EditText etDuration;
     private EditText etDescription;
     private EditText etAdditionalInfo;
+    private ListView listViewAttractions;
+    private AttractionChangeOrderAdapter adapter;
 
     private Handler handler;
-    private AttractionListAttractionAdapter adapter;
     private IAttractionListPassListener mListener;
     private String attractionListId;
     private AttractionListManager attractionListManager;
@@ -70,7 +74,7 @@ public class GuideTripDetails extends Fragment {
         //companyId = "f93fd190-4c8c-4e53-9cab-a9e8bef0f288";
         SetPropertiesFromArguments();
         attractionListManager = new AttractionListManager(getContext());
-        adapter = new AttractionListAttractionAdapter(getContext());
+        adapter = new AttractionChangeOrderAdapter(getContext());
         InitializeVeribles();
         SetButtonEvents();
         Thread thread = new ThreadGetData();
@@ -100,6 +104,8 @@ public class GuideTripDetails extends Fragment {
         etDuration = view.findViewById(R.id.attractionListDuration);
         etDescription = view.findViewById(R.id.attractionListDescription);
         etAdditionalInfo = view.findViewById(R.id.attractionListAdditionalInfo);
+        listViewAttractions = view.findViewById(R.id.listview_attractions);
+        listViewAttractions.setAdapter(adapter);
     }
 
     private void SetButtonEvents(){
@@ -179,7 +185,29 @@ public class GuideTripDetails extends Fragment {
         attractionList.Duration = duration;
         attractionList.Description = description;
         attractionList.AdditionalInfo = additionalInfo;
+        attractionList.Attractions = new HashMap<>();
+        List<Attraction> attractions = adapter.GetAttracionList();
+        if(attractions != null){
+            int order = 1;
+            for(Attraction attraction : attractions){
+                attraction.AttracionListOrder = order;
+                attractionList.Attractions.put(attraction.Id, attraction);
+                order++;
+            }
+        }
         attractionListManager.UpdateFirebaseAttractionList(attractionListId, attractionList);
+    }
+
+    private ArrayList<Attraction> GetAttractionListFromHashMap(HashMap<String, Attraction> hashMap){
+        Object[] array = hashMap.values().toArray();
+        ArrayList<Attraction> attractions = new ArrayList<>();
+        if(array != null){
+            for(Object object: array){
+                Attraction attraction = (Attraction)object;
+                attractions.add(attraction);
+            }
+        }
+        return attractions;
     }
 
     public class MyHandler extends Handler {
@@ -193,6 +221,11 @@ public class GuideTripDetails extends Fragment {
                 case 1:
                     //Update data adapter and UI
                     attractionList = ((AttractionList) msg.obj);
+                    if(attractionList.Attractions != null){
+                        ArrayList<Attraction> values = GetAttractionListFromHashMap(attractionList.Attractions);
+                        Collections.sort(values);
+                        adapter.AddAllItemsToAdapter(values);
+                    }
                     UpdateInterface(attractionList);
                     break;
                 default:

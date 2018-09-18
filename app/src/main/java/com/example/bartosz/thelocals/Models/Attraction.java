@@ -1,9 +1,11 @@
 package com.example.bartosz.thelocals.Models;
 
+import android.support.annotation.NonNull;
+
 import java.text.DateFormat;
 import java.util.Date;
 
-public class Attraction {
+public class Attraction implements Comparable<Attraction>{
 
     private Boolean isSelected;
     public String Id;
@@ -18,6 +20,7 @@ public class Attraction {
     public String UserId;
     public Boolean IsValidated;
     public Integer VisitsCounter;
+    public Integer AttracionListOrder;
 
     public Attraction(){
         VisitsCounter = 0;
@@ -43,5 +46,14 @@ public class Attraction {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    @Override
+    public int compareTo(@NonNull Attraction attraction) {
+        if(attraction.AttracionListOrder != null && this.AttracionListOrder != null){
+            int compareAttracionListOder = attraction.AttracionListOrder;
+            return this.AttracionListOrder - compareAttracionListOder;
+        }
+        return 0;
     }
 }
