@@ -1,12 +1,15 @@
 package com.example.bartosz.thelocals.Providers;
 
-import com.example.bartosz.thelocals.AttractionList;
+import android.content.Context;
+import android.test.mock.MockContext;
+
+import com.example.bartosz.thelocals.Models.AttractionList;
+import com.google.firebase.FirebaseApp;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class AttractionListsProviderTests {
@@ -36,10 +39,15 @@ public class AttractionListsProviderTests {
     public void GetAttractionListForCompany_ShouldReturnNotNull(){
         //Arragne
         String companyId = "1aa0f3bb-160c-46de-89c3-4f84acf23d1b";
-        AttractionListsProvider attractionListsProvider = new AttractionListsProvider(companyId);
+        //Context appContext = ;
+        MockContext context = new MockContext();
+
+        FirebaseApp.initializeApp(context);
+        AttractionListsProvider attractionListsProvider = new AttractionListsProvider();
 
         //Act
-        ArrayList<com.example.bartosz.thelocals.Models.AttractionList> result = attractionListsProvider.GetAttractionListsForCompany().getResult();
+        AttractionList result = attractionListsProvider.GetAttractionListById("0430c296-a245-4e27-956c-09dd5dba0953").getResult();
+//        ArrayList<com.example.bartosz.thelocals.Models.AttractionList> result = attractionListsProvider.GetAttractionListsForCompany().getResult();
 
         //Assert
         assertNotNull(result);
