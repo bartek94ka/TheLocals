@@ -39,6 +39,7 @@
     <string name="fragment_edit_guide">Edytuj dane przewodnika</string>
     <string name="fragmnet_add_guide">Dodaj przewodnika</string>
     <string name="fragment_login">Logowanie</string>
+    <string name="fragment_register">Rejestracja</string>
 
 
     <string name="collection_guides">Guides</string>
