@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class CompanyDetails extends Fragment {
 
@@ -50,11 +53,23 @@ public class CompanyDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_company_detials));
+        SetHeaderForActivity();
         SetPropertiesFromArguments();
         companyManager = new CompanyManager(getContext());
         InitializeVeribles();
         SetCompanyProperties();
+    }
+
+    private void SetHeaderForActivity(){
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+        String name = taskInfo.get(0).topActivity.getClassName();
+        if(name.contains("InitialActivity")){
+            ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_company_detials));
+        }
+        else if(name.contains("MainActivity")){
+            ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_company_detials));
+        }
     }
 
     private void InitializeVeribles(){
