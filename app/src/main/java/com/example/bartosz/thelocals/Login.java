@@ -1,7 +1,10 @@
 package com.example.bartosz.thelocals;
 
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 
 public class Login extends Fragment {
@@ -54,6 +58,7 @@ public class Login extends Fragment {
     private FirebaseAuth firebaseAuth;
     private UserManager userManager;
     private CallbackManager callbackManager;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     public Login() {
         // Required empty public constructor
@@ -74,10 +79,37 @@ public class Login extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_login));
+        ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_login));
         InitializeLocalVeribles();
         InitializeClasses();
         SetHandlers();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        firebaseAuth.addAuthStateListener(authStateListener);
+        /*
+        user = firebaseAuth.getCurrentUser();
+        if(user != null){
+            Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(loginIntent);
+            LoginActivity.this.finish();
+        }
+        */
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        firebaseAuth.removeAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void InitializeLocalVeribles(){
@@ -97,6 +129,22 @@ public class Login extends Fragment {
     }
 
     private void SetHandlers(){
+
+        authStateListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null){
+                    String email = firebaseAuth.getCurrentUser().getEmail();
+                    if(email != null && firebaseAuth.getCurrentUser() != null)
+                    {
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getContext(), "Zalogowano", Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
+                    }
+                }
+            }
+        };
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,13 +166,14 @@ public class Login extends Fragment {
                     public void onSuccess(LoginResult loginResult) {
                         // App code
                         handleFacebookAccessToken(loginResult.getAccessToken());
-
+                        Log.d("LoginSuccess", "facebook:onSuccess");
                         Toast.makeText(getContext(), "Zalogowano przez Facebook", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onCancel() {
                         // App code
+                        Log.d("LoginCancel", "facebook:onCancel");
                     }
 
                     @Override
@@ -134,13 +183,21 @@ public class Login extends Fragment {
                     }
                 });
 
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                //user = firebaseAuth.getCurrentUser();
+            }
+        });
+
     }
 
     private void handleFacebookAccessToken(final AccessToken token) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                         if (task.isComplete()) {
@@ -180,28 +237,30 @@ public class Login extends Fragment {
 
         if(TextUtils.isEmpty(emailString))
         {
-            Toast.makeText(getContext(), "Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Proszę podać adres email", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!userManager.isEmailValid(passwordString)){
-            Toast.makeText(getContext(), "Wrong email foramt. Please enter your email", Toast.LENGTH_SHORT).show();
+        if(!userManager.isEmailValid(emailString)){
+            Toast.makeText(getContext(), "Nieprawidłowy format adresu email", Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(passwordString))
         {
-            Toast.makeText(getContext(), "Please enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Proszę podać hasło", Toast.LENGTH_SHORT).show();
             return;
         }
 
         progressDialog.setMessage("Logowanie...");
         progressDialog.show();
 
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
         firebaseAuth.signInWithEmailAndPassword(emailString, passwordString)
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Login Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Zalogowano", Toast.LENGTH_SHORT).show();
                         } else {
                             try{
                                 throw task.getException();

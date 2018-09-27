@@ -61,7 +61,7 @@ public class Register extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_register));
+        ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_register));
         InitializeLocalVeribles();
         InitializeClasses();
         SetHandlers();
@@ -134,7 +134,7 @@ public class Register extends Fragment {
 
         try {
             this.firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText)
-                    .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
@@ -143,11 +143,10 @@ public class Register extends Fragment {
                                 String province = (String)spinnerProvince.getSelectedItem();
                                 userManager.AddUserToDatabase(getContext(), firebaseAuth.getUid(), "", nameText, "", province);
                                 //Change activity
-                                /*
-                                Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                                RegisterActivity.this.startActivity(registerIntent);
-                                RegisterActivity.this.finish();
-                                */
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(getContext(), "Zalogowano", Toast.LENGTH_SHORT).show();
+                                getActivity().finish();
                             } else {
                                 Toast.makeText(getContext(), "Nie udało się zarejestrować. Spróbuj ponownie", Toast.LENGTH_SHORT).show();
                             }

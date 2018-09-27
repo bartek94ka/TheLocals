@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_welcome"
+            android:icon="@mipmap/ic_home_black_24dp"
+            android:title="Strona główna" />
+        <item
+            android:id="@+id/nav_attractionList"
+            android:icon="@mipmap/ic_location_on_black_24dp"
+            android:title="Lista atrakcji w regionie" />
+        <item
+            android:id="@+id/nav_attractionSuggesstedList"
+            android:icon="@mipmap/baseline_map_black_24dp"
+            android:title="Lista tras" />
+        <item
+            android:id="@+id/nav_guideList"
+            android:icon="@mipmap/ic_group_black_24dp"
+            android:title="Lista przewodników" />
+        <item
+            android:id="@+id/nav_companyList"
+            android:icon="@mipmap/baseline_view_list_black_24dp"
+            android:title="Lista biur" />
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@mipmap/outline_vpn_key_black_24dp"
+            android:title="Logowanie"/>
+        <item
+            android:id="@+id/nav_register"
+            android:icon="@mipmap/ic_person_add_black_24dp"
+            android:title="Rejestracja"/>
+    </group>
+
+</menu>

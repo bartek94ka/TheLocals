@@ -1,9 +1,11 @@
 package com.example.bartosz.thelocals;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import com.example.bartosz.thelocals.Listeners.IAttractionListDetailsPassListener;
 import com.example.bartosz.thelocals.Listeners.IAttractionListPassListener;
@@ -25,27 +27,23 @@ import com.example.bartosz.thelocals.Listeners.IMapPassListener;
 import com.example.bartosz.thelocals.Listeners.IWelcomePageListener;
 import com.example.bartosz.thelocals.Managers.UserManager;
 import com.example.bartosz.thelocals.Models.Attraction;
-import com.example.bartosz.thelocals.Models.AttractionList;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+public class InitialActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         IAttractionPassListener, IComapnyPassListener, IMapPassListener, IWelcomePageListener, IAttractionListPassListener,
         IGuidePassListener, IAttractionListDetailsPassListener {
 
-
-    private UserManager userManager;
     private Fragment fragment;
     private FragmentManager fragmentManager;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_initial);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,52 +57,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         fragmentManager = getSupportFragmentManager();
-
         UseDefaultFragment();
 
-        userManager = new UserManager();
-
-        CheckForPermissions();
+        CheckIfUserIsLogged();
     }
 
     @Override
     public void onBackPressed() {
-
-        int index = fragmentManager.getBackStackEntryCount() - 1;
-        List<Fragment> fragmentList = fragmentManager.getFragments();
-        Fragment currentFragment = getVisibleFragment();
-        try{
-            SetMarkerOnMap setMarkerOnMap = (SetMarkerOnMap) fragmentList.get(index);
-            MarkerOptions markerOptions = setMarkerOnMap.GetMarkerOption();
-            Bundle args = new Bundle();
-            args.putString("latitude", String.valueOf(markerOptions.getPosition().latitude));
-            args.putString("longitude", String.valueOf(markerOptions.getPosition().longitude));
-            currentFragment.setArguments(args);
-
-            //Fragment newAttraction = fragmentManager.popBackStack();
-            fragment.setArguments(args);
-            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            //fragmentTransaction.replace(getVisibleFragment().getId(), newAttraction);
-            //fragmentTransaction.commit();
-        }catch(Exception ex){
-
-        }
-
-        /*
-        FragmentManager.BackStackEntry backEntry = (FragmentManager.BackStackEntry) fragmentManager.getBackStackEntryAt(index);
-        String tag = backEntry.getName();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-        */
-
-        if(fragment.getId() == 1){
-
-            //fragment.setArguments();
-        }
-        //firstFragment.setData("yourString");
-        //finish();
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -132,92 +92,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_welcome) {
             fragment = new Welcome();
-        } else if (id == R.id.nav_logout) {
-            LogoutUserAndChangeActivity();
-        } else if (id == R.id.nav_newAttraction){
-            fragment = new NewAttraction();
-        } else if (id == R.id.nav_addCompany) {
-            fragment = new AddCompany();
-        } else if (id == R.id.nav_userSettings) {
-            fragment = new UserSettings();
         } else if (id == R.id.nav_companyList){
             fragment = new CompanyList();
         } else if (id == R.id.nav_attractionSuggesstedList){
             fragment = new AttractionSuggesstedList();
-        } else if (id == R.id.nav_addGuide){
-            fragment = new AddGuide();
+            //dorzucić przekazywanie parametru regionu
         } else if (id == R.id.nav_guideList){
             fragment = new GuideList();
         } else if (id == R.id.nav_attractionList){
             fragment = new com.example.bartosz.thelocals.AttractionList();
-        } else if (id == R.id.nav_addedCompanies){
-            fragment = new EditCompanyList();
-        } else if (id == R.id.nav_addedGuides){
-            fragment = new EditGuideList();
+            //dorzucić przekazywanie parametru regionu
+        } else if (id == R.id.nav_login){
+            fragment = new Login();
+        } else if (id == R.id.nav_register){
+            fragment = new Register();
         }
 
         if(fragment != null){
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.replace(getVisibleFragment().getId(), fragment);
             fragmentTransaction.commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(MainActivity.this, "Permission denied to read your Location", Toast.LENGTH_SHORT).show();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
-    private void CheckForPermissions(){
-        int permission = getApplication().getBaseContext().checkSelfPermission(Manifest.permission.MAPS_RECEIVE);
-        if( permission == PackageManager.PERMISSION_DENIED){
-
-        }
-        else{
-            if(shouldShowRequestPermissionRationale(Manifest.permission.MAPS_RECEIVE)){
-                Toast.makeText(this, "Udostępnienie lokalizacji jest potrzebne, aby korzystać funkcji aplikacji", Toast.LENGTH_LONG).show();
-            }
-            requestPermissions(new String[]{Manifest.permission.MAPS_RECEIVE}, 1);
-        }
+    public void SetActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
     }
 
     private void UseDefaultFragment(){
-        //fragment = new NewAttraction();
-        //fragment = new SetMarkerOnMap();
-        //fragment = new AttractionDetails();
-        //fragment = new AddCompany();
-        //fragment = new CompanyAttractionSuggesstedList();
         fragment = new Welcome();
-        //fragment = new CompanyDetails();
-
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -225,20 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
     }
 
-    private void LogoutUserAndChangeActivity(){
-        //TODO check if user was register by service - without FB
-
-//        FirebaseAuth.getInstance().signOut();
-        LoginManager.getInstance().logOut();
-        userManager.LogoutUser();
-        if (FirebaseAuth.getInstance().getCurrentUser() == null && FirebaseAuth.getInstance().getCurrentUser() == null){
-            Intent intent = new Intent(MainActivity.this, InitialActivity.class);
-            startActivity(intent);
-            MainActivity.this.finish();
-        }
-    }
-
-    public Fragment getVisibleFragment(){
+    private Fragment getVisibleFragment(){
         List<Fragment> fragments = fragmentManager.getFragments();
         if(fragments != null){
             for(Fragment fragment : fragments){
@@ -249,8 +144,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
     }
 
-    public void SetActionBarTitle(String title) {
-        getSupportActionBar().setTitle(title);
+    private void CheckIfUserIsLogged(){
+        authStateListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null){
+                    String email = firebaseAuth.getCurrentUser().getEmail();
+                    if(email != null && firebaseAuth.getCurrentUser() != null)
+                    {
+                        Intent intent = new Intent( InitialActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        InitialActivity.this.finish();
+                    }
+                }
+            }
+        };
     }
 
     @Override
@@ -267,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void PassAttractionListToAttractionLists(AttractionList attractionList) {
+    public void PassAttractionListToAttractionLists(com.example.bartosz.thelocals.Models.AttractionList attractionList) {
         Fragment companyAttractionSuggesstedList = new CompanyAttractionSuggesstedList();
         Bundle args = new Bundle();
         args.putSerializable("attractionList", attractionList.CompanyId);
@@ -275,12 +183,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction fragmentTransaction = (fragmentManager.beginTransaction());
         fragment = getVisibleFragment();
         fragmentTransaction.replace(fragment.getId(), companyAttractionSuggesstedList);
-        //fragment = companyAttractionSuggesstedList;
-        /*
-        getSupportFragmentManager().beginTransaction().
-                replace(fragment.getId(), selectedAttractionsOnMap).
-                commit();
-        */
         fragmentTransaction.commit();
     }
 

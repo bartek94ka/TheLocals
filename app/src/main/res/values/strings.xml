@@ -69,4 +69,5 @@
         <item>Wielkopolskie</item>
         <item>Zachodniopomorskie</item>
     </string-array>
+    <string name="title_activity_initial">InitialActivity</string>
 </resources>
