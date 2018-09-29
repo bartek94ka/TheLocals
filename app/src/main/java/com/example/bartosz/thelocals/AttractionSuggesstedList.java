@@ -95,6 +95,8 @@ public class AttractionSuggesstedList extends Fragment {
                 if(task.isSuccessful()){
                     user = task.getResult();
                     provinceName = user.SelectedProvince;
+                    Thread thread = new ThreadGetMoreData();
+                    thread.start();
                 }
             }
         });

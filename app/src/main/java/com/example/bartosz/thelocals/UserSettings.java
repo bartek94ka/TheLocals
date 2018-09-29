@@ -35,7 +35,6 @@ public class UserSettings extends Fragment implements View.OnClickListener {
     private View view;
 
     private FirebaseAuth _firebaseAuth;
-    private FirebaseDatabase _database;
     private FirebaseUser _currentUser;
     private User _user;
 
@@ -126,7 +125,6 @@ public class UserSettings extends Fragment implements View.OnClickListener {
         _userDataValidator = new UserDataValidator();
 
         _firebaseAuth = FirebaseAuth.getInstance();
-        _database = FirebaseDatabase.getInstance();
         _currentUser = _firebaseAuth.getCurrentUser();
 
         _settingsName = view.findViewById(R.id.settingsName);

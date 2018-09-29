@@ -40,6 +40,8 @@ public class InitialActivity extends AppCompatActivity implements NavigationView
     private FragmentManager fragmentManager;
     private FirebaseAuth.AuthStateListener authStateListener;
 
+    private String provinceName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,22 +94,29 @@ public class InitialActivity extends AppCompatActivity implements NavigationView
 
         if (id == R.id.nav_welcome) {
             fragment = new Welcome();
+            if(provinceName != null){
+                Bundle args = new Bundle();
+                args.putString("provinceName", provinceName);
+                fragment.setArguments(args);
+            }
         } else if (id == R.id.nav_companyList){
             fragment = new CompanyList();
         } else if (id == R.id.nav_attractionSuggesstedList){
             fragment = new AttractionSuggesstedList();
-            Bundle args = new Bundle();
-            args.putString("provinceName", "Wielkopolskie");
-            fragment.setArguments(args);
-            //dorzucić przekazywanie parametru regionu
+            if(provinceName != null){
+                Bundle args = new Bundle();
+                args.putString("provinceName", provinceName);
+                fragment.setArguments(args);
+            }
         } else if (id == R.id.nav_guideList){
             fragment = new GuideList();
         } else if (id == R.id.nav_attractionList){
             fragment = new com.example.bartosz.thelocals.AttractionList();
-            Bundle args = new Bundle();
-            args.putString("provinceName", "Wielkopolskie");
-            fragment.setArguments(args);
-            //dorzucić przekazywanie parametru regionu
+            if(provinceName != null){
+                Bundle args = new Bundle();
+                args.putString("provinceName", provinceName);
+                fragment.setArguments(args);
+            }
         } else if (id == R.id.nav_login){
             fragment = new Login();
         } else if (id == R.id.nav_register){
@@ -125,6 +134,8 @@ public class InitialActivity extends AppCompatActivity implements NavigationView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void SetProvinceName(String provinceName) { this.provinceName = provinceName; }
 
     public void SetActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
