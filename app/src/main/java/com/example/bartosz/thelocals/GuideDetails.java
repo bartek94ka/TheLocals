@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import com.example.bartosz.thelocals.Managers.ImageManager;
 import com.example.bartosz.thelocals.Models.Guide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.List;
 
 public class GuideDetails extends Fragment {
 
@@ -46,10 +49,22 @@ public class GuideDetails extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_guide_detials));
+        SetHeaderForActivity();
         SetGuideIdArguments();
         guideManager = new GuideManager(getContext());
         InitializeVeribles();
+    }
+
+    private void SetHeaderForActivity(){
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+        String name = taskInfo.get(0).topActivity.getClassName();
+        if(name.contains("InitialActivity")){
+            ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_guide_detials));
+        }
+        else if(name.contains("MainActivity")){
+            ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragmnet_guide_detials));
+        }
     }
 
     private void InitializeVeribles(){

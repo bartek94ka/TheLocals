@@ -96,11 +96,17 @@ public class InitialActivity extends AppCompatActivity implements NavigationView
             fragment = new CompanyList();
         } else if (id == R.id.nav_attractionSuggesstedList){
             fragment = new AttractionSuggesstedList();
+            Bundle args = new Bundle();
+            args.putString("provinceName", "Wielkopolskie");
+            fragment.setArguments(args);
             //dorzucić przekazywanie parametru regionu
         } else if (id == R.id.nav_guideList){
             fragment = new GuideList();
         } else if (id == R.id.nav_attractionList){
             fragment = new com.example.bartosz.thelocals.AttractionList();
+            Bundle args = new Bundle();
+            args.putString("provinceName", "Wielkopolskie");
+            fragment.setArguments(args);
             //dorzucić przekazywanie parametru regionu
         } else if (id == R.id.nav_login){
             fragment = new Login();

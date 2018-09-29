@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class AttractionSuggesstedList extends Fragment {
@@ -37,6 +39,8 @@ public class AttractionSuggesstedList extends Fragment {
     private AttractionSuggesstedListAdapter adapter;
     private UserManager userManager;
     private User user;
+
+    private String provinceName;
 
     public AttractionSuggesstedList() {
     }
@@ -53,8 +57,23 @@ public class AttractionSuggesstedList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_sugessted_list));
+        SetHeaderForActivity();
+        SetPropertiesFromArguments();
         InitializeLocalVeribles();
+        Thread thread = new ThreadGetMoreData();
+        thread.start();
+    }
+
+    private void SetHeaderForActivity(){
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+        String name = taskInfo.get(0).topActivity.getClassName();
+        if(name.contains("InitialActivity")){
+            ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_sugessted_list));
+        }
+        else if(name.contains("MainActivity")){
+            ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_sugessted_list));
+        }
     }
 
     private void InitializeLocalVeribles() {
@@ -64,7 +83,9 @@ public class AttractionSuggesstedList extends Fragment {
         adapter = new AttractionSuggesstedListAdapter(getContext());
         listViewAttractionLists.setAdapter(adapter);
         userManager = new UserManager();
-        SetUserData();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            SetUserData();
+        }
     }
 
     private void SetUserData(){
@@ -73,11 +94,17 @@ public class AttractionSuggesstedList extends Fragment {
             public void onComplete(@NonNull Task<User> task) {
                 if(task.isSuccessful()){
                     user = task.getResult();
-                    Thread thread = new ThreadGetMoreData();
-                    thread.start();
+                    provinceName = user.SelectedProvince;
                 }
             }
         });
+    }
+
+    private void SetPropertiesFromArguments(){
+        Bundle args = getArguments();
+        if(args != null){
+            provinceName = (String)args.get("provinceName");
+        }
     }
 
     private class MyHandler extends Handler {
@@ -99,7 +126,7 @@ public class AttractionSuggesstedList extends Fragment {
     private class ThreadGetMoreData extends Thread {
         @Override
         public void run() {
-            attractionListManager.GetAllAttracionListsFromProvinceOrderByVisitsCounter(user.SelectedProvince).addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
+            attractionListManager.GetAllAttracionListsFromProvinceOrderByVisitsCounter(provinceName).addOnCompleteListener(new OnCompleteListener<ArrayList<AttractionList>>() {
                 @Override
                 public void onComplete(@NonNull Task<ArrayList<AttractionList>> task) {
                     if(task.isSuccessful()){

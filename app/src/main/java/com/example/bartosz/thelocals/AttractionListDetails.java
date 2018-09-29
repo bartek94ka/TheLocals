@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class AttractionListDetails extends Fragment {
 
@@ -62,13 +64,25 @@ public class AttractionListDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list_details));
+        SetHeaderForActivity();
         SetPropertiesFromArguments();
         attractionListManager = new AttractionListManager(getContext());
         adapter = new AttractionListAttractionAdapter(getContext());
         InitializeVeribles();
         SetAttrcationListProperties();
         SetButtonEvents();
+    }
+
+    private void SetHeaderForActivity(){
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+        String name = taskInfo.get(0).topActivity.getClassName();
+        if(name.contains("InitialActivity")){
+            ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list_details));
+        }
+        else if(name.contains("MainActivity")){
+            ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list_details));
+        }
     }
 
     private void InitializeVeribles(){

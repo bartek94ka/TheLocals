@@ -1,5 +1,6 @@
 package com.example.bartosz.thelocals;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import com.example.bartosz.thelocals.Managers.AttractionManager;
 import com.example.bartosz.thelocals.Managers.ImageManager;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Providers.AttractionInfoProvider;
+
+import java.util.List;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -56,7 +59,7 @@ public class AttractionDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_details));
+        SetHeaderForActivity();
         SetPropertiesFromArguments();
         attractionInfoProvider = new AttractionInfoProvider(provinceName);
 
@@ -68,6 +71,18 @@ public class AttractionDetails extends Fragment {
         textViewVisitsCounter = view.findViewById(R.id.attractionVisitsCounter);
 
         InitializeLocalVeribles();
+    }
+
+    private void SetHeaderForActivity(){
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+        String name = taskInfo.get(0).topActivity.getClassName();
+        if(name.contains("InitialActivity")){
+            ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_details));
+        }
+        else if(name.contains("MainActivity")){
+            ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_details));
+        }
     }
 
     private void InitializeLocalVeribles(){

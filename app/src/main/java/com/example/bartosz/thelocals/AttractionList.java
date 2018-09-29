@@ -1,6 +1,7 @@
 package com.example.bartosz.thelocals;
 
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,12 +12,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.bartosz.thelocals.Adapters.AttractionListAttractionAdapter;
 import com.example.bartosz.thelocals.Adapters.AttractionListDisplayAdapter;
-import com.example.bartosz.thelocals.AttractionAdapters.AttractionListAdapter;
 import com.example.bartosz.thelocals.Listeners.IAttractionPassListener;
 import com.example.bartosz.thelocals.Models.Attraction;
 import com.example.bartosz.thelocals.Models.User;
@@ -26,10 +24,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import bolts.Continuation;
-import bolts.Task;
-
 
 public class AttractionList extends Fragment {
 
@@ -69,27 +66,57 @@ public class AttractionList extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
+        SetHeaderForActivity();
         InitializeLocalVeribles();
+        SetAtrractionList();
+    }
+
+    private void SetHeaderForActivity(){
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+        String name = taskInfo.get(0).topActivity.getClassName();
+        if(name.contains("InitialActivity")){
+            ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
+        }
+        else if(name.contains("MainActivity")){
+            ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_attraction_list));
+        }
     }
 
     private void InitializeLocalVeribles(){
-
         listViewAttractions = view.findViewById(R.id.listview_attractions);
         adapter = new AttractionListDisplayAdapter(getContext());
         adapter.ClearList();
         listViewAttractions.setAdapter(adapter);
         handler = new MyHandler();
         userManager = new UserManager();
+    }
+
+    private void SetAtrractionList(){
         final Thread thread = new ThreadGetMoreData();
-        userManager.getUserData(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<User>() {
-            @Override
-            public void onSuccess(User user) {
-                provinceName = user.SelectedProvince;
-                attractionInfoProvider = new AttractionInfoProvider(provinceName);
-                thread.start();
-            }
-        });
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            userManager.getUserData(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    provinceName = user.SelectedProvince;
+                    attractionInfoProvider = new AttractionInfoProvider(provinceName);
+                    thread.start();
+                }
+            });
+        }
+        else{
+            SetPropertiesFromArguments();
+            attractionInfoProvider = new AttractionInfoProvider(provinceName);
+            thread.start();
+        }
+
+    }
+
+    private void SetPropertiesFromArguments(){
+        Bundle args = getArguments();
+        if(args != null){
+            provinceName = (String)args.get("provinceName");
+        }
     }
 
     public class MyHandler extends Handler {

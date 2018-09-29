@@ -1,5 +1,7 @@
 package com.example.bartosz.thelocals;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
@@ -77,7 +79,7 @@ public class SelectedAttractionsOnMap extends Fragment implements NavigationView
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_selected_attractions_map));
+        SetHeaderForActivity();
         SetAttractionListFromArguments();
         googleMapProvider = new GoogleMapProvider();
         attractionMarkerProvider = new AttractionMarkerProvider();
@@ -89,7 +91,18 @@ public class SelectedAttractionsOnMap extends Fragment implements NavigationView
             mapView.onResume();
             mapView.getMapAsync(this);
         }
+    }
 
+    private void SetHeaderForActivity(){
+        ActivityManager am = (ActivityManager)getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+        String name = taskInfo.get(0).topActivity.getClassName();
+        if(name.contains("InitialActivity")){
+            ((InitialActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_selected_attractions_map));
+        }
+        else if(name.contains("MainActivity")){
+            ((MainActivity)getActivity()).SetActionBarTitle(getString(R.string.fragment_selected_attractions_map));
+        }
     }
 
     private void SetAttractionListFromArguments(){
